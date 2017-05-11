@@ -7,7 +7,8 @@ addons:
 
 before_install:
   - sudo apt-get update -qq
-  - sude apt-get remove --purge postgresql-9.1 postgresql-server-dev-9.1 
+  - sude apt-get remove
+      purge postgresql-9.1
   - sudo apt-get install -y
       postgresql-9.5 postgresql-server-dev-9.5
       build-essential autoconf libtool libcunit1-dev
