@@ -168,6 +168,7 @@ static void test_gdal_polygonize() {
 	gv = rt_raster_gdal_polygonize(rt, 0, TRUE, &nPols);
 
 	CU_ASSERT_DOUBLE_EQUAL(gv[0].val, 1.8, FLT_EPSILON);
+	printf("gval[0].val = %f", gv[0].val);
 
 	gobserved = (LWGEOM *)gv[0].geom;
 
