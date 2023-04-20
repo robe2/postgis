@@ -167,13 +167,17 @@ static void test_gdal_polygonize() {
 	nPols = 0;
 	gv = rt_raster_gdal_polygonize(rt, 0, TRUE, &nPols);
 
+	printf("gval[0].val = %f\n", gv[0].val);
 	CU_ASSERT_DOUBLE_EQUAL(gv[0].val, 1.8, FLT_EPSILON);
-	printf("gval[0].val = %f", gv[0].val);
+
 
 	gobserved = (LWGEOM *)gv[0].geom;
 
+	printf("observed: %f  expected: %f\n", lwgeom_area(gobserved), lwgeom_area(gexpected) );
 	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON);
 
+
+	printf("gval[1].val = %f\n", gv[1].val);
 	CU_ASSERT_DOUBLE_EQUAL(gv[1].val, 0.0, FLT_EPSILON);
 	gobserved = (LWGEOM *)gv[1].geom;
 	gexpected = lwgeom_from_wkt("POLYGON((3 3,3 6,6 6,6 3,3 3))", LW_PARSER_CHECK_NONE);
