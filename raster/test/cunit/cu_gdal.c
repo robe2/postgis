@@ -172,9 +172,10 @@ static void test_gdal_polygonize() {
 
 
 	gobserved = (LWGEOM *)gv[0].geom;
-	*wkt = lwgeom_to_wkt((const LWGEOM *) gobserved, WKT_EXTENDED, 2, NULL);
+	*wkt =lwgeom_to_wkt((const LWGEOM *) gobserved, WKT_ISO, 8, NULL);
+
 	printf("observed: %s, expected: %s \n", wkt, "POLYGON((3 1,3 2,2 2,2 3,1 3,1 6,2 6,2 7,3 7,3 8,5 8,5 6,3 6,3 3,4 3,5 3,5 1,3 1))");
-	rtdealloc(wkt);
+
 
 	printf("observed area: %f  expected area: %f\n", lwgeom_area(gobserved), lwgeom_area(gexpected) );
 	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON);
