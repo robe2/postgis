@@ -908,12 +908,14 @@ SELECT '#3355',  ST_Intersects(
          'LINESTRING(124.983539 1.419224,91.181596 29.647798)'::geography
        , ST_Segmentize('LINESTRING(124.983539 1.419224,91.181596 29.647798)'::geography, 47487290)::geography);
 
+-- note change seems crazy but PG16s ordering of parenthesis is different from prior versions
+-- so to accomodate had to get rid of space
 SELECT '#3356', ST_Summary(wkt::geometry) As wkt_geom,
    ST_Summary(wkt::geography) As wkt_geog,
    ST_Summary(wkt::geometry::geography) As geom_geog
 FROM (VALUES (
      'LINESTRING(124.983539 1.419224,91.181596 29.647798)'::text ),
- ('LINESTRING(124.983539 1.419224,91.181596 29.647798, 91.28 29.647)'::text  ) ) As f(wkt)
+ ('LINESTRING(124.983539 1.419224,91.181596 29.647798,91.28 29.647)'::text  ) ) As f(wkt)
 ORDER BY wkt;
 
 SELECT '#3367', ST_AsText(ST_RemoveRepeatedPoints('POLYGON EMPTY'::geometry));
