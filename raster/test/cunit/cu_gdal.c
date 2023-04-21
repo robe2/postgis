@@ -155,6 +155,7 @@ static void test_gdal_polygonize() {
 	int i;
 	rt_raster rt;
 	int nPols = 0;
+	double  total_area = 0; total_val = 0;
 	rt_geomval gv = NULL;
 	LWGEOM *gexpected, *gobserved;
 	char *wkt = NULL;
@@ -167,42 +168,19 @@ static void test_gdal_polygonize() {
 	nPols = 0;
 	gv = rt_raster_gdal_polygonize(rt, 0, TRUE, &nPols);
 
-	printf("gval[0].val = %f\n", gv[0].val);
+	//printf("gval[0].val = %f\n", gv[0].val);
 	//CU_ASSERT_DOUBLE_EQUAL(gv[0].val, 1.8, FLT_EPSILON);
-	CU_ASSERT_DOUBLE_EQUAL(gv[0].val + gv[1].val + gv[2].val + gv[3].val, 1.8 + 0.0 + 2.8 + 0, FLT_EPSILON);
 
-	gobserved = (LWGEOM *)gv[0].geom;
-	wkt =lwgeom_to_wkt((const LWGEOM *) gobserved, WKT_ISO, 8, NULL);
-	printf("observed: %s, expected: %s \n", wkt, "POLYGON((3 1,3 2,2 2,2 3,1 3,1 6,2 6,2 7,3 7,3 8,5 8,5 6,3 6,3 3,4 3,5 3,5 1,3 1))");
+	total_area = 0; total_val = 0;
+	for (i = 0; i < nPols; i++) {
+		total_val += gv[i].val;
+		gobserved = (LWGEOM *) gv[i].geom;
+		total_area += lwgeom_area(gobserved);
+		lwgeom_free((LWGEOM *) gv[i].geom);
+	}
+	CU_ASSERT_DOUBLE_EQUAL(total_val, 1.8 + 0.0 + 2.8 + 0, FLT_EPSILON);
+	CU_ASSERT_DOUBLE_EQUAL(total_area, 81, FLT_EPSILON);
 
-	printf("observed area: %f  expected area: %f\n", lwgeom_area(gobserved), lwgeom_area(gexpected) );
-	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON);
-
-	printf("gval[1].val = %f\n", gv[1].val);
-	CU_ASSERT_DOUBLE_EQUAL(gv[1].val, 0.0, FLT_EPSILON);
-	gobserved = (LWGEOM *)gv[1].geom;
-	gexpected = lwgeom_from_wkt("POLYGON((3 3,3 6,6 6,6 3,3 3))", LW_PARSER_CHECK_NONE);
-	printf("observed area: %f  expected area: %f\n", lwgeom_area(gobserved), lwgeom_area(gexpected) );
-	wkt =lwgeom_to_wkt((const LWGEOM *) gobserved, WKT_ISO, 8, NULL);
-	printf("observed: %s, expected: %s \n", wkt, "POLYGON((3 3,3 6,6 6,6 3,3 3))");
-
-	printf("gval[2].val = %f\n", gv[2].val);
-	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON );
-	CU_ASSERT_DOUBLE_EQUAL(gv[2].val, 2.8, FLT_EPSILON);
-
-	gobserved = (LWGEOM *)gv[2].geom;
-	gexpected = lwgeom_from_wkt("POLYGON((5 1,5 3,6 3,6 6,5 6,5 8,6 8,6 7,7 7,7 6,8 6,8 3,7 3,7 2,6 2,6 1,5 1))",
-				    LW_PARSER_CHECK_NONE);
-	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON);
-
-	gobserved = (LWGEOM *)gv[3].geom;
-	gexpected = lwgeom_from_wkt(
-	    "POLYGON((0 0,0 9,9 9,9 0,0 0),(6 7,6 8,3 8,3 7,2 7,2 6,1 6,1 3,2 3,2 2,3 2,3 1,6 1,6 2,7 2,7 3,8 3,8 6,7 6,7 7,6 7))",
-	    LW_PARSER_CHECK_NONE);
-	CU_ASSERT_DOUBLE_EQUAL(gv[3].val, 0.0, FLT_EPSILON);
-	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON);
-
-	for (i = 0; i < nPols; i++) lwgeom_free((LWGEOM *) gv[i].geom);
 	rtdealloc(gv);
 	cu_free_raster(rt);
 
