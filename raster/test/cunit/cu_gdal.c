@@ -173,22 +173,23 @@ static void test_gdal_polygonize() {
 
 	gobserved = (LWGEOM *)gv[0].geom;
 	wkt =lwgeom_to_wkt((const LWGEOM *) gobserved, WKT_ISO, 8, NULL);
-
 	printf("observed: %s, expected: %s \n", wkt, "POLYGON((3 1,3 2,2 2,2 3,1 3,1 6,2 6,2 7,3 7,3 8,5 8,5 6,3 6,3 3,4 3,5 3,5 1,3 1))");
-
 
 	printf("observed area: %f  expected area: %f\n", lwgeom_area(gobserved), lwgeom_area(gexpected) );
 	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON);
-
 
 	printf("gval[1].val = %f\n", gv[1].val);
 	CU_ASSERT_DOUBLE_EQUAL(gv[1].val, 0.0, FLT_EPSILON);
 	gobserved = (LWGEOM *)gv[1].geom;
 	gexpected = lwgeom_from_wkt("POLYGON((3 3,3 6,6 6,6 3,3 3))", LW_PARSER_CHECK_NONE);
 	printf("observed area: %f  expected area: %f\n", lwgeom_area(gobserved), lwgeom_area(gexpected) );
-	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON );
+	wkt =lwgeom_to_wkt((const LWGEOM *) gobserved, WKT_ISO, 8, NULL);
+	printf("observed: %s, expected: %s \n", wkt, "POLYGON((3 3,3 6,6 6,6 3,3 3))");
 
+	printf("gval[2].val = %f\n", gv[2].val);
+	CU_ASSERT_DOUBLE_EQUAL(lwgeom_area(gobserved), lwgeom_area(gexpected), FLT_EPSILON );
 	CU_ASSERT_DOUBLE_EQUAL(gv[2].val, 2.8, FLT_EPSILON);
+
 	gobserved = (LWGEOM *)gv[2].geom;
 	gexpected = lwgeom_from_wkt("POLYGON((5 1,5 3,6 3,6 6,5 6,5 8,6 8,6 7,7 7,7 6,8 6,8 3,7 3,7 2,6 2,6 1,5 1))",
 				    LW_PARSER_CHECK_NONE);
