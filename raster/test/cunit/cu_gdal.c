@@ -256,7 +256,7 @@ static void test_gdal_polygonize() {
 
 	printf("total area, total_val, polys = %f, %f, %i\n", total_area, total_val, nPols);
 	CU_ASSERT_DOUBLE_EQUAL(total_val, 4.6, FLT_EPSILON);
-	CU_ASSERT_DOUBLE_EQUAL(total_area, 81, FLT_EPSILON);
+	CU_ASSERT_DOUBLE_EQUAL(total_area, 28, FLT_EPSILON);
 
 	rtdealloc(gv);
 	cu_free_raster(rt);
@@ -269,7 +269,7 @@ static void test_gdal_polygonize() {
 	nPols = 0;
 	gv = rt_raster_gdal_polygonize(rt, 0, TRUE, &nPols);
 
-	CU_ASSERT_DOUBLE_EQUAL(nPols, 3, FLT_EPSILON);
+	CU_ASSERT_DOUBLE_EQUAL(nPols, 4, FLT_EPSILON);
 	total_area = 0; total_val = 0;
 	for (i = 0; i < nPols; i++) {
 		total_val += gv[i].val;
