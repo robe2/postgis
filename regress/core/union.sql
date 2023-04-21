@@ -87,4 +87,4 @@ SELECT ST_AsText(ST_Union(geom)) FROM geoms;
 
 DROP TABLE geoms;
 
-DROP PROCEDURE IF EXISTS force_parellel_mode;
+DROP PROCEDURE IF EXISTS force_parellel_mode(text);
