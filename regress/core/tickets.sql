@@ -1465,7 +1465,28 @@ SELECT x AS id, ST_Point(40000 + 10000, -100000 , 27700) AS geom
 FROM generate_series(1,1000000) AS x ;
 
 set max_parallel_workers_per_gather=3;
-set force_parallel_mode=on;
+/** PG16 force_parallel_mode was renamed to debug_parallel_query, thus the need for this conditional **/
+CREATE OR REPLACE PROCEDURE tickets_force_parellel_mode(param_state text) language plpgsql AS
+$$
+BEGIN
+	IF (_postgis_pgsql_version())::integer < 160 THEN
+		IF param_state = 'on' THEN
+			SET force_parallel_mode=on;
+		ELSE
+			SET force_parallel_mode=off;
+		END IF;
+	ELSE
+		IF param_state = 'on' THEN
+			SET debug_parallel_query=on;
+		ELSE
+			SET debug_parallel_query=off;
+		END IF;
+	END IF;
+END;
+$$;
+
+CALL tickets_force_parellel_mode('on');
+
 DROP TABLE IF EXISTS object_list_temp;
 WITH object_list AS (
 	SELECT '#5139'::text AS t, id, to_jsonb(geom) AS json_data
@@ -1479,7 +1500,7 @@ SELECT t, id FROM object_list_temp ORDER BY id;
 DROP TABLE IF EXISTS object_list_temp;
 DROP TABLE IF EXISTS a;
 reset max_parallel_workers_per_gather;
-reset force_parallel_mode;
+CALL tickets_force_parellel_mode('off');
 
 SET client_min_messages TO NOTICE;
 -- https://trac.osgeo.org/postgis/ticket/5315
