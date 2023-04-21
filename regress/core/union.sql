@@ -31,7 +31,7 @@ INSERT INTO geoms SELECT ST_GeomFromText('POLYGON EMPTY') AS geom;
 SELECT ST_AsText(ST_Union(geom)) FROM geoms;
 
 /** PG16 force_parallel_mode was renamed to debug_parallel_query, thus the need for this conditional **/
-CREATE OR REPLACE PROCEDURE force_parellel_mode(param_state text) language plpgsql AS
+CREATE OR REPLACE PROCEDURE p_force_parellel_mode(param_state text) language plpgsql AS
 $$
 BEGIN
 	IF (_postgis_pgsql_version())::integer < 160 THEN
@@ -54,7 +54,7 @@ $$;
 
 TRUNCATE TABLE geoms;
 
-CALL force_parallel_mode('on');
+CALL p_force_parellel_mode('on'::text);
 SET parallel_setup_cost = 0;
 SET parallel_tuple_cost = 0;
 SET min_parallel_table_scan_size = 0;
@@ -87,4 +87,4 @@ SELECT ST_AsText(ST_Union(geom)) FROM geoms;
 
 DROP TABLE geoms;
 
-DROP PROCEDURE IF EXISTS force_parellel_mode(text);
+DROP PROCEDURE IF EXISTS p_force_parellel_mode(text);
