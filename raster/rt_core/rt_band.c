@@ -32,7 +32,7 @@
 #define _LARGEFILE64_SOURCE 1
 
 #include <stdio.h>
-
+#include <stdbool.h>
 #include "librtcore.h"
 #include "librtcore_internal.h"
 
