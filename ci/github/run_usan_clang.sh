@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -e
 clang --version
+CLANG_VER=14
 # Enable undefined behaviour sanitizer using traps
 CFLAGS_USAN="-g3 -O0 -mtune=generic -fno-omit-frame-pointer -fsanitize=undefined,implicit-conversion -fsanitize-undefined-trap-on-error -fno-sanitize-recover=implicit-conversion"
 LDFLAGS_STD="-Wl,-Bsymbolic-functions -Wl,-z,relro"
@@ -10,7 +11,7 @@ export ASAN_OPTIONS=halt_on_error=false,leak_check_at_exit=false,exitcode=0
 export MSAN_OPTIONS=halt_on_error=false,leak_check_at_exit=false,exitcode=0
 
 #Run postgres preloading sanitizer libs
-LD_PRELOAD=/usr/lib/clang/11/lib/linux/libclang_rt.asan-x86_64.so \
+LD_PRELOAD=/usr/lib/clang/${CLANG_VER}/lib/linux/libclang_rt.asan-x86_64.so \
 /usr/local/pgsql/bin/pg_ctl -c -o '-F' -l /tmp/logfile start
 
 
