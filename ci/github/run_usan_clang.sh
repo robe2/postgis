@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 clang --version
-CLANG_VER=14
+CLANG_VER=11
 # Enable undefined behaviour sanitizer using traps
 CFLAGS_USAN="-g3 -O0 -mtune=generic -fno-omit-frame-pointer -fsanitize=undefined,implicit-conversion -fsanitize-undefined-trap-on-error -fno-sanitize-recover=implicit-conversion"
 LDFLAGS_STD="-Wl,-Bsymbolic-functions -Wl,-z,relro"
