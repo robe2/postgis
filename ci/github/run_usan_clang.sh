@@ -2,7 +2,8 @@
 set -e
 CLANG_FULL_VER=`clang --version`
 echo $CLANG_FULL_VER
-CLANG_VER=15
+echo `cat /etc/os-release`
+CLANG_VER=14
 # Enable undefined behaviour sanitizer using traps
 CFLAGS_USAN="-g3 -O0 -mtune=generic -fno-omit-frame-pointer -fsanitize=undefined,implicit-conversion -fsanitize-undefined-trap-on-error -fno-sanitize-recover=implicit-conversion"
 LDFLAGS_STD="-Wl,-Bsymbolic-functions -Wl,-z,relro"
