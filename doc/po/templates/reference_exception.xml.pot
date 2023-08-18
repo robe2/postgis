@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-07-13 19:13+0000\n"
+"POT-Creation-Date: 2023-07-18 20:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <kde-i18n-doc@kde.org>\n"
@@ -27,12 +27,6 @@ msgid ""
 "These functions are rarely used functions that should only be used if your "
 "data is corrupted in someway. They are used for troubleshooting corruption "
 "and also fixing things that should under normal circumstances, never happen."
-msgstr ""
-
-#. Tag: refname
-#: reference_exception.xml:9
-#, no-c-format
-msgid "PostGIS_AddBBox"
 msgstr ""
 
 #. Tag: refpurpose
@@ -88,15 +82,6 @@ msgstr ""
 msgid "Examples"
 msgstr ""
 
-#. Tag: programlisting
-#: reference_exception.xml:42
-#, no-c-format
-msgid ""
-"UPDATE sometable\n"
-" SET geom =  PostGIS_AddBBox(geom)\n"
-" WHERE PostGIS_HasBBox(geom) = false;"
-msgstr ""
-
 #. Tag: title
 #: reference_exception.xml:47 reference_exception.xml:95
 #: reference_exception.xml:136
@@ -108,12 +93,6 @@ msgstr ""
 #: reference_exception.xml:49
 #, no-c-format
 msgid ", <xref linkend=\"PostGIS_HasBBox\"/>"
-msgstr ""
-
-#. Tag: refname
-#: reference_exception.xml:55
-#, no-c-format
-msgid "PostGIS_DropBBox"
 msgstr ""
 
 #. Tag: refpurpose
@@ -155,34 +134,10 @@ msgid ""
 "one can manually correct using below and readd the bbox or do a dump reload."
 msgstr ""
 
-#. Tag: programlisting
-#: reference_exception.xml:90
-#, no-c-format
-msgid ""
-"--This example drops bounding boxes where the cached box is not correct\n"
-"                        --The force to ST_AsBinary before applying Box2D "
-"forces a recalculation of the box, and Box2D applied to the table geometry "
-"always\n"
-"                        -- returns the cached bounding box.\n"
-"                        UPDATE sometable\n"
-" SET geom =  PostGIS_DropBBox(geom)\n"
-" WHERE Not (Box2D(ST_AsBinary(geom)) = Box2D(geom));\n"
-"\n"
-"        UPDATE sometable\n"
-" SET geom =  PostGIS_AddBBox(geom)\n"
-" WHERE Not PostGIS_HasBBOX(geom);"
-msgstr ""
-
 #. Tag: para
 #: reference_exception.xml:97
 #, no-c-format
 msgid ", <xref linkend=\"PostGIS_HasBBox\"/>, <xref linkend=\"Box2D\"/>"
-msgstr ""
-
-#. Tag: refname
-#: reference_exception.xml:104
-#, no-c-format
-msgid "PostGIS_HasBBox"
 msgstr ""
 
 #. Tag: refpurpose
@@ -206,14 +161,6 @@ msgid ""
 "Returns TRUE if the bbox of this geometry is cached, FALSE otherwise. Use "
 "<xref linkend=\"PostGIS_AddBBox\"/> and <xref linkend=\"PostGIS_DropBBox\"/> "
 "to control caching."
-msgstr ""
-
-#. Tag: programlisting
-#: reference_exception.xml:131
-#, no-c-format
-msgid ""
-"SELECT geom\n"
-"FROM sometable WHERE PostGIS_HasBBox(geom) = false;"
 msgstr ""
 
 #. Tag: para

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-04-10 06:16+0000\n"
-"PO-Revision-Date: 2023-04-14 03:08+0000\n"
+"POT-Creation-Date: 2023-08-03 00:19+0000\n"
+"PO-Revision-Date: 2023-08-11 01:08+0000\n"
 "Last-Translator: Teramoto Ikuhiro <yellow@affrc.go.jp>\n"
 "Language-Team: Japanese <https://weblate.osgeo.org/projects/postgis/"
 "reference_clusterxml/ja/>\n"
@@ -30,12 +30,6 @@ msgstr ""
 #, no-c-format
 msgid "Clustering Functions"
 msgstr "クラスタリング関数"
-
-#. Tag: refname
-#: reference_cluster.xml:12
-#, no-c-format
-msgid "ST_ClusterDBSCAN"
-msgstr "ST_ClusterDBSCAN"
 
 #. Tag: refpurpose
 #: reference_cluster.xml:14
@@ -64,9 +58,9 @@ msgstr ""
 "paramdef>"
 
 #. Tag: title
-#: reference_cluster.xml:35 reference_cluster.xml:139 reference_cluster.xml:180
+#: reference_cluster.xml:35 reference_cluster.xml:142 reference_cluster.xml:186
 #: reference_cluster.xml:234 reference_cluster.xml:325
-#: reference_cluster.xml:368
+#: reference_cluster.xml:374
 #, no-c-format
 msgid "Description"
 msgstr "説明"
@@ -75,27 +69,27 @@ msgstr "説明"
 #: reference_cluster.xml:37
 #, no-c-format
 msgid ""
-"Returns cluster number for each input geometry, based on a 2D implementation "
-"of the <ulink url=\"https://en.wikipedia.org/wiki/DBSCAN\">Density-based "
-"spatial clustering of applications with noise (DBSCAN)</ulink> algorithm. "
-"Unlike <xref linkend=\"ST_ClusterKMeans\"/>, it does not require the number "
-"of clusters to be specified, but instead uses the desired <link "
+"A window function that returns a cluster number for each input geometry, "
+"using the 2D <ulink url=\"https://en.wikipedia.org/wiki/DBSCAN\">Density-"
+"based spatial clustering of applications with noise (DBSCAN)</ulink> "
+"algorithm. Unlike <xref linkend=\"ST_ClusterKMeans\"/>, it does not require "
+"the number of clusters to be specified, but instead uses the desired <link "
 "linkend=\"ST_Distance\">distance</link> (<varname>eps</varname>) and density "
-"(<varname>minpoints</varname>) parameters to construct each cluster."
+"(<varname>minpoints</varname>) parameters to determine each cluster."
 msgstr ""
-"<ulink url=\"https://en.wikipedia.org/wiki/DBSCAN\">DBSCAN (ノイズ適用可能な"
-"密度に基づいた空間クラスタリング)</ulink>アルゴリズムの2次元実装に基づいて、"
-"それぞれの入力ジオメトリが入るクラスタの整数識別子を返します。<xref "
-"linkend=\"ST_ClusterKMeans\"/>と違って、クラスタ数の指定は求められず、所望す"
-"る<link linkend=\"ST_Distance\">距離</link> (<varname>eps</varname>)と密度"
-"(<varname>minpoints</varname>)をクラスタを構築するためのパラメータとして使い"
-"ます。"
+"2次元<ulink url=\"https://en.wikipedia.org/wiki/DBSCAN\">Density-based "
+"spatial clustering of applications with noise (DBSCAN)</ulink>アルゴリズムを"
+"使って、入力ジオメトリ毎にクラスタ番号を返すウィンドウ関数です。<xref "
+"linkend=\"ST_ClusterKMeans\"/>と違い、クラスタ数の指定は不要ですが、代わり"
+"に、クラスタを決定するために、期待する<link linkend=\"ST_Distance\">距離</"
+"link>(<varname>eps</varname>)と密度(<varname>minpoints</varname>)のパラメータ"
+"を使います。"
 
 #. Tag: para
 #: reference_cluster.xml:44
 #, no-c-format
-msgid "An input geometry will be added to a cluster if it is either:"
-msgstr "入力ジオメトリは次の場合にクラスタに追加されます。"
+msgid "An input geometry is added to a cluster if it is either:"
+msgstr "入力ジオメトリは、次のいずれかの場合にはクラスタに追加されます:"
 
 #. Tag: para
 #: reference_cluster.xml:48
@@ -103,11 +97,11 @@ msgstr "入力ジオメトリは次の場合にクラスタに追加されます
 msgid ""
 "A \"core\" geometry, that is within <varname>eps</varname> <link "
 "linkend=\"ST_Distance\">distance</link> of at least <varname>minpoints</"
-"varname> input geometries (including itself) or"
+"varname> input geometries (including itself); or"
 msgstr ""
-"「核」ジオメトリは、入力ジオメトリ (自分を含む)のうち少なくとも"
+"「核」ジオメトリという、入力ジオメトリ (自分を含む)のうち少なくとも"
 "<varname>minpoints</varname>個が<varname>eps</varname>で指定した<link "
-"linkend=\"ST_Distance\">距離</link>の範囲内にあるものです。"
+"linkend=\"ST_Distance\">距離</link>の範囲内にあるもの。または"
 
 #. Tag: para
 #: reference_cluster.xml:53
@@ -116,217 +110,169 @@ msgid ""
 "A \"border\" geometry, that is within <varname>eps</varname> <link "
 "linkend=\"ST_Distance\">distance</link> of a core geometry."
 msgstr ""
-"「境界」ジオメトリは、核ジオメトリから<varname>eps</varname>で指定した<link "
-"linkend=\"ST_Distance\">距離</link>の範囲内にあるものです。"
+"「境界」ジオメトリという、核ジオメトリから<varname>eps</varname>で指定した"
+"<link linkend=\"ST_Distance\">距離</link>の範囲内にあるものです。"
 
 #. Tag: para
 #: reference_cluster.xml:60
 #, no-c-format
 msgid ""
 "Note that border geometries may be within <varname>eps</varname> distance of "
-"core geometries in more than one cluster; in this case, either assignment "
-"would be correct, and the border geometry will be arbitrarily asssigned to "
-"one of the available clusters. In these cases, it is possible for a correct "
-"cluster to be generated with fewer than <varname>minpoints</varname> "
-"geometries. When assignment of a border geometry is ambiguous, repeated "
-"calls to ST_ClusterDBSCAN will produce identical results if an ORDER BY "
-"clause is included in the window definition, but cluster assignments may "
-"differ from other implementations of the same algorithm."
+"core geometries in more than one cluster. Either assignment would be "
+"correct, so the border geometry will be arbitrarily asssigned to one of the "
+"available clusters. In this situation it is possible for a correct cluster "
+"to be generated with fewer than <varname>minpoints</varname> geometries. To "
+"ensure deterministic assignment of border geometries (so that repeated calls "
+"to ST_ClusterDBSCAN will produce identical results) use an <code>ORDER BY</"
+"code> clause in the window definition. Ambiguous cluster assignments may "
+"differ from other DBSCAN implementations."
 msgstr ""
-"境界ジオメトリが<varname>eps</varname>以内に複数の核ジオメトリがあるかも知れ"
-"ないことに注意して下さい。この場合には、どちらに割り当てられても正しく、境界"
-"ジオメトリは、対象クラスタのうちの一つに任意に割り当てられます。これらの場合"
-"には、<varname>minpoints</varname>より少ないジオメトリで正しいクラスタを生成"
-"できます。境界ジオメトリの割り当てが曖昧な時、ウィンドウの定義にORDER BY句が"
-"含まれている場合には、ST_ClusterDBSCANは同じ結果を返しますが、クラスタの割り"
-"当ては同じアルゴリズムの他の実装と異なる可能性があります。"
+"境界ジオメトリは、複数のクラスタの核ジオメトリの<varname>eps</varname>距離内"
+"に存在する場合があることに注意して下さい。どちらに割り当てても正しいので、境"
+"界ジオメトリは有効なクラスタの一つに任意に割り当てられます。この状況では、正"
+"しいクラスタが<varname>minpoints</varname>ジオメトリより少ないジオメトリで生"
+"成される可能性があります。境界ジオメトリの割当の決定性を確実にする (その結"
+"果、ST_ClusterDBSCANの呼び出しで同じ結果が生成される)には、ウィンドウ定義内で"
+"<code>ORDER BY</code>節を使います。あいまいなクラスタ割当は他のDBSCAN実装とは"
+"異なるかも知れません。"
 
 #. Tag: para
-#: reference_cluster.xml:68
+#: reference_cluster.xml:70
 #, no-c-format
 msgid ""
-"Input geometries that do not meet the criteria to join any other cluster "
-"will be assigned a cluster number of NULL."
+"Geometries that do not meet the criteria to join any cluster are assigned a "
+"cluster number of NULL."
 msgstr ""
-"どのクラスタの参加基準にも合わない入力ジオメトリは、番号をNULLとします。"
+"どのクラスタとの結合の基準に合わないジオメトリは、NULLのクラスタ番号が割り当"
+"てられます。"
 
 #. Tag: para
-#: reference_cluster.xml:72 reference_cluster.xml:246
+#: reference_cluster.xml:74 reference_cluster.xml:246
 #, no-c-format
 msgid "Availability: 2.3.0"
 msgstr "Availability: 2.3.0"
 
 #. Tag: para
-#: reference_cluster.xml:73 reference_cluster.xml:330 reference_cluster.xml:374
+#: reference_cluster.xml:75 reference_cluster.xml:337 reference_cluster.xml:384
 #, no-c-format
 msgid "&curve_support;"
 msgstr "&curve_support;"
 
 #. Tag: title
-#: reference_cluster.xml:77 reference_cluster.xml:147 reference_cluster.xml:188
-#: reference_cluster.xml:250 reference_cluster.xml:334
-#: reference_cluster.xml:379
+#: reference_cluster.xml:79 reference_cluster.xml:154 reference_cluster.xml:194
+#: reference_cluster.xml:250 reference_cluster.xml:341
+#: reference_cluster.xml:389
 #, no-c-format
 msgid "Examples"
 msgstr "例"
 
 #. Tag: para
-#: reference_cluster.xml:78
+#: reference_cluster.xml:80
 #, no-c-format
 msgid ""
-"Assigning a cluster number to each polygon within 50 meters of each other. "
-"Require at least 2 polygons per cluster"
+"Clustering polygon within 50 meters of each other, and requiring at least 2 "
+"polygons per cluster."
 msgstr ""
-"50メートル以内にある個々のポリゴンへのクラスタ番号の割り当て。少なくともクラ"
-"スタには二つのポリゴンが求められます。"
+"少なくともクラスタごとに二つ以上のポリゴンが必要な50メートル以内のクラスタ。"
 
 #. Tag: para
-#: reference_cluster.xml:90
+#: reference_cluster.xml:92
 #, no-c-format
-msgid "within 50 meters at least 2 per cluster. singletons have NULL for cid"
+msgid ""
+"Clusters within 50 meters with at least 2 items per cluster. Singletons have "
+"NULL for cid"
 msgstr ""
 "少なくともクラスタごとに二つ以上のポリゴンがある50メートル以内のクラスタ。一"
 "つだけならcidはNULL。"
 
-#. Tag: programlisting
-#: reference_cluster.xml:93
-#, no-c-format
-msgid ""
-"SELECT name, ST_ClusterDBSCAN(geom, eps := 50, minpoints := 2) over () AS "
-"cid\n"
-"FROM boston_polys\n"
-"WHERE name > '' AND building > ''\n"
-"        AND ST_DWithin(geom,\n"
-"        ST_Transform(\n"
-"            ST_GeomFromText('POINT(-71.04054 42.35141)', 4326), 26986),\n"
-"           500);"
-msgstr ""
-"SELECT name, ST_ClusterDBSCAN(geom, eps := 50, minpoints := 2) over () AS "
-"cid\n"
-"FROM boston_polys\n"
-"WHERE name > '' AND building > ''\n"
-"        AND ST_DWithin(geom,\n"
-"        ST_Transform(\n"
-"            ST_GeomFromText('POINT(-71.04054 42.35141)', 4326), 26986),\n"
-"           500);"
-
-#. Tag: screen
-#: reference_cluster.xml:96
-#, no-c-format
-msgid ""
-"<![CDATA[                name                 | bucket\n"
-"-------------------------------------+--------\n"
-" Manulife Tower                      |      0\n"
-" Park Lane Seaport I                 |      0\n"
-" Park Lane Seaport II                |      0\n"
-" Renaissance Boston Waterfront Hotel |      0\n"
-" Seaport Boston Hotel                |      0\n"
-" Seaport Hotel & World Trade Center  |      0\n"
-" Waterside Place                     |      0\n"
-" World Trade Center East             |      0\n"
-" 100 Northern Avenue                 |      1\n"
-" 100 Pier 4                          |      1\n"
-" The Institute of Contemporary Art   |      1\n"
-" 101 Seaport                         |      2\n"
-" District Hall                       |      2\n"
-" One Marina Park Drive               |      2\n"
-" Twenty Two Liberty                  |      2\n"
-" Vertex                              |      2\n"
-" Vertex                              |      2\n"
-" Watermark Seaport                   |      2\n"
-" Blue Hills Bank Pavilion            |   NULL\n"
-" World Trade Center West             |   NULL\n"
-"(20 rows)]]>"
-msgstr ""
-"<![CDATA[                name                 | bucket\n"
-"-------------------------------------+--------\n"
-" Manulife Tower                      |      0\n"
-" Park Lane Seaport I                 |      0\n"
-" Park Lane Seaport II                |      0\n"
-" Renaissance Boston Waterfront Hotel |      0\n"
-" Seaport Boston Hotel                |      0\n"
-" Seaport Hotel & World Trade Center  |      0\n"
-" Waterside Place                     |      0\n"
-" World Trade Center East             |      0\n"
-" 100 Northern Avenue                 |      1\n"
-" 100 Pier 4                          |      1\n"
-" The Institute of Contemporary Art   |      1\n"
-" 101 Seaport                         |      2\n"
-" District Hall                       |      2\n"
-" One Marina Park Drive               |      2\n"
-" Twenty Two Liberty                  |      2\n"
-" Vertex                              |      2\n"
-" Vertex                              |      2\n"
-" Watermark Seaport                   |      2\n"
-" Blue Hills Bank Pavilion            |   NULL\n"
-" World Trade Center West             |   NULL\n"
-"(20 rows)]]>"
-
 #. Tag: para
-#: reference_cluster.xml:104
+#: reference_cluster.xml:106
 #, no-c-format
 msgid ""
-"Combining parcels with the same cluster number into a single geometry. This "
-"uses named argument calling"
-msgstr ""
-"同じクラスタ番号の群を一つのジオメトリに統合します。名前付き引数を使用してい"
-"ます。"
-
-#. Tag: programlisting
-#: reference_cluster.xml:107
-#, no-c-format
-msgid ""
-"SELECT cid, ST_Collect(geom) AS cluster_geom, array_agg(parcel_id) AS "
-"ids_in_cluster FROM (\n"
-"    SELECT parcel_id, ST_ClusterDBSCAN(geom, eps := 0.5, minpoints := 5) "
-"over () AS cid, geom\n"
-"    FROM parcels) sq\n"
-"GROUP BY cid;"
-msgstr ""
-"SELECT cid, ST_Collect(geom) AS cluster_geom, array_agg(parcel_id) AS "
-"ids_in_cluster FROM (\n"
-"    SELECT parcel_id, ST_ClusterDBSCAN(geom, eps := 0.5, minpoints := 5) "
-"over () AS cid, geom\n"
-"    FROM parcels) sq\n"
-"GROUP BY cid;"
+"A example showing combining parcels with the same cluster number into "
+"geometry collections."
+msgstr "同じクラスタ番号の区画をジオメトリコレクションに合併する例。"
 
 #. Tag: title
-#: reference_cluster.xml:111 reference_cluster.xml:151
-#: reference_cluster.xml:192 reference_cluster.xml:293
-#: reference_cluster.xml:338 reference_cluster.xml:383
+#: reference_cluster.xml:113 reference_cluster.xml:158
+#: reference_cluster.xml:198 reference_cluster.xml:293
+#: reference_cluster.xml:345 reference_cluster.xml:393
 #, no-c-format
 msgid "See Also"
 msgstr "関連情報"
 
 #. Tag: para
-#: reference_cluster.xml:112
+#: reference_cluster.xml:114
 #, no-c-format
 msgid ""
 ", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-"linkend=\"ST_ClusterIntersecting\"/>, <xref linkend=\"ST_ClusterWithin\"/> "
-"<xref linkend=\"ST_ClusterIntersectingWin\"/>"
+"linkend=\"ST_ClusterIntersecting\"/>, <xref "
+"linkend=\"ST_ClusterIntersectingWin\"/>, <xref linkend=\"ST_ClusterWithin\"/"
+">, <xref linkend=\"ST_ClusterWithinWin\"/>"
 msgstr ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref linkend="
-"\"ST_ClusterIntersecting\"/>, <xref linkend=\"ST_ClusterWithin\"/> <xref "
-"linkend=\"ST_ClusterIntersectingWin\"/>"
-
-#. Tag: refname
-#: reference_cluster.xml:124
-#, no-c-format
-msgid "ST_ClusterIntersectingWin"
-msgstr "ST_ClusterIntersectingWin"
+", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
+"linkend=\"ST_ClusterIntersecting\"/>, <xref "
+"linkend=\"ST_ClusterIntersectingWin\"/>, <xref linkend=\"ST_ClusterWithin\"/"
+">, <xref linkend=\"ST_ClusterWithinWin\"/>"
 
 #. Tag: refpurpose
-#: reference_cluster.xml:126
+#: reference_cluster.xml:129
+#, no-c-format
+msgid "Aggregate function that clusters input geometries into connected sets."
+msgstr "入力ジオメトリを接続関係にある集合にクラスタリングする集約関数です。"
+
+#. Tag: funcprototype
+#: reference_cluster.xml:134
+#, no-c-format
+msgid ""
+"<funcdef>geometry[] <function>ST_ClusterIntersecting</function></funcdef> "
+"<paramdef><type>geometry set</type> <parameter>g</parameter></paramdef>"
+msgstr ""
+"<funcdef>geometry[] <function>ST_ClusterIntersecting</function></funcdef> "
+"<paramdef><type>geometry set</type> <parameter>g</parameter></paramdef>"
+
+#. Tag: para
+#: reference_cluster.xml:144
+#, no-c-format
+msgid ""
+"An aggregate function that returns an array of GeometryCollections "
+"partitioning the input geometries into connected clusters that are disjoint. "
+"Each geometry in a cluster intersects at least one other geometry in the "
+"cluster, and does not intersect any geometry in other clusters."
+msgstr ""
+"入力ジオメトリから接続されたものをクラスタとし、クラスタ間は接続されていない"
+"ように分割してGEOMETRYCOLLECTIONの配列を返す集約関数です。クラスタ内の個々の"
+"ジオメトリは同一クラスタ内の他のジオメトリの少なくとも一つとインタセクトし、"
+"他のクラスタ内のいずれのジオメトリともインタセクトしません。"
+
+#. Tag: para
+#: reference_cluster.xml:150 reference_cluster.xml:336
+#, no-c-format
+msgid "Availability: 2.2.0"
+msgstr "Availability: 2.2.0"
+
+#. Tag: para
+#: reference_cluster.xml:159 reference_cluster.xml:199
+#, no-c-format
+msgid ""
+", <xref linkend=\"ST_ClusterWithin\"/>, <xref "
+"linkend=\"ST_ClusterWithinWin\"/>"
+msgstr ""
+", <xref linkend=\"ST_ClusterWithin\"/>, <xref "
+"linkend=\"ST_ClusterWithinWin\"/>"
+
+#. Tag: refpurpose
+#: reference_cluster.xml:173
 #, no-c-format
 msgid ""
 "Window function that returns a cluster id for each input geometry, "
 "clustering input geometries into connected sets."
-msgstr "入力ジオメトリごとに接続された集合にクラスタリングを行い、クラスタIDを返すウ"
-"ィンドウ関数です。"
+msgstr ""
+"入力ジオメトリごとに接続された集合にクラスタリングを行い、クラスタIDを返す"
+"ウィンドウ関数です。"
 
 #. Tag: funcprototype
-#: reference_cluster.xml:131
+#: reference_cluster.xml:178
 #, no-c-format
 msgid ""
 "<funcdef>integer <function>ST_ClusterIntersectingWin</function></funcdef> "
@@ -334,180 +280,28 @@ msgid ""
 "paramdef>"
 msgstr ""
 "<funcdef>integer <function>ST_ClusterIntersectingWin</function></funcdef> "
-"<paramdef><type>geometry winset </type> "
-"<parameter>geom</parameter></paramdef>"
+"<paramdef><type>geometry winset </type> <parameter>geom</parameter></"
+"paramdef>"
 
 #. Tag: para
-#: reference_cluster.xml:141
+#: reference_cluster.xml:188
 #, no-c-format
 msgid ""
-"ST_ClusterIntersectingWin is a windowing function that builds inter-"
-"connecting clusters of geometries that intersect. It is possible to traverse "
-"all geometries in a cluster without leaving the cluster. The return value is "
-"the cluster number that the geometry argument participates in, or null for "
-"null inputs."
+"A window function that builds connected clusters of geometries that "
+"intersect. It is possible to traverse all geometries in a cluster without "
+"leaving the cluster. The return value is the cluster number that the "
+"geometry argument participates in, or null for null inputs."
 msgstr ""
-"ST_ClusterIntersectingWinは、インタセクトするジオメトリの相互接続するクラスタ"
-"を構築するウィンドウ関数です。クラスタを出ることなく全てのジオメトリを横断す"
-"ることができます。返り値は引数のジオメトリが関係するクラスタ番号か、入力がNUL"
-"Lの場合にはNULLかのいずれかです。"
+"インタセクトするジオメトリの接続されたクラスタを構築するウィンドウ関数です。"
+"クラスタを離れることなく、クラスタ内の全てのジオメトリを走査することができま"
+"す。返り値はジオメトリ引数が入っているクラスタの番号です。入力がNULLの場合に"
+"はNULLを返します。"
 
 #. Tag: para
-#: reference_cluster.xml:143 reference_cluster.xml:373
+#: reference_cluster.xml:190 reference_cluster.xml:383
 #, no-c-format
 msgid "Availability: 3.4.0"
 msgstr "Availability: 3.4.0"
-
-#. Tag: programlisting
-#: reference_cluster.xml:148
-#, no-c-format
-msgid ""
-"WITH testdata AS (\n"
-"  SELECT id, geom::geometry FROM (\n"
-"  VALUES  (1, 'LINESTRING (0 0, 1 1)'),\n"
-"          (2, 'LINESTRING (5 5, 4 4)'),\n"
-"          (3, 'LINESTRING (6 6, 7 7)'),\n"
-"          (4, 'LINESTRING (0 0, -1 -1)'),\n"
-"          (5, 'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))')) AS t(id, geom)\n"
-")\n"
-"SELECT id, \n"
-"  ST_AsText(geom), \n"
-"  ST_ClusterIntersectingWin(geom) OVER () AS cluster \n"
-"FROM testdata;\n"
-"\n"
-" id |           st_astext            | cluster \n"
-"----+--------------------------------+---------\n"
-"  1 | LINESTRING(0 0,1 1)            |       0\n"
-"  2 | LINESTRING(5 5,4 4)            |       0\n"
-"  3 | LINESTRING(6 6,7 7)            |       1\n"
-"  4 | LINESTRING(0 0,-1 -1)          |       0\n"
-"  5 | POLYGON((0 0,4 0,4 4,0 4,0 0)) |       0"
-msgstr ""
-"WITH testdata AS (\n"
-"  SELECT id, geom::geometry FROM (\n"
-"  VALUES  (1, 'LINESTRING (0 0, 1 1)'),\n"
-"          (2, 'LINESTRING (5 5, 4 4)'),\n"
-"          (3, 'LINESTRING (6 6, 7 7)'),\n"
-"          (4, 'LINESTRING (0 0, -1 -1)'),\n"
-"          (5, 'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))')) AS t(id, geom)\n"
-")\n"
-"SELECT id, \n"
-"  ST_AsText(geom), \n"
-"  ST_ClusterIntersectingWin(geom) OVER () AS cluster \n"
-"FROM testdata;\n"
-"\n"
-" id |           st_astext            | cluster \n"
-"----+--------------------------------+---------\n"
-"  1 | LINESTRING(0 0,1 1)            |       0\n"
-"  2 | LINESTRING(5 5,4 4)            |       0\n"
-"  3 | LINESTRING(6 6,7 7)            |       1\n"
-"  4 | LINESTRING(0 0,-1 -1)          |       0\n"
-"  5 | POLYGON((0 0,4 0,4 4,0 4,0 0)) |       0"
-
-#. Tag: para
-#: reference_cluster.xml:152
-#, no-c-format
-msgid ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-"linkend=\"ST_ClusterWithinWin\"/> <xref linkend=\"ST_ClusterWithin\"/> <xref "
-"linkend=\"ST_ClusterIntersecting\"/>"
-msgstr ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref linkend=\"ST_ClusterWithinWin\""
-"/> <xref linkend=\"ST_ClusterWithin\"/> <xref linkend="
-"\"ST_ClusterIntersecting\"/>"
-
-#. Tag: refname
-#: reference_cluster.xml:165
-#, no-c-format
-msgid "ST_ClusterIntersecting"
-msgstr "ST_ClusterIntersecting"
-
-#. Tag: refpurpose
-#: reference_cluster.xml:167
-#, no-c-format
-msgid "Aggregate function that clusters input geometries into connected sets."
-msgstr "入力ジオメトリを接続関係にある集合にクラスタリングする集約関数です。"
-
-#. Tag: funcprototype
-#: reference_cluster.xml:172
-#, no-c-format
-msgid ""
-"<funcdef>geometry[] <function>ST_ClusterIntersecting</function></funcdef> "
-"<paramdef><type>geometry set</type> <parameter>g</parameter></paramdef>"
-msgstr ""
-"<funcdef>geometry[] <function>ST_ClusterIntersecting</function></funcdef> "
-"<paramdef><type>geometry set</type> <parameter>g</parameter></paramdef>"
-
-#. Tag: para
-#: reference_cluster.xml:182
-#, no-c-format
-msgid ""
-"ST_ClusterIntersecting is an aggregate function that returns an array of "
-"GeometryCollections, where each GeometryCollection represents an "
-"interconnected set of geometries."
-msgstr ""
-"ST_ClusterIntersectingはジオメトリコレクションの配列を返す集約関数です。配列"
-"の要素は、相互接続されるジオメトリの集合を表現します。"
-
-#. Tag: para
-#: reference_cluster.xml:184 reference_cluster.xml:329
-#, no-c-format
-msgid "Availability: 2.2.0"
-msgstr "Availability: 2.2.0"
-
-#. Tag: programlisting
-#: reference_cluster.xml:189
-#, no-c-format
-msgid ""
-"WITH testdata AS\n"
-"  (SELECT unnest(ARRAY['LINESTRING (0 0, 1 1)'::geometry,\n"
-"           'LINESTRING (5 5, 4 4)'::geometry,\n"
-"           'LINESTRING (6 6, 7 7)'::geometry,\n"
-"           'LINESTRING (0 0, -1 -1)'::geometry,\n"
-"           'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))'::geometry]) AS geom)\n"
-"\n"
-"SELECT ST_AsText(unnest(ST_ClusterIntersecting(geom))) FROM testdata;\n"
-"\n"
-"--result\n"
-"\n"
-"st_astext\n"
-"---------\n"
-"GEOMETRYCOLLECTION(LINESTRING(0 0,1 1),LINESTRING(5 5,4 4),LINESTRING(0 0,-1 "
-"-1),POLYGON((0 0,4 0,4 4,0 4,0 0)))\n"
-"GEOMETRYCOLLECTION(LINESTRING(6 6,7 7))"
-msgstr ""
-"WITH testdata AS\n"
-"  (SELECT unnest(ARRAY['LINESTRING (0 0, 1 1)'::geometry,\n"
-"           'LINESTRING (5 5, 4 4)'::geometry,\n"
-"           'LINESTRING (6 6, 7 7)'::geometry,\n"
-"           'LINESTRING (0 0, -1 -1)'::geometry,\n"
-"           'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))'::geometry]) AS geom)\n"
-"\n"
-"SELECT ST_AsText(unnest(ST_ClusterIntersecting(geom))) FROM testdata;\n"
-"\n"
-"-- 結果 --\n"
-"\n"
-"st_astext\n"
-"---------\n"
-"GEOMETRYCOLLECTION(LINESTRING(0 0,1 1),LINESTRING(5 5,4 4),LINESTRING(0 0,-1 "
-"-1),POLYGON((0 0,4 0,4 4,0 4,0 0)))\n"
-"GEOMETRYCOLLECTION(LINESTRING(6 6,7 7))"
-
-#. Tag: para
-#: reference_cluster.xml:193
-#, no-c-format
-msgid ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-"linkend=\"ST_ClusterWithinWin\"/> <xref linkend=\"ST_ClusterWithin\"/>"
-msgstr ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref linkend=\"ST_ClusterWithinWin\""
-"/> <xref linkend=\"ST_ClusterWithin\"/>"
-
-#. Tag: refname
-#: reference_cluster.xml:211
-#, no-c-format
-msgid "ST_ClusterKMeans"
-msgstr "ST_ClusterKMeans"
 
 #. Tag: refpurpose
 #: reference_cluster.xml:213
@@ -583,109 +377,17 @@ msgstr "Enhanced: 3.1.0 3次元ジオメトリと重みに対応するように�
 msgid "Generate dummy set of parcels for examples:"
 msgstr "例としてダミーの区画の集合を生成します。"
 
-#. Tag: programlisting
-#: reference_cluster.xml:252
-#, no-c-format
-msgid ""
-"CREATE TABLE parcels AS\n"
-"SELECT lpad((row_number() over())::text,3,'0') As parcel_id, geom,\n"
-"('{residential, commercial}'::text[])[1 + mod(row_number()OVER(),2)] As "
-"type\n"
-"FROM\n"
-"    ST_Subdivide(ST_Buffer('SRID=3857;LINESTRING(40 100, 98 100, 100 150, 60 "
-"90)'::geometry,\n"
-"    40, 'endcap=square'),12) As geom;"
-msgstr ""
-"CREATE TABLE parcels AS\n"
-"SELECT lpad((row_number() over())::text,3,'0') As parcel_id, geom,\n"
-"('{residential, commercial}'::text[])[1 + mod(row_number()OVER(),2)] As "
-"type\n"
-"FROM\n"
-"    ST_Subdivide(ST_Buffer('SRID=3857;LINESTRING(40 100, 98 100, 100 150, 60 "
-"90)'::geometry,\n"
-"    40, 'endcap=square'),12) As geom;"
-
 #. Tag: para
 #: reference_cluster.xml:259
 #, no-c-format
 msgid "Parcels color-coded by cluster number (cid)"
 msgstr "クラスタ番号 (cid)による色付けを施した区画"
 
-#. Tag: programlisting
-#: reference_cluster.xml:262
-#, no-c-format
-msgid ""
-"SELECT ST_ClusterKMeans(geom, 3) OVER() AS cid, parcel_id, geom\n"
-"    FROM parcels;"
-msgstr ""
-"SELECT ST_ClusterKMeans(geom, 3) OVER() AS cid, parcel_id, geom\n"
-"    FROM parcels;"
-
-#. Tag: screen
-#: reference_cluster.xml:263
-#, no-c-format
-msgid ""
-"cid | parcel_id |   geom\n"
-"-----+-----------+---------------\n"
-"   0 | 001       | 0103000000...\n"
-"   0 | 002       | 0103000000...\n"
-"   1 | 003       | 0103000000...\n"
-"   0 | 004       | 0103000000...\n"
-"   1 | 005       | 0103000000...\n"
-"   2 | 006       | 0103000000...\n"
-"   2 | 007       | 0103000000..."
-msgstr ""
-"cid | parcel_id |   geom\n"
-"-----+-----------+---------------\n"
-"   0 | 001       | 0103000000...\n"
-"   0 | 002       | 0103000000...\n"
-"   1 | 003       | 0103000000...\n"
-"   0 | 004       | 0103000000...\n"
-"   1 | 005       | 0103000000...\n"
-"   2 | 006       | 0103000000...\n"
-"   2 | 007       | 0103000000..."
-
 #. Tag: para
 #: reference_cluster.xml:266
 #, no-c-format
 msgid "Partitioning parcel clusters by type:"
 msgstr "タイプ別による区画の分割"
-
-#. Tag: programlisting
-#: reference_cluster.xml:267
-#, no-c-format
-msgid ""
-"SELECT ST_ClusterKMeans(geom, 3) over (PARTITION BY type) AS cid, parcel_id, "
-"type\n"
-"    FROM parcels;"
-msgstr ""
-"SELECT ST_ClusterKMeans(geom, 3) over (PARTITION BY type) AS cid, parcel_id, "
-"type\n"
-"    FROM parcels;"
-
-#. Tag: screen
-#: reference_cluster.xml:268
-#, no-c-format
-msgid ""
-"cid | parcel_id |    type\n"
-"-----+-----------+-------------\n"
-"   1 | 005       | commercial\n"
-"   1 | 003       | commercial\n"
-"   2 | 007       | commercial\n"
-"   0 | 001       | commercial\n"
-"   1 | 004       | residential\n"
-"   0 | 002       | residential\n"
-"   2 | 006       | residential"
-msgstr ""
-"cid | parcel_id |    type\n"
-"-----+-----------+-------------\n"
-"   1 | 005       | commercial\n"
-"   1 | 003       | commercial\n"
-"   2 | 007       | commercial\n"
-"   0 | 001       | commercial\n"
-"   1 | 004       | residential\n"
-"   0 | 002       | residential\n"
-"   2 | 006       | residential"
 
 #. Tag: para
 #: reference_cluster.xml:270
@@ -701,42 +403,6 @@ msgstr ""
 "セットのクラスタリング。<ulink url=\"https://data.humdata.org/dataset/kontur-"
 "population-dataset\">Kontur Population Data</ulink>に基づいて、中心から3000km"
 "以下となる、少なくとも 20 の地域が識別されます。"
-
-#. Tag: programlisting
-#: reference_cluster.xml:275
-#, no-c-format
-msgid ""
-"create table kontur_population_3000km_clusters as\n"
-"select\n"
-"    geom,\n"
-"    ST_ClusterKMeans(\n"
-"        ST_Force4D(\n"
-"            ST_Transform(ST_Force3D(geom), 4978), -- cluster in 3D XYZ CRS\n"
-"            mvalue := population -- set clustering to be weighed by "
-"population\n"
-"        ),\n"
-"        20,                      -- aim to generate at least 20 clusters\n"
-"        max_radius := 3000000    -- but generate more to make each under "
-"3000 km radius\n"
-"    ) over () as cid\n"
-"from\n"
-"    kontur_population;"
-msgstr ""
-"create table kontur_population_3000km_clusters as\n"
-"select\n"
-"    geom,\n"
-"    ST_ClusterKMeans(\n"
-"        ST_Force4D(\n"
-"            ST_Transform(ST_Force3D(geom), 4978), -- cluster in 3D XYZ CRS\n"
-"            mvalue := population -- set clustering to be weighed by "
-"population\n"
-"        ),\n"
-"        20,                      -- aim to generate at least 20 clusters\n"
-"        max_radius := 3000000    -- but generate more to make each under "
-"3000 km radius\n"
-"    ) over () as cid\n"
-"from\n"
-"    kontur_population;"
 
 #. Tag: para
 #: reference_cluster.xml:281
@@ -761,23 +427,16 @@ msgid ""
 ">, <xref linkend=\"ST_ClusterWithin\"/>, <xref linkend=\"ST_Subdivide\"/>, "
 "<xref linkend=\"ST_Force_3D\"/>, <xref linkend=\"ST_Force_4D\"/>,"
 msgstr ""
-", <xref linkend=\"ST_ClusterIntersectingWin\"/>, <xref linkend="
-"\"ST_ClusterWithinWin\"/>, <xref linkend=\"ST_ClusterIntersecting\"/>, <xref "
-"linkend=\"ST_ClusterWithin\"/>, <xref linkend=\"ST_Subdivide\"/>, <xref "
-"linkend=\"ST_Force_3D\"/>, <xref linkend=\"ST_Force_4D\"/>,"
-
-#. Tag: refname
-#: reference_cluster.xml:309
-#, no-c-format
-msgid "ST_ClusterWithin"
-msgstr "ST_ClusterWithin"
+", <xref linkend=\"ST_ClusterIntersectingWin\"/>, <xref "
+"linkend=\"ST_ClusterWithinWin\"/>, <xref linkend=\"ST_ClusterIntersecting\"/"
+">, <xref linkend=\"ST_ClusterWithin\"/>, <xref linkend=\"ST_Subdivide\"/>, "
+"<xref linkend=\"ST_Force_3D\"/>, <xref linkend=\"ST_Force_4D\"/>,"
 
 #. Tag: refpurpose
 #: reference_cluster.xml:311
 #, no-c-format
-msgid ""
-"Aggregate function that clusters input geometries by separation distance."
-msgstr "空間的な距離によって入力ジオメトリのクラスタリングを行う集約関数です。"
+msgid "Aggregate function that clusters geometries by separation distance."
+msgstr "分離距離でジオメトリのクラスタリングを行う集約関数です。"
 
 #. Tag: funcprototype
 #: reference_cluster.xml:316
@@ -795,84 +454,53 @@ msgstr ""
 #: reference_cluster.xml:327
 #, no-c-format
 msgid ""
-"ST_ClusterWithin is an aggregate function that returns an array of "
-"GeometryCollections, where each GeometryCollection represents a set of "
-"geometries separated by no more than the specified distance. (Distances are "
-"Cartesian distances in the units of the SRID.)"
+"An aggregate function that returns an array of GeometryCollections, where "
+"each collection is a cluster containing some input geometries. Clustering "
+"partitions the input geometries into sets in which each geometry is within "
+"the specified <parameter>distance</parameter> of at least one other geometry "
+"in the same cluster. Distances are Cartesian distances in the units of the "
+"SRID."
 msgstr ""
-"ST_ClusterWithinはジオメトリコレクションの配列を返す集計関数です。それぞれの"
-"ジオメトリコレクション要素は、指定した距離 (SRIDの単位によるデカルト距離)以内"
-"となるよう分けられたジオメトリの集合です。"
-
-#. Tag: programlisting
-#: reference_cluster.xml:335
-#, no-c-format
-msgid ""
-"WITH testdata AS\n"
-"  (SELECT unnest(ARRAY['LINESTRING (0 0, 1 1)'::geometry,\n"
-"                       'LINESTRING (5 5, 4 4)'::geometry,\n"
-"                       'LINESTRING (6 6, 7 7)'::geometry,\n"
-"                       'LINESTRING (0 0, -1 -1)'::geometry,\n"
-"                       'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))'::geometry]) AS "
-"geom)\n"
-"\n"
-"SELECT ST_AsText(unnest(ST_ClusterWithin(geom, 1.4))) FROM testdata;\n"
-"\n"
-"--result\n"
-"\n"
-"st_astext\n"
-"---------\n"
-"GEOMETRYCOLLECTION(LINESTRING(0 0,1 1),LINESTRING(5 5,4 4),LINESTRING(0 0,-1 "
-"-1),POLYGON((0 0,4 0,4 4,0 4,0 0)))\n"
-"GEOMETRYCOLLECTION(LINESTRING(6 6,7 7))"
-msgstr ""
-"WITH testdata AS\n"
-"  (SELECT unnest(ARRAY['LINESTRING (0 0, 1 1)'::geometry,\n"
-"                       'LINESTRING (5 5, 4 4)'::geometry,\n"
-"                       'LINESTRING (6 6, 7 7)'::geometry,\n"
-"                       'LINESTRING (0 0, -1 -1)'::geometry,\n"
-"                       'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))'::geometry]) AS "
-"geom)\n"
-"\n"
-"SELECT ST_AsText(unnest(ST_ClusterWithin(geom, 1.4))) FROM testdata;\n"
-"\n"
-"-- 結果 --\n"
-"\n"
-"st_astext\n"
-"---------\n"
-"GEOMETRYCOLLECTION(LINESTRING(0 0,1 1),LINESTRING(5 5,4 4),LINESTRING(0 0,-1 "
-"-1),POLYGON((0 0,4 0,4 4,0 4,0 0)))\n"
-"GEOMETRYCOLLECTION(LINESTRING(6 6,7 7))"
+"GEOMETRYCOLLECTIONの配列を返す集約関数で、個々の要素は入力ジオメトリを含むク"
+"ラスタです。クラスタリングは入力ジオメトリを、それぞれのジオメトリが、同じク"
+"ラスタ内の他のジオメトリのうち少なくとも一つとの距離が<parameter>distance</"
+"parameter>以内となる集合に分割します。距離はSRIDの単位を取るデカルト距離で"
+"す。"
 
 #. Tag: para
-#: reference_cluster.xml:339
+#: reference_cluster.xml:334
 #, no-c-format
 msgid ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-"linkend=\"ST_ClusterIntersectingWin\"/>, <xref "
-"linkend=\"ST_ClusterWithinWin\"/>, <xref linkend=\"ST_ClusterIntersecting\"/>"
+"ST_ClusterWithin is equivalent to running <xref linkend=\"ST_ClusterDBSCAN\"/"
+"> with <code>minpoints := 0</code>."
 msgstr ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref linkend="
-"\"ST_ClusterIntersectingWin\"/>, <xref linkend=\"ST_ClusterWithinWin\"/>, "
-"<xref linkend=\"ST_ClusterIntersecting\"/>"
+"ST_ClusterWithinは<xref linkend=\"ST_ClusterDBSCAN\"/>を<code>minpoints := "
+"0</code>で実行するのと同じです。"
 
-#. Tag: refname
-#: reference_cluster.xml:352
+#. Tag: para
+#: reference_cluster.xml:346
 #, no-c-format
-msgid "ST_ClusterWithinWin"
-msgstr "ST_ClusterWithinWin"
+msgid ""
+", <xref linkend=\"ST_ClusterDBSCAN\"/>, <xref "
+"linkend=\"ST_ClusterIntersecting\"/>, <xref "
+"linkend=\"ST_ClusterIntersectingWin\"/>"
+msgstr ""
+", <xref linkend=\"ST_ClusterDBSCAN\"/>, <xref "
+"linkend=\"ST_ClusterIntersecting\"/>, <xref "
+"linkend=\"ST_ClusterIntersectingWin\"/>"
 
 #. Tag: refpurpose
-#: reference_cluster.xml:354
+#: reference_cluster.xml:360
 #, no-c-format
 msgid ""
 "Window function that returns a cluster id for each input geometry, "
 "clustering using separation distance."
-msgstr "入力ジオメトリごとに分離距離を使ったクラスタリングを行い、クラスタIDを返すウ"
-"ィンドウ関数です。"
+msgstr ""
+"入力ジオメトリごとに分離距離を使ったクラスタリングを行い、クラスタIDを返す"
+"ウィンドウ関数です。"
 
 #. Tag: funcprototype
-#: reference_cluster.xml:359
+#: reference_cluster.xml:365
 #, no-c-format
 msgid ""
 "<funcdef>integer <function>ST_ClusterWithinWin</function></funcdef> "
@@ -882,174 +510,42 @@ msgid ""
 msgstr ""
 "<funcdef>integer <function>ST_ClusterWithinWin</function></funcdef> "
 "<paramdef><type>geometry winset </type> <parameter>geom</parameter></"
-"paramdef> <paramdef><type>float8 </type> "
-"<parameter>distance</parameter></paramdef>"
+"paramdef> <paramdef><type>float8 </type> <parameter>distance</parameter></"
+"paramdef>"
 
 #. Tag: para
-#: reference_cluster.xml:370
+#: reference_cluster.xml:376
 #, no-c-format
 msgid ""
-"ST_ClusterWithinWin is a window function that returns an integer for each "
-"input geometry, where the integer the cluster number the geometry is a "
-"member of. Clusters represent a set of input geometries separated by no more "
-"than the specified distance. (Distances are Cartesian distances in the units "
-"of the SRID.)"
+"A window function that returns a cluster number for each input geometry. "
+"Clustering partitions the geometries into sets in which each geometry is "
+"within the specified <varname>distance</varname> of at least one other "
+"geometry in the same cluster. Distances are Cartesian distances in the units "
+"of the SRID."
 msgstr ""
-"ST_ClusterWithinWinは、ジオメトリ毎に整数を返すウィンドウ関数です。この整数は"
-"、ジオメトリがメンバになっているクラスタの番号です。"
-"クラスタは指定距離以上でない入力ジオメトリの集合を表現します "
-"(距離はSRIDの単位のデカルト距離です。)"
+"入力ジオメトリ毎のクラスタ番号を返すウィンドウ関数です。クラスタリングはジオ"
+"メトリを、それぞれのジオメトリが、同じクラスタ内の他のジオメトリのうち少なく"
+"とも一つとの距離が<varname>distance</varname>以内となる集合に分割します。距離"
+"はSRIDの単位を取るデカルト距離です。"
 
 #. Tag: para
-#: reference_cluster.xml:372
+#: reference_cluster.xml:382
 #, no-c-format
 msgid ""
 "ST_ClusterWithinWin is equivalent to running <xref "
-"linkend=\"ST_ClusterDBSCAN\"/> with a `minpoints` of zero."
+"linkend=\"ST_ClusterDBSCAN\"/> with <code>minpoints := 0</code>."
 msgstr ""
-"ST_ClusterWithinWinは<xref linkend=\"ST_ClusterDBSCAN\""
-"/>を、`minpoints`を0にして実行するのと同じです。"
-
-#. Tag: programlisting
-#: reference_cluster.xml:380
-#, no-c-format
-msgid ""
-"WITH testdata AS (\n"
-"  SELECT id, geom::geometry FROM (\n"
-"  VALUES  (1, 'LINESTRING (0 0, 1 1)'),\n"
-"          (2, 'LINESTRING (5 5, 4 4)'),\n"
-"          (3, 'LINESTRING (6 6, 7 7)'),\n"
-"          (4, 'LINESTRING (0 0, -1 -1)'),\n"
-"          (5, 'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))')) AS t(id, geom)\n"
-")\n"
-"SELECT id, \n"
-"  ST_AsText(geom), \n"
-"  ST_ClusterWithinWin(geom, 1.4) OVER () AS cluster \n"
-"FROM testdata;\n"
-"\n"
-"\n"
-" id |           st_astext            | cluster \n"
-"----+--------------------------------+---------\n"
-"  1 | LINESTRING(0 0,1 1)            |       0\n"
-"  2 | LINESTRING(5 5,4 4)            |       0\n"
-"  3 | LINESTRING(6 6,7 7)            |       1\n"
-"  4 | LINESTRING(0 0,-1 -1)          |       0\n"
-"  5 | POLYGON((0 0,4 0,4 4,0 4,0 0)) |       0"
-msgstr ""
-"WITH testdata AS (\n"
-"  SELECT id, geom::geometry FROM (\n"
-"  VALUES  (1, 'LINESTRING (0 0, 1 1)'),\n"
-"          (2, 'LINESTRING (5 5, 4 4)'),\n"
-"          (3, 'LINESTRING (6 6, 7 7)'),\n"
-"          (4, 'LINESTRING (0 0, -1 -1)'),\n"
-"          (5, 'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))')) AS t(id, geom)\n"
-")\n"
-"SELECT id, \n"
-"  ST_AsText(geom), \n"
-"  ST_ClusterWithinWin(geom, 1.4) OVER () AS cluster \n"
-"FROM testdata;\n"
-"\n"
-"\n"
-" id |           st_astext            | cluster \n"
-"----+--------------------------------+---------\n"
-"  1 | LINESTRING(0 0,1 1)            |       0\n"
-"  2 | LINESTRING(5 5,4 4)            |       0\n"
-"  3 | LINESTRING(6 6,7 7)            |       1\n"
-"  4 | LINESTRING(0 0,-1 -1)          |       0\n"
-"  5 | POLYGON((0 0,4 0,4 4,0 4,0 0)) |       0"
+"ST_ClusterWithinWinは<xref linkend=\"ST_ClusterDBSCAN\"/>を<code>minpoints :"
+"= 0</code>で実行するのと同じです。"
 
 #. Tag: para
-#: reference_cluster.xml:384
+#: reference_cluster.xml:394
 #, no-c-format
 msgid ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-"linkend=\"ST_ClusterIntersectingWin\"/>, <xref linkend=\"ST_ClusterWithin\"/"
-">, <xref linkend=\"ST_ClusterIntersecting\"/>"
+", <xref linkend=\"ST_ClusterDBSCAN\"/>, <xref "
+"linkend=\"ST_ClusterIntersecting\"/>, <xref "
+"linkend=\"ST_ClusterIntersectingWin\"/>,"
 msgstr ""
-", <xref linkend=\"ST_ClusterKMeans\"/>, <xref linkend="
-"\"ST_ClusterIntersectingWin\"/>, <xref linkend=\"ST_ClusterWithin\"/>, <xref "
-"linkend=\"ST_ClusterIntersecting\"/>"
-
-#, no-c-format
-#~ msgid ""
-#~ ", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-#~ "linkend=\"ST_ClusterIntersecting\"/>, <xref linkend=\"ST_ClusterWithin\"/>"
-#~ msgstr ""
-#~ ", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-#~ "linkend=\"ST_ClusterIntersecting\"/>, <xref linkend=\"ST_ClusterWithin\"/>"
-
-#, no-c-format
-#~ msgid ""
-#~ "Aggregate function that clusters the input geometries into connected sets."
-#~ msgstr ""
-#~ "入力ジオメトリを接続関係にある集合にクラスタリングする集約関数です。"
-
-#, no-c-format
-#~ msgid ""
-#~ "WITH testdata AS\n"
-#~ "  (SELECT unnest(ARRAY['LINESTRING (0 0, 1 1)'::geometry,\n"
-#~ "                       'LINESTRING (5 5, 4 4)'::geometry,\n"
-#~ "                       'LINESTRING (6 6, 7 7)'::geometry,\n"
-#~ "                       'LINESTRING (0 0, -1 -1)'::geometry,\n"
-#~ "                       'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))'::geometry]) "
-#~ "AS geom)\n"
-#~ "\n"
-#~ "SELECT ST_AsText(unnest(ST_ClusterIntersecting(geom))) FROM testdata;\n"
-#~ "\n"
-#~ "--result\n"
-#~ "\n"
-#~ "st_astext\n"
-#~ "---------\n"
-#~ "GEOMETRYCOLLECTION(LINESTRING(0 0,1 1),LINESTRING(5 5,4 4),LINESTRING(0 "
-#~ "0,-1 -1),POLYGON((0 0,4 0,4 4,0 4,0 0)))\n"
-#~ "GEOMETRYCOLLECTION(LINESTRING(6 6,7 7))"
-#~ msgstr ""
-#~ "WITH testdata AS\n"
-#~ "  (SELECT unnest(ARRAY['LINESTRING (0 0, 1 1)'::geometry,\n"
-#~ "                       'LINESTRING (5 5, 4 4)'::geometry,\n"
-#~ "                       'LINESTRING (6 6, 7 7)'::geometry,\n"
-#~ "                       'LINESTRING (0 0, -1 -1)'::geometry,\n"
-#~ "                       'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))'::geometry]) "
-#~ "AS geom)\n"
-#~ "\n"
-#~ "SELECT ST_AsText(unnest(ST_ClusterIntersecting(geom))) FROM testdata;\n"
-#~ "\n"
-#~ "-- 結果 --\n"
-#~ "\n"
-#~ "st_astext\n"
-#~ "---------\n"
-#~ "GEOMETRYCOLLECTION(LINESTRING(0 0,1 1),LINESTRING(5 5,4 4),LINESTRING(0 "
-#~ "0,-1 -1),POLYGON((0 0,4 0,4 4,0 4,0 0)))\n"
-#~ "GEOMETRYCOLLECTION(LINESTRING(6 6,7 7))"
-
-#, no-c-format
-#~ msgid ""
-#~ ", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-#~ "linkend=\"ST_ClusterWithin\"/>"
-#~ msgstr ""
-#~ ", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-#~ "linkend=\"ST_ClusterWithin\"/>"
-
-#, no-c-format
-#~ msgid ""
-#~ ", <xref linkend=\"ST_ClusterIntersecting\"/>, <xref "
-#~ "linkend=\"ST_ClusterWithin\"/>, <xref linkend=\"ST_Subdivide\"/>, <xref "
-#~ "linkend=\"ST_Force_3D\"/>, <xref linkend=\"ST_Force_4D\"/>,"
-#~ msgstr ""
-#~ ", <xref linkend=\"ST_ClusterIntersecting\"/>, <xref "
-#~ "linkend=\"ST_ClusterWithin\"/>, <xref linkend=\"ST_Subdivide\"/>, <xref "
-#~ "linkend=\"ST_Force_3D\"/>, <xref linkend=\"ST_Force_4D\"/>,"
-
-#, no-c-format
-#~ msgid ""
-#~ "Aggregate function that clusters the input geometries by separation "
-#~ "distance."
-#~ msgstr "入力ジオメトリを空間距離でクラスタリングする集約関数です。"
-
-#, no-c-format
-#~ msgid ""
-#~ ", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-#~ "linkend=\"ST_ClusterIntersecting\"/>"
-#~ msgstr ""
-#~ ", <xref linkend=\"ST_ClusterKMeans\"/>, <xref "
-#~ "linkend=\"ST_ClusterIntersecting\"/>"
+", <xref linkend=\"ST_ClusterDBSCAN\"/>, <xref "
+"linkend=\"ST_ClusterIntersecting\"/>, <xref "
+"linkend=\"ST_ClusterIntersectingWin\"/>,"

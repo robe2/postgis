@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PostGIS\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-11 01:55+0000\n"
-"PO-Revision-Date: 2022-10-25 07:30+0000\n"
+"POT-Creation-Date: 2023-07-18 20:22+0000\n"
+"PO-Revision-Date: 2023-05-15 11:08+0000\n"
 "Last-Translator: Teramoto Ikuhiro <yellow@affrc.go.jp>\n"
 "Language-Team: Japanese <https://weblate.osgeo.org/projects/postgis/"
 "reference_transactionxml/ja/>\n"
@@ -15,16 +15,16 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 4.16.4\n"
 
 #. Tag: para
 #: reference_transaction.xml:6
 #, no-c-format
 msgid ""
 "These functions implement a row locking mechanism to support long "
-"transactions. They are provided primarily for implementors of the <ulink url="
-"\"http://www.opengeospatial.org/standards/wfs\">Web Feature Service</ulink> "
-"specification."
+"transactions. They are provided primarily for implementors of the <ulink "
+"url=\"http://www.opengeospatial.org/standards/wfs\">Web Feature Service</"
+"ulink> specification."
 msgstr ""
 "これらの関数は、ロングトランザクション機能のために、行をロックする機構を実装"
 "しています。これらは主に<ulink url=\"http://www.opengeospatial.org/standards/"
@@ -40,19 +40,14 @@ msgstr "ロングトランザクション機能"
 #: reference_transaction.xml:16
 #, no-c-format
 msgid ""
-"For the locking mechanism to operate correctly the <emphasis role=\"bold"
-"\">serializable</emphasis> <ulink url=\"http://www.postgresql.org/docs/"
-"current/static/transaction-iso.html\"> transaction isolation level</ulink> "
-"must be used."
+"For the locking mechanism to operate correctly the <emphasis "
+"role=\"bold\">serializable</emphasis> <ulink url=\"http://www.postgresql.org/"
+"docs/current/static/transaction-iso.html\"> transaction isolation level</"
+"ulink> must be used."
 msgstr ""
 "<ulink url=\"http://www.postgresql.org/docs/current/static/transaction-iso."
-"html\">serializable transaction level</ulink>を使わなければなりません。さもなくばロック機構が壊れます。"
-
-#. Tag: refname
-#: reference_transaction.xml:24
-#, no-c-format
-msgid "AddAuth"
-msgstr "AddAuth"
+"html\">serializable transaction level</ulink>を使わなければなりません。さもな"
+"くばロック機構が壊れます。"
 
 #. Tag: refpurpose
 #: reference_transaction.xml:26
@@ -60,8 +55,9 @@ msgstr "AddAuth"
 msgid ""
 "<refpurpose>Adds an authorization token to be used in the current "
 "transaction.</refpurpose>"
-msgstr "<refpurpose>現在のトランザクションで使用する認可トークンを追加します。</refpu"
-"rpose>"
+msgstr ""
+"<refpurpose>現在のトランザクションで使用する認可トークンを追加します。</"
+"refpurpose>"
 
 #. Tag: funcprototype
 #: reference_transaction.xml:31
@@ -87,7 +83,8 @@ msgstr "説明"
 msgid ""
 "<para>Adds an authorization token to be used in the current transaction.</"
 "para>"
-msgstr "<para>現在のトランザクションで使用する認可トークンを追加します。</para>"
+msgstr ""
+"<para>現在のトランザクションで使用する認可トークンを追加します。</para>"
 
 #. Tag: para
 #: reference_transaction.xml:43
@@ -96,8 +93,8 @@ msgid ""
 "Adds the current transaction identifier and authorization token to a "
 "temporary table called <varname>temp_lock_have_table</varname>."
 msgstr ""
-"現在のトランザクション識別子と認可トークンを<varname>temp_lock_have_table</va"
-"rname>という一時テーブルに追加します。"
+"現在のトランザクション識別子と認可トークンを<varname>temp_lock_have_table</"
+"varname>という一時テーブルに追加します。"
 
 #. Tag: para
 #: reference_transaction.xml:46 reference_transaction.xml:98
@@ -115,34 +112,6 @@ msgstr "Availability: 1.1.3"
 msgid "Examples"
 msgstr "例"
 
-#. Tag: programlisting
-#: reference_transaction.xml:52
-#, no-c-format
-msgid ""
-"SELECT LockRow('towns', '353', 'priscilla');\n"
-"                BEGIN TRANSACTION;\n"
-"                        SELECT AddAuth('joey');\n"
-"                        UPDATE towns SET geom = ST_Translate(geom,2,2) WHERE "
-"gid = 353;\n"
-"                COMMIT;\n"
-"\n"
-"\n"
-"                ---Error--\n"
-"                ERROR:  UPDATE where \"gid\" = '353' requires authorization "
-"'priscilla'"
-msgstr ""
-"SELECT LockRow('towns', '353', 'priscilla');\n"
-"                BEGIN TRANSACTION;\n"
-"                        SELECT AddAuth('joey');\n"
-"                        UPDATE towns SET geom = ST_Translate(geom,2,2) WHERE "
-"gid = 353;\n"
-"                COMMIT;\n"
-"\n"
-"\n"
-"                -- エラー --\n"
-"                ERROR:  UPDATE where \"gid\" = '353' requires authorization "
-"'priscilla'"
-
 #. Tag: title
 #: reference_transaction.xml:57 reference_transaction.xml:111
 #: reference_transaction.xml:155 reference_transaction.xml:200
@@ -151,42 +120,15 @@ msgstr ""
 msgid "See Also"
 msgstr "関連情報"
 
-#. Tag: refname
-#: reference_transaction.xml:65
-#, no-c-format
-msgid "CheckAuth"
-msgstr "CheckAuth"
-
 #. Tag: refpurpose
 #: reference_transaction.xml:67
 #, no-c-format
 msgid ""
 "Creates a trigger on a table to prevent/allow updates and deletes of rows "
 "based on authorization token."
-msgstr "認可トークンを基に行の更新と削除とを禁止/許可するためにテーブル上にトリガを生"
-"成します。"
-
-#. Tag: funcsynopsis
-#: reference_transaction.xml:71
-#, no-c-format
-msgid ""
-"<funcprototype> <funcdef>integer <function>CheckAuth</function></funcdef> "
-"<paramdef><type>text </type> <parameter>a_schema_name</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>a_table_name</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>a_key_column_name</parameter></"
-"paramdef> </funcprototype> <funcprototype> <funcdef>integer "
-"<function>CheckAuth</function></funcdef> <paramdef><type>text </type> "
-"<parameter>a_table_name</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>a_key_column_name</parameter></paramdef> </funcprototype>"
 msgstr ""
-"<funcprototype> <funcdef>integer <function>CheckAuth</function></funcdef> "
-"<paramdef><type>text </type> <parameter>a_schema_name</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>a_table_name</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>a_key_column_name</parameter></"
-"paramdef> </funcprototype> <funcprototype> <funcdef>integer "
-"<function>CheckAuth</function></funcdef> <paramdef><type>text </type> "
-"<parameter>a_table_name</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>a_key_column_name</parameter></paramdef> </funcprototype>"
+"認可トークンを基に行の更新と削除とを禁止/許可するためにテーブル上にトリガを生"
+"成します。"
 
 #. Tag: para
 #: reference_transaction.xml:90
@@ -220,26 +162,6 @@ msgstr "このテーブルに認証トリガが既に存在している場合に
 msgid "If Transaction support is not enabled, function throws an exception."
 msgstr "トランザクション機能が無い場合は、例外が投げられます。"
 
-#. Tag: programlisting
-#: reference_transaction.xml:106
-#, no-c-format
-msgid ""
-"SELECT CheckAuth('public', 'towns', 'gid');\n"
-"                        result\n"
-"                        ------\n"
-"                        0"
-msgstr ""
-"SELECT CheckAuth('public', 'towns', 'gid');\n"
-"                        結果\n"
-"                        ------\n"
-"                        0"
-
-#. Tag: refname
-#: reference_transaction.xml:119
-#, no-c-format
-msgid "DisableLongTransactions"
-msgstr "DisableLongTransactions"
-
 #. Tag: refpurpose
 #: reference_transaction.xml:121
 #, no-c-format
@@ -264,8 +186,9 @@ msgid ""
 "transaction support metadata tables, and drops all triggers attached to lock-"
 "checked tables."
 msgstr ""
-"ロングトランザクション機能を無効にします。この関数によって、ロングトランザクション機能のためのメタデータテーブルが削除され、ロックチェックテーブルに付けら"
-"れた全てのトリガが削除されます。"
+"ロングトランザクション機能を無効にします。この関数によって、ロングトランザク"
+"ション機能のためのメタデータテーブルが削除され、ロックチェックテーブルに付け"
+"られた全てのトリガが削除されます。"
 
 #. Tag: para
 #: reference_transaction.xml:139
@@ -278,24 +201,6 @@ msgstr ""
 "<varname>authorization_table</varname>メタデータテーブル、"
 "<varname>authorized_tables</varname>ビュー、<varname>checkauthtrigger</"
 "varname>トリガの全てが削除されます。"
-
-#. Tag: programlisting
-#: reference_transaction.xml:150
-#, no-c-format
-msgid ""
-"SELECT DisableLongTransactions();\n"
-"--result--\n"
-"Long transactions support disabled"
-msgstr ""
-"SELECT DisableLongTransactions();\n"
-"-- 結果 --\n"
-"Long transactions support disabled"
-
-#. Tag: refname
-#: reference_transaction.xml:163
-#, no-c-format
-msgid "EnableLongTransactions"
-msgstr "EnableLongTransactions"
 
 #. Tag: refpurpose
 #: reference_transaction.xml:165
@@ -321,8 +226,9 @@ msgid ""
 "metadata tables. It must be called once before using the other functions in "
 "this section. Calling it twice is harmless."
 msgstr ""
-"ロングトランザクション機能を有効にします。この関数によって、必要なメタデータテーブルが生成されます。このセクションにある他の関数を呼ぶ前に、一度呼ぶ必要が"
-"あります。二度呼んでも構いません。"
+"ロングトランザクション機能を有効にします。この関数によって、必要なメタデータ"
+"テーブルが生成されます。このセクションにある他の関数を呼ぶ前に、一度呼ぶ必要"
+"があります。二度呼んでも構いません。"
 
 #. Tag: para
 #: reference_transaction.xml:185
@@ -334,67 +240,11 @@ msgstr ""
 "<varname>authorization_table</varname>メタデータテーブル"
 "<varname>authorized_tables</varname>ビューが生成されます。"
 
-#. Tag: programlisting
-#: reference_transaction.xml:195
-#, no-c-format
-msgid ""
-"SELECT EnableLongTransactions();\n"
-"--result--\n"
-"Long transactions support enabled"
-msgstr ""
-"SELECT EnableLongTransactions();\n"
-"-- 結果 --\n"
-"Long transactions support enabled"
-
-#. Tag: refname
-#: reference_transaction.xml:208
-#, no-c-format
-msgid "LockRow"
-msgstr "LockRow"
-
 #. Tag: refpurpose
 #: reference_transaction.xml:210
 #, no-c-format
 msgid "Sets lock/authorization for a row in a table."
 msgstr "テーブル内の行にロック/認可を設定します。"
-
-#. Tag: funcsynopsis
-#: reference_transaction.xml:214
-#, no-c-format
-msgid ""
-"<funcprototype> <funcdef>integer <function>LockRow</function></funcdef> "
-"<paramdef><type>text </type> <parameter>a_schema_name</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>a_table_name</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>a_row_key</parameter></paramdef> "
-"<paramdef><type>text</type> <parameter>an_auth_token</parameter></paramdef> "
-"<paramdef><type>timestamp</type> <parameter>expire_dt</parameter></paramdef> "
-"</funcprototype> <funcprototype> <funcdef>integer <function>LockRow</"
-"function></funcdef> <paramdef><type>text </type> <parameter>a_table_name</"
-"parameter></paramdef> <paramdef><type>text </type> <parameter>a_row_key</"
-"parameter></paramdef> <paramdef><type>text</type> <parameter>an_auth_token</"
-"parameter></paramdef> <paramdef><type>timestamp</type> <parameter>expire_dt</"
-"parameter></paramdef> </funcprototype> <funcprototype> <funcdef>integer "
-"<function>LockRow</function></funcdef> <paramdef><type>text </type> "
-"<parameter>a_table_name</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>a_row_key</parameter></paramdef> <paramdef><type>text</type> "
-"<parameter>an_auth_token</parameter></paramdef> </funcprototype>"
-msgstr ""
-"<funcprototype> <funcdef>integer <function>LockRow</function></funcdef> "
-"<paramdef><type>text </type> <parameter>a_schema_name</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>a_table_name</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>a_row_key</parameter></paramdef> "
-"<paramdef><type>text</type> <parameter>an_auth_token</parameter></paramdef> "
-"<paramdef><type>timestamp</type> <parameter>expire_dt</parameter></paramdef> "
-"</funcprototype> <funcprototype> <funcdef>integer <function>LockRow</"
-"function></funcdef> <paramdef><type>text </type> <parameter>a_table_name</"
-"parameter></paramdef> <paramdef><type>text </type> <parameter>a_row_key</"
-"parameter></paramdef> <paramdef><type>text</type> <parameter>an_auth_token</"
-"parameter></paramdef> <paramdef><type>timestamp</type> <parameter>expire_dt</"
-"parameter></paramdef> </funcprototype> <funcprototype> <funcdef>integer "
-"<function>LockRow</function></funcdef> <paramdef><type>text </type> "
-"<parameter>a_table_name</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>a_row_key</parameter></paramdef> <paramdef><type>text</type> "
-"<parameter>an_auth_token</parameter></paramdef> </funcprototype>"
 
 #. Tag: para
 #: reference_transaction.xml:245
@@ -406,43 +256,10 @@ msgid ""
 "emphasis>. Returns 1 if lock has been assigned, 0 otherwise (i.e. row is "
 "already locked by another auth.)"
 msgstr ""
-"テーブル内の指定した行にロック/認可を設定します。<varname>an_auth_token</varn"
-"ame>はテキスト値です。<varname>expire_dt</varname>は <emphasis>now() + 1 時間"
-"</emphasis>をデフォルトとするタイムスタンプです。割り当てが行われたなら1が返"
-"り、他の場合 (例: 行が他の認可で既にロックされていた)には0が返ります。"
-
-#. Tag: programlisting
-#: reference_transaction.xml:259
-#, no-c-format
-msgid ""
-"SELECT LockRow('public', 'towns', '2', 'joey');\n"
-"LockRow\n"
-"-------\n"
-"1\n"
-"\n"
-"--Joey has already locked the record and Priscilla is out of luck\n"
-"SELECT LockRow('public', 'towns', '2', 'priscilla');\n"
-"LockRow\n"
-"-------\n"
-"0"
-msgstr ""
-"SELECT LockRow('public', 'towns', '2', 'joey');\n"
-"LockRow\n"
-"-------\n"
-"1\n"
-"\n"
-"-- Joeyは既にレコードをロックしていて\n"
-"-- Priscillaはロックできなかっただけにラックが無かったと\n"
-"SELECT LockRow('public', 'towns', '2', 'priscilla');\n"
-"LockRow\n"
-"-------\n"
-"0"
-
-#. Tag: refname
-#: reference_transaction.xml:272
-#, no-c-format
-msgid "UnlockRows"
-msgstr "UnlockRows"
+"テーブル内の指定した行にロック/認可を設定します。<varname>an_auth_token</"
+"varname>はテキスト値です。<varname>expire_dt</varname>は <emphasis>now() + 1 "
+"時間</emphasis>をデフォルトとするタイムスタンプです。割り当てが行われたなら1"
+"が返り、他の場合 (例: 行が他の認可で既にロックされていた)には0が返ります。"
 
 #. Tag: refpurpose
 #: reference_transaction.xml:274
@@ -466,54 +283,6 @@ msgstr ""
 msgid ""
 "Removes all locks held by specified authorization token. Returns the number "
 "of locks released."
-msgstr "指定した認証IDが保持するロックを全て削除します。解放されたロックの数が返されます。"
-
-#. Tag: programlisting
-#: reference_transaction.xml:300
-#, no-c-format
-msgid ""
-"SELECT LockRow('towns', '353', 'priscilla');\n"
-"                SELECT LockRow('towns', '2', 'priscilla');\n"
-"                SELECT UnLockRows('priscilla');\n"
-"                UnLockRows\n"
-"                ------------\n"
-"                2"
 msgstr ""
-"SELECT LockRow('towns', '353', 'priscilla');\n"
-"                SELECT LockRow('towns', '2', 'priscilla');\n"
-"                SELECT UnLockRows('priscilla');\n"
-"                UnLockRows\n"
-"                ------------\n"
-"                2"
-
-#~ msgid ""
-#~ "Creates/adds to a temp table called temp_lock_have_table the current "
-#~ "transaction identifier and authorization token key."
-#~ msgstr ""
-#~ "temp_lock_have_tableという一時テーブルに現在のトランザクション識別子と認証"
-#~ "トークンキーを作成、追加します。"
-
-#~ msgid ""
-#~ "<refpurpose>Disable long transaction support. This function removes the "
-#~ "long transaction support metadata tables, and drops all triggers attached "
-#~ "to lock-checked tables.</refpurpose>"
-#~ msgstr ""
-#~ "<refpurpose>ロングトランザクション機能を無効にします。この関数によって、ロ"
-#~ "ングトランザクション機能のためのメタデータテーブルが削除され、ロックチェッ"
-#~ "クテーブルに付けられた全てのトリガが削除されます。</refpurpose>"
-
-#~ msgid ""
-#~ "<refpurpose>Enable long transaction support. This function creates the "
-#~ "required metadata tables, needs to be called once before using the other "
-#~ "functions in this section. Calling it twice is harmless.</refpurpose>"
-#~ msgstr ""
-#~ "<refpurpose>ロングトランザクション機能を有効にします。この関数によって、必"
-#~ "要なメタデータテーブルが生成されます。このセクションにある他の関数を呼ぶ前"
-#~ "に、一度呼ぶ必要があります。二度呼んでも構いません。</refpurpose>"
-
-#~ msgid ""
-#~ "<refpurpose>Remove all locks held by specified authorization id. Returns "
-#~ "the number of locks released.</refpurpose>"
-#~ msgstr ""
-#~ "<refpurpose>指定した認証IDが保持するロックを全て削除します。解放されたロッ"
-#~ "クの数が返されます。</refpurpose>"
+"指定した認証IDが保持するロックを全て削除します。解放されたロックの数が返され"
+"ます。"

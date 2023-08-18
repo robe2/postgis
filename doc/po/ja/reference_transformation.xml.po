@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-11 01:55+0000\n"
-"PO-Revision-Date: 2023-04-14 03:08+0000\n"
+"POT-Creation-Date: 2023-07-18 20:22+0000\n"
+"PO-Revision-Date: 2023-05-15 11:08+0000\n"
 "Last-Translator: Teramoto Ikuhiro <yellow@affrc.go.jp>\n"
 "Language-Team: Japanese <https://weblate.osgeo.org/projects/postgis/"
 "reference_transformationxml/ja/>\n"
@@ -21,13 +21,13 @@ msgstr ""
 #: reference_transformation.xml:5
 #, no-c-format
 msgid ""
-"These functions change the position and shape of geometries using <ulink url="
-"\"https://en.wikipedia.org/wiki/Affine_transformation\">affine "
+"These functions change the position and shape of geometries using <ulink "
+"url=\"https://en.wikipedia.org/wiki/Affine_transformation\">affine "
 "transformations</ulink>."
 msgstr ""
 "これらの関数は<ulink url=\"https://ja.wikipedia.org/wiki/"
-"%E3%82%A2%E3%83%95%E3%82%A3%E3%83%B3%E5%86%99%E5%83%8F\""
-">アフィン変換</ulink>を使用してジオメトリの位置と形状を変更するものです。"
+"%E3%82%A2%E3%83%95%E3%82%A3%E3%83%B3%E5%86%99%E5%83%8F\">アフィン変換</ulink>"
+"を使用してジオメトリの位置と形状を変更するものです。"
 
 #. Tag: title
 #: reference_transformation.xml:10
@@ -35,69 +35,11 @@ msgstr ""
 msgid "Affine Transformations"
 msgstr "アフィン変換"
 
-#. Tag: refname
-#: reference_transformation.xml:14
-#, no-c-format
-msgid "ST_Affine"
-msgstr "ST_Affine"
-
 #. Tag: refpurpose
 #: reference_transformation.xml:16
 #, no-c-format
 msgid "Apply a 3D affine transformation to a geometry."
 msgstr "ジオメトリに3次元アフィン変換を適用します。"
-
-#. Tag: funcsynopsis
-#: reference_transformation.xml:20
-#, no-c-format
-msgid ""
-"<funcprototype> <funcdef>geometry <function>ST_Affine</function></funcdef> "
-"<paramdef><type>geometry </type> <parameter>geomA</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>a</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>b</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>c</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>d</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>e</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>f</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>g</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>h</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>i</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>xoff</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>yoff</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>zoff</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry <function>ST_Affine</"
-"function></funcdef> <paramdef><type>geometry </type> <parameter>geomA</"
-"parameter></paramdef> <paramdef><type>float </type> <parameter>a</"
-"parameter></paramdef> <paramdef><type>float </type> <parameter>b</"
-"parameter></paramdef> <paramdef><type>float </type> <parameter>d</"
-"parameter></paramdef> <paramdef><type>float </type> <parameter>e</"
-"parameter></paramdef> <paramdef><type>float </type> <parameter>xoff</"
-"parameter></paramdef> <paramdef><type>float </type> <parameter>yoff</"
-"parameter></paramdef> </funcprototype>"
-msgstr ""
-"<funcprototype> <funcdef>geometry <function>ST_Affine</function></funcdef> "
-"<paramdef><type>geometry </type> <parameter>geomA</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>a</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>b</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>c</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>d</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>e</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>f</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>g</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>h</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>i</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>xoff</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>yoff</parameter></paramdef> "
-"<paramdef><type>float </type> <parameter>zoff</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Affine</function></funcdef> <paramdef><type>geometry </type> "
-"<parameter>geomA</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>a</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>b</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>d</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>e</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>xoff</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>yoff</parameter></paramdef> </funcprototype>"
 
 #. Tag: title
 #: reference_transformation.xml:52 reference_transformation.xml:127
@@ -114,7 +56,8 @@ msgstr "説明"
 msgid ""
 "Applies a 3D affine transformation to the geometry to do things like "
 "translate, rotate, scale in one step."
-msgstr "3次元アフィン変換をジオメトリに適用して移動、回転、拡大縮小を一度に行います。"
+msgstr ""
+"3次元アフィン変換をジオメトリに適用して移動、回転、拡大縮小を一度に行います。"
 
 #. Tag: para
 #: reference_transformation.xml:55
@@ -131,10 +74,10 @@ msgid ""
 "z' = g*x + h*y + i*z + zoff</programlisting> All of the translate / scale "
 "functions below are expressed via such an affine transformation."
 msgstr ""
-"一つ目の形式では、次のように関数を呼んでいます。<programlisting>ST_Affine("
-"geom, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff) </programlisting> "
-"これは次のような変換行列を表現しています。<programlisting>/ a  b  c  xoff \\"
-"\n"
+"一つ目の形式では、次のように関数を呼んでいます。"
+"<programlisting>ST_Affine(geom, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff) "
+"</programlisting> これは次のような変換行列を表現しています。"
+"<programlisting>/ a  b  c  xoff \\\n"
 "| d  e  f  yoff |\n"
 "| g  h  i  zoff |\n"
 "\\ 0  0  0     1 /</programlisting>次のようにも表現できます。"
@@ -159,9 +102,9 @@ msgid ""
 "z' = z </programlisting> This method is a subcase of the 3D method above."
 msgstr ""
 "二つ目の形式では、2次元アフィン変換をジオメトリに適用します。次のように関数を"
-"呼んでいます。<programlisting>ST_Affine(geom, a, b, d, e, xoff, yoff)</progra"
-"mlisting>これは次のような変換行列を表現しています。<programlisting>/  a  b  "
-"0  xoff  \\       /  a  b  xoff  \\\n"
+"呼んでいます。<programlisting>ST_Affine(geom, a, b, d, e, xoff, yoff)</"
+"programlisting>これは次のような変換行列を表現しています。<programlisting>/  "
+"a  b  0  xoff  \\       /  a  b  xoff  \\\n"
 "|  d  e  0  yoff  | rsp.  |  d  e  yoff  |\n"
 "|  0  0  1     0  |       \\  0  0     1  /\n"
 "\\  0  0  0     1  /</programlisting>頂点は次のように変換されます。"
@@ -177,7 +120,8 @@ msgstr ""
 msgid ""
 "Enhanced: 2.0.0 support for Polyhedral surfaces, Triangles and TIN was "
 "introduced."
-msgstr "Enhanced: 2.0.0 多面体サーフェス対応、三角対応、TIN対応が導入されました。"
+msgstr ""
+"Enhanced: 2.0.0 多面体サーフェス対応、三角対応、TIN対応が導入されました。"
 
 #. Tag: para
 #: reference_transformation.xml:69
@@ -193,8 +137,9 @@ msgstr "Availability: 1.1.2 AffineからST_Affineに名称変更しました。"
 msgid ""
 "Prior to 1.3.4, this function crashes if used with geometries that contain "
 "CURVES. This is fixed in 1.3.4+"
-msgstr "1.3.4より前では、曲線を含むジオメトリで使用すると、この関数はクラッシュします"
-"。これは1.3.4以上で訂正されています。"
+msgstr ""
+"1.3.4より前では、曲線を含むジオメトリで使用すると、この関数はクラッシュしま"
+"す。これは1.3.4以上で訂正されています。"
 
 #. Tag: para
 #: reference_transformation.xml:72 reference_transformation.xml:138
@@ -238,53 +183,6 @@ msgstr "&curve_support;"
 msgid "Examples"
 msgstr "例"
 
-#. Tag: programlisting
-#: reference_transformation.xml:82
-#, no-c-format
-msgid ""
-"--Rotate a 3d line 180 degrees about the z axis.  Note this is long-hand for "
-"doing ST_Rotate();\n"
-" SELECT ST_AsEWKT(ST_Affine(geom,  cos(pi()), -sin(pi()), 0,  sin(pi()), "
-"cos(pi()), 0,  0, 0, 1,  0, 0, 0)) As using_affine,\n"
-"         ST_AsEWKT(ST_Rotate(geom, pi())) As using_rotate\n"
-"        FROM (SELECT ST_GeomFromEWKT('LINESTRING(1 2 3, 1 4 3)') As geom) As "
-"foo;\n"
-"        using_affine         |        using_rotate\n"
-"-----------------------------+-----------------------------\n"
-" LINESTRING(-1 -2 3,-1 -4 3) | LINESTRING(-1 -2 3,-1 -4 3)\n"
-"(1 row)\n"
-"\n"
-"--Rotate a 3d line 180 degrees in both the x and z axis\n"
-"SELECT ST_AsEWKT(ST_Affine(geom, cos(pi()), -sin(pi()), 0, sin(pi()), "
-"cos(pi()), -sin(pi()), 0, sin(pi()), cos(pi()), 0, 0, 0))\n"
-"        FROM (SELECT ST_GeomFromEWKT('LINESTRING(1 2 3, 1 4 3)') As geom) As "
-"foo;\n"
-"           st_asewkt\n"
-"-------------------------------\n"
-" LINESTRING(-1 -2 -3,-1 -4 -3)\n"
-"(1 row)"
-msgstr ""
-"-- 3次元のラインをZ軸周りに180度回転。これはST_Rotate()を長くしたものです。\n"
-" SELECT ST_AsEWKT(ST_Affine(geom,  cos(pi()), -sin(pi()), 0,  sin(pi()), "
-"cos(pi()), 0,  0, 0, 1,  0, 0, 0)) As using_affine,\n"
-"         ST_AsEWKT(ST_Rotate(geom, pi())) As using_rotate\n"
-"        FROM (SELECT ST_GeomFromEWKT('LINESTRING(1 2 3, 1 4 3)') As geom) As "
-"foo;\n"
-"        using_affine         |        using_rotate\n"
-"-----------------------------+-----------------------------\n"
-" LINESTRING(-1 -2 3,-1 -4 3) | LINESTRING(-1 -2 3,-1 -4 3)\n"
-"(1 row)\n"
-"\n"
-"-- 3次元ラインをX軸周りとZ軸周りに180度ずつ回転\n"
-"SELECT ST_AsEWKT(ST_Affine(geom, cos(pi()), -sin(pi()), 0, sin(pi()), "
-"cos(pi()), -sin(pi()), 0, sin(pi()), cos(pi()), 0, 0, 0))\n"
-"        FROM (SELECT ST_GeomFromEWKT('LINESTRING(1 2 3, 1 4 3)') As geom) As "
-"foo;\n"
-"           st_asewkt\n"
-"-------------------------------\n"
-" LINESTRING(-1 -2 -3,-1 -4 -3)\n"
-"(1 row)"
-
 #. Tag: title
 #: reference_transformation.xml:87 reference_transformation.xml:152
 #: reference_transformation.xml:199 reference_transformation.xml:248
@@ -304,50 +202,11 @@ msgstr ""
 ", <xref linkend=\"ST_Scale\"/>, <xref linkend=\"ST_Translate\"/>, <xref "
 "linkend=\"ST_TransScale\"/>"
 
-#. Tag: refname
-#: reference_transformation.xml:96
-#, no-c-format
-msgid "ST_Rotate"
-msgstr "ST_Rotate"
-
 #. Tag: refpurpose
 #: reference_transformation.xml:98
 #, no-c-format
 msgid "Rotates a geometry about an origin point."
 msgstr "ジオメトリを原点について回転させます。"
-
-#. Tag: funcsynopsis
-#: reference_transformation.xml:102
-#, no-c-format
-msgid ""
-"<funcprototype> <funcdef>geometry <function>ST_Rotate</function></funcdef> "
-"<paramdef><type>geometry</type> <parameter>geomA</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>rotRadians</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry <function>ST_Rotate</"
-"function></funcdef> <paramdef><type>geometry</type> <parameter>geomA</"
-"parameter></paramdef> <paramdef><type>float</type> <parameter>rotRadians</"
-"parameter></paramdef> <paramdef><type>float</type> <parameter>x0</"
-"parameter></paramdef> <paramdef><type>float</type> <parameter>y0</"
-"parameter></paramdef> </funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Rotate</function></funcdef> <paramdef><type>geometry</type> "
-"<parameter>geomA</parameter></paramdef> <paramdef><type>float</type> "
-"<parameter>rotRadians</parameter></paramdef> <paramdef><type>geometry</type> "
-"<parameter>pointOrigin</parameter></paramdef> </funcprototype>"
-msgstr ""
-"<funcprototype> <funcdef>geometry <function>ST_Rotate</function></funcdef> "
-"<paramdef><type>geometry</type> <parameter>geomA</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>rotRadians</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Rotate</function></funcdef> <paramdef><type>geometry</type> "
-"<parameter>geomA</parameter></paramdef> <paramdef><type>float</type> "
-"<parameter>rotRadians</parameter></paramdef> <paramdef><type>float</type> "
-"<parameter>x0</parameter></paramdef> <paramdef><type>float</type> "
-"<parameter>y0</parameter></paramdef> </funcprototype> <funcprototype> "
-"<funcdef>geometry <function>ST_Rotate</function></funcdef> "
-"<paramdef><type>geometry</type> <parameter>geomA</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>rotRadians</parameter></paramdef> "
-"<paramdef><type>geometry</type> <parameter>pointOrigin</parameter></"
-"paramdef> </funcprototype>"
 
 #. Tag: para
 #: reference_transformation.xml:129
@@ -376,58 +235,6 @@ msgstr "Enhanced: 2.0.0 回転の原点を指定するパラメタを追加し�
 msgid "Availability: 1.1.2. Name changed from Rotate to ST_Rotate in 1.2.2"
 msgstr "Availability: 1.1.2 RotateからST_Rotateに名称変更しました。"
 
-#. Tag: programlisting
-#: reference_transformation.xml:147
-#, no-c-format
-msgid ""
-"--Rotate 180 degrees\n"
-"SELECT ST_AsEWKT(ST_Rotate('LINESTRING (50 160, 50 50, 100 50)', pi()));\n"
-"               st_asewkt\n"
-"---------------------------------------\n"
-" LINESTRING(-50 -160,-50 -50,-100 -50)\n"
-"(1 row)\n"
-"\n"
-"--Rotate 30 degrees counter-clockwise at x=50, y=160\n"
-"SELECT ST_AsEWKT(ST_Rotate('LINESTRING (50 160, 50 50, 100 50)', pi()/6, 50, "
-"160));\n"
-"                                 st_asewkt\n"
-"---------------------------------------------------------------------------\n"
-" LINESTRING(50 160,105 64.7372055837117,148.301270189222 89.7372055837117)\n"
-"(1 row)\n"
-"\n"
-"--Rotate 60 degrees clockwise from centroid\n"
-"SELECT ST_AsEWKT(ST_Rotate(geom, -pi()/3, ST_Centroid(geom)))\n"
-"FROM (SELECT 'LINESTRING (50 160, 50 50, 100 50)'::geometry AS geom) AS "
-"foo;\n"
-"                           st_asewkt\n"
-"--------------------------------------------------------------\n"
-" LINESTRING(116.4225 130.6721,21.1597 75.6721,46.1597 32.3708)\n"
-"(1 row)"
-msgstr ""
-"-- 180度回転\n"
-"SELECT ST_AsEWKT(ST_Rotate('LINESTRING (50 160, 50 50, 100 50)', pi()));\n"
-"               st_asewkt\n"
-"---------------------------------------\n"
-" LINESTRING(-50 -160,-50 -50,-100 -50)\n"
-"(1 row)\n"
-"\n"
-"-- x=50,y=160で反時計回りに30度回転\n"
-"SELECT ST_AsEWKT(ST_Rotate('LINESTRING (50 160, 50 50, 100 50)', pi()/6, 50, "
-"160));\n"
-"                                 st_asewkt\n"
-"---------------------------------------------------------------------------\n"
-" LINESTRING(50 160,105 64.7372055837117,148.301270189222 89.7372055837117)\n"
-"(1 row)\n"
-"\n"
-"-- 重心位置で時計回りに60度回転\n"
-"SELECT ST_AsEWKT(ST_Rotate(geom, -pi()/3, ST_Centroid(geom)))\n"
-"FROM (SELECT 'LINESTRING (50 160, 50 50, 100 50)'::geometry AS geom) AS foo;"
-"\n"
-"                           st_asewkt\n"
-"--------------------------------------------------------------\n"
-" LINESTRING(116.4225 130.6721,21.1597 75.6721,46.1597 32.3708)\n"
-"(1 row)"
-
 #. Tag: para
 #: reference_transformation.xml:154
 #, no-c-format
@@ -437,12 +244,6 @@ msgid ""
 msgstr ""
 ", <xref linkend=\"ST_RotateX\"/>, <xref linkend=\"ST_RotateY\"/>, <xref "
 "linkend=\"ST_RotateZ\"/>"
-
-#. Tag: refname
-#: reference_transformation.xml:160
-#, no-c-format
-msgid "ST_RotateX"
-msgstr "ST_RotateX"
 
 #. Tag: refpurpose
 #: reference_transformation.xml:162
@@ -486,35 +287,11 @@ msgstr ""
 msgid "Availability: 1.1.2. Name changed from RotateX to ST_RotateX in 1.2.2"
 msgstr "Availability: 1.1.2 1.2.2でRotateXからST_RotateXに名称変更しました。"
 
-#. Tag: programlisting
-#: reference_transformation.xml:194
-#, no-c-format
-msgid ""
-"--Rotate a line 90 degrees along x-axis\n"
-"SELECT ST_AsEWKT(ST_RotateX(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), "
-"pi()/2));\n"
-"                 st_asewkt\n"
-"---------------------------\n"
-" LINESTRING(1 -3 2,1 -1 1)"
-msgstr ""
-"-- ラインをX軸について90度回転\n"
-"SELECT ST_AsEWKT(ST_RotateX(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), "
-"pi()/2));\n"
-"                 st_asewkt\n"
-"---------------------------\n"
-" LINESTRING(1 -3 2,1 -1 1)"
-
 #. Tag: para
 #: reference_transformation.xml:201
 #, no-c-format
 msgid ", <xref linkend=\"ST_RotateY\"/>, <xref linkend=\"ST_RotateZ\"/>"
 msgstr ", <xref linkend=\"ST_RotateY\"/>, <xref linkend=\"ST_RotateZ\"/>"
-
-#. Tag: refname
-#: reference_transformation.xml:207
-#, no-c-format
-msgid "ST_RotateY"
-msgstr "ST_RotateY"
 
 #. Tag: refpurpose
 #: reference_transformation.xml:209
@@ -558,35 +335,11 @@ msgstr ""
 msgid "Availability: 1.1.2. Name changed from RotateY to ST_RotateY in 1.2.2"
 msgstr "Availability: 1.1.2 1.2.2でRotateYからST_RotateYに名称変更しました。"
 
-#. Tag: programlisting
-#: reference_transformation.xml:243
-#, no-c-format
-msgid ""
-"--Rotate a line 90 degrees along y-axis\n"
-" SELECT ST_AsEWKT(ST_RotateY(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), "
-"pi()/2));\n"
-"                 st_asewkt\n"
-"---------------------------\n"
-" LINESTRING(3 2 -1,1 1 -1)"
-msgstr ""
-"-- ラインをY軸について90度回転\n"
-" SELECT ST_AsEWKT(ST_RotateY(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), "
-"pi()/2));\n"
-"                 st_asewkt\n"
-"---------------------------\n"
-" LINESTRING(3 2 -1,1 1 -1)"
-
 #. Tag: para
 #: reference_transformation.xml:250
 #, no-c-format
 msgid ", <xref linkend=\"ST_RotateX\"/>, <xref linkend=\"ST_RotateZ\"/>"
 msgstr ", <xref linkend=\"ST_RotateX\"/>, <xref linkend=\"ST_RotateZ\"/>"
-
-#. Tag: refname
-#: reference_transformation.xml:256
-#, no-c-format
-msgid "ST_RotateZ"
-msgstr "ST_RotateZ"
 
 #. Tag: refpurpose
 #: reference_transformation.xml:258
@@ -636,57 +389,11 @@ msgstr ""
 msgid "Availability: 1.1.2. Name changed from RotateZ to ST_RotateZ in 1.2.2"
 msgstr "Availability: 1.1.2 1.2.2でRotateZからST_RotateZに名称変更しました。"
 
-#. Tag: programlisting
-#: reference_transformation.xml:295
-#, no-c-format
-msgid ""
-"--Rotate a line 90 degrees along z-axis\n"
-"SELECT ST_AsEWKT(ST_RotateZ(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), "
-"pi()/2));\n"
-"                 st_asewkt\n"
-"---------------------------\n"
-" LINESTRING(-2 1 3,-1 1 1)\n"
-"\n"
-" --Rotate a curved circle around z-axis\n"
-"SELECT ST_AsEWKT(ST_RotateZ(geom, pi()/2))\n"
-"FROM (SELECT ST_LineToCurve(ST_Buffer(ST_GeomFromText('POINT(234 567)'), 3)) "
-"As geom) As foo;\n"
-"\n"
-"                                                                                                           st_asewkt\n"
-"----------------------------------------------------------------------------------------------------------------------------\n"
-" CURVEPOLYGON(CIRCULARSTRING(-567 237,-564.87867965644 236.12132034356,-564 "
-"234,-569.12132034356 231.87867965644,-567 237))"
-msgstr ""
-"-- ラインをZ軸について90度回転\n"
-"SELECT ST_AsEWKT(ST_RotateZ(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), "
-"pi()/2));\n"
-"                 st_asewkt\n"
-"---------------------------\n"
-" LINESTRING(-2 1 3,-1 1 1)\n"
-"\n"
-"-- 曲線化した円をZ軸について回転\n"
-"SELECT ST_AsEWKT(ST_RotateZ(geom, pi()/2))\n"
-"FROM (SELECT ST_LineToCurve(ST_Buffer(ST_GeomFromText('POINT(234 567)'), 3)) "
-"As geom) As foo;\n"
-"\n"
-"                                                                             "
-"                              st_asewkt\n"
-"-----------------------------------------------------------------------------"
-"-----------------------------------------------\n"
-" CURVEPOLYGON(CIRCULARSTRING(-567 237,-564.87867965644 236.12132034356,-564 "
-"234,-569.12132034356 231.87867965644,-567 237))"
-
 #. Tag: para
 #: reference_transformation.xml:302
 #, no-c-format
 msgid ", <xref linkend=\"ST_RotateX\"/>, <xref linkend=\"ST_RotateY\"/>"
 msgstr ", <xref linkend=\"ST_RotateX\"/>, <xref linkend=\"ST_RotateY\"/>"
-
-#. Tag: refname
-#: reference_transformation.xml:308
-#, no-c-format
-msgid "ST_Scale"
-msgstr "ST_Scale"
 
 #. Tag: refpurpose
 #: reference_transformation.xml:310
@@ -694,55 +401,14 @@ msgstr "ST_Scale"
 msgid "Scales a geometry by given factors."
 msgstr "与えた係数でジオメトリを拡大縮小します。"
 
-#. Tag: funcsynopsis
-#: reference_transformation.xml:314
-#, no-c-format
-msgid ""
-"<funcprototype> <funcdef>geometry <function>ST_Scale</function></funcdef> "
-"<paramdef><type>geometry </type> <parameter>geomA</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>XFactor</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>YFactor</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>ZFactor</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry <function>ST_Scale</"
-"function></funcdef> <paramdef><type>geometry </type> <parameter>geomA</"
-"parameter></paramdef> <paramdef><type>float</type> <parameter>XFactor</"
-"parameter></paramdef> <paramdef><type>float</type> <parameter>YFactor</"
-"parameter></paramdef> </funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Scale</function></funcdef> <paramdef><type>geometry </type> "
-"<parameter>geom</parameter></paramdef> <paramdef><type>geometry</type> "
-"<parameter>factor</parameter></paramdef> </funcprototype> <funcprototype> "
-"<funcdef>geometry <function>ST_Scale</function></funcdef> "
-"<paramdef><type>geometry </type> <parameter>geom</parameter></paramdef> "
-"<paramdef><type>geometry</type> <parameter>factor</parameter></paramdef> "
-"<paramdef><type>geometry</type> <parameter>origin</parameter></paramdef> </"
-"funcprototype>"
-msgstr ""
-"<funcprototype> <funcdef>geometry <function>ST_Scale</function></funcdef> "
-"<paramdef><type>geometry </type> <parameter>geomA</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>XFactor</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>YFactor</parameter></paramdef> "
-"<paramdef><type>float</type> <parameter>ZFactor</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Scale</function></funcdef> <paramdef><type>geometry </type> "
-"<parameter>geomA</parameter></paramdef> <paramdef><type>float</type> "
-"<parameter>XFactor</parameter></paramdef> <paramdef><type>float</type> "
-"<parameter>YFactor</parameter></paramdef> </funcprototype> <funcprototype> "
-"<funcdef>geometry <function>ST_Scale</function></funcdef> "
-"<paramdef><type>geometry </type> <parameter>geom</parameter></paramdef> "
-"<paramdef><type>geometry</type> <parameter>factor</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Scale</function></funcdef> <paramdef><type>geometry </type> "
-"<parameter>geom</parameter></paramdef> <paramdef><type>geometry</type> "
-"<parameter>factor</parameter></paramdef> <paramdef><type>geometry</type> "
-"<parameter>origin</parameter></paramdef> </funcprototype>"
-
 #. Tag: para
 #: reference_transformation.xml:350
 #, no-c-format
 msgid ""
 "Scales the geometry to a new size by multiplying the ordinates with the "
 "corresponding factor parameters."
-msgstr "対応するパラメータで軸を乗算してジオメトリを新しいサイズに拡大縮小します。"
+msgstr ""
+"対応するパラメータで軸を乗算してジオメトリを新しいサイズに拡大縮小します。"
 
 #. Tag: para
 #: reference_transformation.xml:354
@@ -753,8 +419,8 @@ msgid ""
 "supported dimensions. Missing dimensions in the <varname>factor</varname> "
 "point are equivalent to no scaling the corresponding dimension."
 msgstr ""
-"<varname>factor</varname>パラメータでジオメトリを取る形式では、2次元、3次元 ("
-"XYZ. XYM)、4次元のポイントで、全ての対応する次元のスケーリングの乗数を設定す"
+"<varname>factor</varname>パラメータでジオメトリを取る形式では、2次元、3次元 "
+"(XYZ. XYM)、4次元のポイントで、全ての対応する次元のスケーリングの乗数を設定す"
 "ることができます。<varname>factor</varname>ポイントの欠けた次元については、対"
 "応する次元は拡大縮小をしないのと等価になります。"
 
@@ -786,8 +452,8 @@ msgid ""
 "Enhanced: 2.2.0 support for scaling all dimension (<varname>factor</varname> "
 "parameter) was introduced."
 msgstr ""
-"Enhanced: 2.2.0 全ての次元の拡大縮小 "
-"(<varname>factor</varname>パラメータ)への対応が導入されました。"
+"Enhanced: 2.2.0 全ての次元の拡大縮小 (<varname>factor</varname>パラメータ)へ"
+"の対応が導入されました。"
 
 #. Tag: para
 #: reference_transformation.xml:370
@@ -796,8 +462,8 @@ msgid ""
 "Enhanced: 2.5.0 support for scaling relative to a local origin "
 "(<varname>origin</varname> parameter) was introduced."
 msgstr ""
-"Enhanced: 2.5.0 局所原点 "
-"(<varname>origin</varname>パラメータ)を使った拡大縮小への対応を導入しました。"
+"Enhanced: 2.5.0 局所原点 (<varname>origin</varname>パラメータ)を使った拡大縮"
+"小への対応を導入しました。"
 
 #. Tag: para
 #: reference_transformation.xml:375
@@ -805,109 +471,17 @@ msgstr ""
 msgid "&M_support;"
 msgstr "&M_support;"
 
-#. Tag: programlisting
-#: reference_transformation.xml:382
-#, no-c-format
-msgid ""
-"--Version 1: scale X, Y, Z\n"
-"SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), 0.5, "
-"0.75, 0.8));\n"
-"                          st_asewkt\n"
-"--------------------------------------\n"
-" LINESTRING(0.5 1.5 2.4,0.5 0.75 0.8)\n"
-"\n"
-"--Version 2: Scale X Y\n"
-" SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), 0.5, "
-"0.75));\n"
-"                        st_asewkt\n"
-"----------------------------------\n"
-" LINESTRING(0.5 1.5 3,0.5 0.75 1)\n"
-"\n"
-"--Version 3: Scale X Y Z M\n"
-" SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3 4, 1 1 1 1)'),\n"
-"   ST_MakePoint(0.5, 0.75, 2, -1)));\n"
-"                               st_asewkt\n"
-"----------------------------------------\n"
-" LINESTRING(0.5 1.5 6 -4,0.5 0.75 2 -1)\n"
-"\n"
-"--Version 4: Scale X Y using false origin\n"
-"SELECT ST_AsText(ST_Scale('LINESTRING(1 1, 2 2)', 'POINT(2 2)', 'POINT(1 "
-"1)'::geometry));\n"
-"      st_astext\n"
-"---------------------\n"
-" LINESTRING(1 1,3 3)"
-msgstr ""
-"-- 一つ目: X, Y, Zの拡大縮小\n"
-"SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), 0.5, "
-"0.75, 0.8));\n"
-"                          st_asewkt\n"
-"--------------------------------------\n"
-" LINESTRING(0.5 1.5 2.4,0.5 0.75 0.8)\n"
-"\n"
-"-- 二つ目: X, Yの拡大縮小\n"
-" SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), 0.5, "
-"0.75));\n"
-"                        st_asewkt\n"
-"----------------------------------\n"
-" LINESTRING(0.5 1.5 3,0.5 0.75 1)\n"
-"\n"
-"-- 三つ目: X, Y, Z, Mの拡大縮小\n"
-" SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3 4, 1 1 1 1)'),\n"
-"   ST_MakePoint(0.5, 0.75, 2, -1)));\n"
-"                               st_asewkt\n"
-"----------------------------------------\n"
-" LINESTRING(0.5 1.5 6 -4,0.5 0.75 2 -1)\n"
-"\n"
-"-- 四つ目: 仮原点を使ったX, Yの拡大縮小\n"
-"SELECT ST_AsText(ST_Scale('LINESTRING(1 1, 2 2)', 'POINT(2 2)', 'POINT(1 "
-"1)'::geometry));\n"
-"      st_astext\n"
-"---------------------\n"
-" LINESTRING(1 1,3 3)"
-
 #. Tag: para
 #: reference_transformation.xml:389
 #, no-c-format
 msgid ", <xref linkend=\"ST_TransScale\"/>"
 msgstr ", <xref linkend=\"ST_TransScale\"/>"
 
-#. Tag: refname
-#: reference_transformation.xml:395
-#, no-c-format
-msgid "ST_Translate"
-msgstr "ST_Translate"
-
 #. Tag: refpurpose
 #: reference_transformation.xml:397
 #, no-c-format
 msgid "Translates a geometry by given offsets."
 msgstr "与えられたオフセットでジオメトリを変換します。"
-
-#. Tag: funcsynopsis
-#: reference_transformation.xml:401
-#, no-c-format
-msgid ""
-"<funcprototype> <funcdef>geometry <function>ST_Translate</function></"
-"funcdef> <paramdef><type>geometry </type> <parameter>g1</parameter></"
-"paramdef> <paramdef><type>float </type> <parameter>deltax</parameter></"
-"paramdef> <paramdef><type>float </type> <parameter>deltay</parameter></"
-"paramdef> </funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Translate</function></funcdef> <paramdef><type>geometry </type> "
-"<parameter>g1</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>deltax</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>deltay</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>deltaz</parameter></paramdef> </funcprototype>"
-msgstr ""
-"<funcprototype> <funcdef>geometry <function>ST_Translate</function></"
-"funcdef> <paramdef><type>geometry </type> <parameter>g1</parameter></"
-"paramdef> <paramdef><type>float </type> <parameter>deltax</parameter></"
-"paramdef> <paramdef><type>float </type> <parameter>deltay</parameter></"
-"paramdef> </funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Translate</function></funcdef> <paramdef><type>geometry </type> "
-"<parameter>g1</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>deltax</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>deltay</parameter></paramdef> <paramdef><type>float </type> "
-"<parameter>deltaz</parameter></paramdef> </funcprototype>"
 
 #. Tag: para
 #: reference_transformation.xml:421
@@ -917,8 +491,8 @@ msgid ""
 "delta z units. Units are based on the units defined in spatial reference "
 "(SRID) for this geometry."
 msgstr ""
-"deltax, deltay, deltazぶん移動した新しいジオメトリを返します。単位は、"
-"このジオメトリの空間参照系 (SRID)で定義された単位です。"
+"deltax, deltay, deltazぶん移動した新しいジオメトリを返します。単位は、このジ"
+"オメトリの空間参照系 (SRID)で定義された単位です。"
 
 #. Tag: para
 #: reference_transformation.xml:426
@@ -932,45 +506,11 @@ msgstr "Availability: 1.2.2"
 msgid "Move a point 1 degree longitude"
 msgstr "ポイントを経度1度ぶん移動させます。"
 
-#. Tag: programlisting
-#: reference_transformation.xml:434
-#, no-c-format
-msgid ""
-"SELECT ST_AsText(ST_Translate(ST_GeomFromText('POINT(-71.01 "
-"42.37)',4326),1,0)) As wgs_transgeomtxt;\n"
-"\n"
-"        wgs_transgeomtxt\n"
-"        ---------------------\n"
-"        POINT(-70.01 42.37)"
-msgstr ""
-"SELECT ST_AsText(ST_Translate(ST_GeomFromText('POINT(-71.01 42."
-"37)',4326),1,0)) As wgs_transgeomtxt;\n"
-"\n"
-"        wgs_transgeomtxt\n"
-"        ---------------------\n"
-"        POINT(-70.01 42.37)"
-
 #. Tag: para
 #: reference_transformation.xml:435
 #, no-c-format
 msgid "Move a linestring 1 degree longitude and 1/2 degree latitude"
 msgstr "ラインストリングを緯度1度ぶん、経度1/2度ぶん移動させます。"
-
-#. Tag: programlisting
-#: reference_transformation.xml:436
-#, no-c-format
-msgid ""
-"SELECT ST_AsText(ST_Translate(ST_GeomFromText('LINESTRING(-71.01 "
-"42.37,-71.11 42.38)',4326),1,0.5)) As wgs_transgeomtxt;\n"
-"                   wgs_transgeomtxt\n"
-"        ---------------------------------------\n"
-"        LINESTRING(-70.01 42.87,-70.11 42.88)"
-msgstr ""
-"SELECT ST_AsText(ST_Translate(ST_GeomFromText('LINESTRING(-71.01 42.37,-"
-"71.11 42.38)',4326),1,0.5)) As wgs_transgeomtxt;\n"
-"                   wgs_transgeomtxt\n"
-"        ---------------------------------------\n"
-"        LINESTRING(-70.01 42.87,-70.11 42.88)"
 
 #. Tag: para
 #: reference_transformation.xml:437
@@ -978,57 +518,17 @@ msgstr ""
 msgid "Move a 3d point"
 msgstr "3次元ポイントを移動させます。"
 
-#. Tag: programlisting
-#: reference_transformation.xml:438
-#, no-c-format
-msgid ""
-"SELECT ST_AsEWKT(ST_Translate(CAST('POINT(0 0 0)' As geometry), 5, 12,3));\n"
-"        st_asewkt\n"
-"        ---------\n"
-"        POINT(5 12 3)"
-msgstr ""
-"SELECT ST_AsEWKT(ST_Translate(CAST('POINT(0 0 0)' As geometry), 5, 12,3));\n"
-"        st_asewkt\n"
-"        ---------\n"
-"        POINT(5 12 3)"
-
 #. Tag: para
 #: reference_transformation.xml:439
 #, no-c-format
 msgid "Move a curve and a point"
 msgstr "曲線とポイントを移動させます。"
 
-#. Tag: programlisting
-#: reference_transformation.xml:440
-#, no-c-format
-msgid ""
-"SELECT ST_AsText(ST_Translate(ST_Collect('CURVEPOLYGON(CIRCULARSTRING(4 "
-"3,3.12 0.878,1 0,-1.121 5.1213,6 7, 8 9,4 3))','POINT(1 3)'),1,2));\n"
-"                                                                                                                 st_astext\n"
-"------------------------------------------------------------------------------------------------------------\n"
-" GEOMETRYCOLLECTION(CURVEPOLYGON(CIRCULARSTRING(5 5,4.12 2.878,2 2,-0.121 "
-"7.1213,7 9,9 11,5 5)),POINT(2 5))"
-msgstr ""
-"SELECT ST_AsText(ST_Translate(ST_Collect('CURVEPOLYGON(CIRCULARSTRING(4 "
-"3,3.12 0.878,1 0,-1.121 5.1213,6 7, 8 9,4 3))','POINT(1 3)'),1,2));\n"
-"                                                                             "
-"                                    st_astext\n"
-"-----------------------------------------------------------------------------"
-"-------------------------------\n"
-" GEOMETRYCOLLECTION(CURVEPOLYGON(CIRCULARSTRING(5 5,4.12 2.878,2 2,-0.121 "
-"7.1213,7 9,9 11,5 5)),POINT(2 5))"
-
 #. Tag: para
 #: reference_transformation.xml:446
 #, no-c-format
 msgid ", <xref linkend=\"ST_AsText\"/>, <xref linkend=\"ST_GeomFromText\"/>"
 msgstr ", <xref linkend=\"ST_AsText\"/>, <xref linkend=\"ST_GeomFromText\"/>"
-
-#. Tag: refname
-#: reference_transformation.xml:452
-#, no-c-format
-msgid "ST_TransScale"
-msgstr "ST_TransScale"
 
 #. Tag: refpurpose
 #: reference_transformation.xml:454
@@ -1060,7 +560,8 @@ msgstr ""
 msgid ""
 "Translates the geometry using the deltaX and deltaY args, then scales it "
 "using the XFactor, YFactor args, working in 2D only."
-msgstr "deltaXとdeltaY引数を使ってジオメトリを移動させ、XFactor,YFactor引数で拡大縮小"
+msgstr ""
+"deltaXとdeltaY引数を使ってジオメトリを移動させ、XFactor,YFactor引数で拡大縮小"
 "させます。2次元でのみ動作します。"
 
 #. Tag: para
@@ -1071,47 +572,9 @@ msgid ""
 "hand for <code>ST_Affine(geomA, XFactor, 0, 0, 0, YFactor, 0, 0, 0, 1, "
 "deltaX*XFactor, deltaY*YFactor, 0)</code>."
 msgstr ""
-"<code>ST_TransScale(geomA, deltaX, deltaY, XFactor, "
-"YFactor)</code>は<code>ST_Affine(geomA, XFactor, 0, 0, 0, YFactor, 0, 0, 0, "
-"1, deltaX*XFactor, deltaY*YFactor, 0)</code>の短縮版です。"
-
-#. Tag: programlisting
-#: reference_transformation.xml:492
-#, no-c-format
-msgid ""
-"SELECT ST_AsEWKT(ST_TransScale(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), "
-"0.5, 1, 1, 2));\n"
-"                  st_asewkt\n"
-"-----------------------------\n"
-" LINESTRING(1.5 6 3,1.5 4 1)\n"
-"\n"
-"\n"
-"--Buffer a point to get an approximation of a circle, convert to curve and "
-"then translate 1,2 and scale it 3,4\n"
-"  SELECT ST_AsText(ST_Transscale(ST_LineToCurve(ST_Buffer('POINT(234 567)', "
-"3)),1,2,3,4));\n"
-"                                                                                                                  st_astext\n"
-"------------------------------------------------------------------------------------------------------------------------------\n"
-" CURVEPOLYGON(CIRCULARSTRING(714 2276,711.363961030679 2267.51471862576,705 "
-"2264,698.636038969321 2284.48528137424,714 2276))"
-msgstr ""
-"SELECT ST_AsEWKT(ST_TransScale(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), "
-"0.5, 1, 1, 2));\n"
-"                  st_asewkt\n"
-"-----------------------------\n"
-" LINESTRING(1.5 6 3,1.5 4 1)\n"
-"\n"
-"\n"
-"-- ポイントのバッファから得た近似円を曲線に変換したうえで\n"
-"-- (1, 2)だけ移動させ、(3, 4)倍に拡大します\n"
-"  SELECT ST_AsText(ST_Transscale(ST_LineToCurve(ST_Buffer('POINT(234 567)', "
-"3)),1,2,3,4));\n"
-"                                                                             "
-"                                     st_astext\n"
-"-----------------------------------------------------------------------------"
-"-------------------------------------------------\n"
-" CURVEPOLYGON(CIRCULARSTRING(714 2276,711.363961030679 2267.51471862576,705 "
-"2264,698.636038969321 2284.48528137424,714 2276))"
+"<code>ST_TransScale(geomA, deltaX, deltaY, XFactor, YFactor)</code>は"
+"<code>ST_Affine(geomA, XFactor, 0, 0, 0, YFactor, 0, 0, 0, 1, "
+"deltaX*XFactor, deltaY*YFactor, 0)</code>の短縮版です。"
 
 #. Tag: para
 #: reference_transformation.xml:499

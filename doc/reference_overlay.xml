@@ -39,7 +39,7 @@
 
         <para>Performed by the GEOS module.</para>
 
-        <para>Availability: 2.2.0</para>
+        <para role="availability" conformance="2.2.0">Availability: 2.2.0</para>
 
       </refsection>
 
@@ -97,7 +97,8 @@ on that same grid. (Requires GEOS-3.9.0 or higher)
             </para>
 
         <para>Performed by the GEOS module</para>
-        <para>Enhanced: 3.1.0 accept a gridSize parameter - requires GEOS &gt;= 3.9.0</para>
+        <para role="enhanced" conformance="3.1.0">Enhanced: 3.1.0 accept a gridSize parameter.</para>
+        <para role="geos_requirement" conformance="3.9.0">Requires GEOS &gt;= 3.9.0 to use the gridSize parameter.</para>
 
         <para>&sfs_compliant; s2.1.1.3</para>
         <para>&sqlmm_compliant; SQL-MM 3: 5.1.20</para>
@@ -228,7 +229,7 @@ on that same grid.  (Requires GEOS-3.9.0 or higher)
             <para>ST_Intersection in conjunction with <xref linkend="ST_Intersects"/> is useful for clipping geometries such as in bounding box, buffer, or region
                 queries where you only require the portion of a geometry that is inside a country or region of interest.</para>
 
-            <note><para>Geography: For geography this is really a thin wrapper around the geometry implementation. It first determines the best SRID that
+            <note><para>&geography_transform; It first determines the best SRID that
                     fits the bounding box of the 2 geography objects (if geography objects are within one half zone UTM but not same UTM will pick one of those) (favoring UTM or Lambert Azimuthal Equal Area (LAEA) north/south pole, and falling back on mercator in worst case scenario)  and then intersection in that best fit planar spatial ref and retransforms back to WGS84 geography.</para></note>
 
         <warning><para>This function will drop the M coordinate values if present.</para></warning>
@@ -237,9 +238,10 @@ on that same grid.  (Requires GEOS-3.9.0 or higher)
 
         <para>Performed by the GEOS module</para>
 
-        <para>Enhanced: 3.1.0 accept a gridSize parameter - requires GEOS &gt;= 3.9.0</para>
-        <para>Changed: 3.0.0 does not depend on SFCGAL.</para>
-        <para>Availability: 1.5 support for geography data type was introduced.</para>
+        <para role="enhanced" conformance="3.1.0">Enhanced: 3.1.0 accept a gridSize parameter</para>
+        <para role="geos_requirement" conformance="3.9.0">Requires GEOS &gt;= 3.9.0 to use the gridSize parameter</para>
+        <para role="changed" conformance="3.0.0">Changed: 3.0.0 does not depend on SFCGAL.</para>
+        <para role="availability" conformance="1.5">Availability: 1.5 support for geography data type was introduced.</para>
 
         <para>&sfs_compliant; s2.1.1.3</para>
         <para>&sqlmm_compliant; SQL-MM 3: 5.1.18</para>
@@ -399,9 +401,9 @@ The resulting linework is dissolved (duplicate lines are removed).
 
         <para>&Z_support;</para>
         <para>Performed by the GEOS module.</para>
-        <para>Availability: 2.0.0</para>
+        <para role="availability" conformance="2.0.0">Availability: 2.0.0</para>
 
-        <para>
+        <para role="changed" conformance="2.4.0">
 Changed: 2.4.0 this function uses GEOSNode internally instead of GEOSUnaryUnion.
 This may cause the resulting linestrings to have a different order and direction compared to PostGIS &lt; 2.4.
         </para>
@@ -480,9 +482,9 @@ MULTILINESTRING((2 5,2 3),(2 3,2 1,4 1),(4 1,2 3),(4 1,6 1),(6 1,7 1))
             to snap the input to the blade first, using <xref linkend="ST_Snap"/> with a small tolerance.
             </para></note>
 
-            <para>Availability: 2.0.0 requires GEOS</para>
-            <para>Enhanced: 2.2.0 support for splitting a line by a multiline, a multipoint or (multi)polygon boundary was introduced.</para>
-            <para>Enhanced: 2.5.0 support for splitting a polygon by a multiline was introduced.</para>
+            <para role="availability" conformance="2.0.0">Availability: 2.0.0 requires GEOS</para>
+            <para role="enhanced" conformance="2.2.0">Enhanced: 2.2.0 support for splitting a line by a multiline, a multipoint or (multi)polygon boundary was introduced.</para>
+            <para role="enhanced" conformance="2.5.0">Enhanced: 2.5.0 support for splitting a polygon by a multiline was introduced.</para>
 
         </refsection>
         <refsection>
@@ -649,9 +651,10 @@ SELECT ST_AsText( ST_Split( ST_Snap(line, point, 1), point)) AS snapped_split,
         </para></note>
 
         <para>Performed by the GEOS module.</para>
-        <para>Availability: 2.2.0</para>
-        <para>Enhanced: 2.5.0 reuses existing points on polygon split, vertex count is lowered from 8 to 5.</para>
-        <para>Enhanced: 3.1.0 accept a gridSize parameter, requires GEOS &gt;= 3.9.0 to use this new feature.</para>
+        <para role="availability" conformance="2.2.0">Availability: 2.2.0</para>
+        <para role="enhanced" conformance="2.5.0">Enhanced: 2.5.0 reuses existing points on polygon split, vertex count is lowered from 8 to 5.</para>
+        <para role="enhanced" conformance="3.1.0">Enhanced: 3.1.0 accept a gridSize parameter.</para>
+        <para role="geos_requirement" conformance="3.9.0">Requires GEOS &gt;= 3.9.0 to use the gridSize parameter</para>
       </refsection>
 
       <refsection>
@@ -793,7 +796,8 @@ on that same grid. (Requires GEOS-3.9.0 or higher)
 
         <para>Performed by the GEOS module</para>
 
-        <para>Enhanced: 3.1.0 accept a gridSize parameter - requires GEOS &gt;= 3.9.0</para>
+        <para role="enhanced" conformance="3.1.0">Enhanced: 3.1.0 accept a gridSize parameter.</para>
+        <para role="geos_requirement" conformance="3.9.0">Requires GEOS &gt;= 3.9.0 to use the gridSize parameter</para>
 
         <para>&sfs_compliant; s2.1.1.3</para>
         <para>&sqlmm_compliant; SQL-MM 3: 5.1.21</para>
@@ -928,8 +932,9 @@ MULTILINESTRING((1 3 2.75,1 4 2),(1 1 3,1 2 2.25))
 
         <para>&Z_support; However, the result is computed using XY only.
             The result Z values are copied, averaged or interpolated.</para>
-        <para>Enhanced: 3.1.0 accept a gridSize parameter - requires GEOS &gt;= 3.9.0</para>
-        <para>Availability: 2.0.0</para>
+        <para role="enhanced" conformance="3.1.0">Enhanced: 3.1.0 accept a gridSize parameter.</para>
+        <para role="geos_requirement" conformance="3.9.0">Requires GEOS &gt;= 3.9.0 to use the gridSize parameter</para>
+        <para role="availability" conformance="2.0.0">Availability: 2.0.0</para>
 
       </refsection>
 
@@ -1033,9 +1038,10 @@ MULTILINESTRING((1 3 2.75,1 4 2),(1 1 3,1 2 2.25))
         was renamed from "Union" because UNION is an SQL reserved
         word.</para>
 
-    <para>Enhanced: 3.1.0 accept a gridSize parameter - requires GEOS &gt;= 3.9.0</para>
-    <para>Changed: 3.0.0 does not depend on SFCGAL.</para>
-    <para>Availability: 1.4.0 - ST_Union was enhanced. ST_Union(geomarray) was introduced and also faster aggregate collection in PostgreSQL.</para>
+    <para role="enhanced" conformance="3.1.0">Enhanced: 3.1.0 accept a gridSize parameter.</para>
+    <para role="geos_requirement" conformance="3.9.0">Requires GEOS &gt;= 3.9.0 to use the gridSize parameter</para>
+    <para role="changed" conformance="3.0.0">Changed: 3.0.0 does not depend on SFCGAL.</para>
+    <para role="availability" conformance="1.4.0">Availability: 1.4.0 - ST_Union was enhanced. ST_Union(geomarray) was introduced and also faster aggregate collection in PostgreSQL.</para>
 
     <para>&sfs_compliant; s2.1.1.3</para>
     <note><para>Aggregate version is not explicitly defined in OGC SPEC.</para></note>

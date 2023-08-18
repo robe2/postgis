@@ -150,6 +150,10 @@ PGXS := @PGXS@
 include $(PGXS)
 PERL = @PERL@
 
+ifneq (@MKDIR_P@,)
+	MKDIR_P = @MKDIR_P@
+endif
+
 VPATH = @srcdir@
 
 # TODO: fix this, if srcdir is set, install of .control file fails

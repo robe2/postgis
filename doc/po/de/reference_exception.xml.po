@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PostGIS\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-11 01:55+0000\n"
+"POT-Creation-Date: 2023-07-18 20:22+0000\n"
 "PO-Revision-Date: 2019-05-29 13:20+0000\n"
 "Last-Translator: Andreas Schild <andreas.schild@bfw.gv.at>\n"
 "Language-Team: German (http://www.transifex.com/postgis/postgis/language/"
@@ -34,12 +34,6 @@ msgstr ""
 "Diese selten genutzten Funktionen sollten nur im Fall beschädigter Daten "
 "verwendet werden. Sie werden zur Fehlerbeseitigung und zur Reperatur von "
 "Dingen verwendet, die unter normalen Umständen nicht vorkommen sollten."
-
-#. Tag: refname
-#: reference_exception.xml:9
-#, no-c-format
-msgid "PostGIS_AddBBox"
-msgstr "PostGIS_AddBBox"
 
 #. Tag: refpurpose
 #: reference_exception.xml:11
@@ -104,18 +98,6 @@ msgstr "&curve_support;"
 msgid "Examples"
 msgstr "Beispiele"
 
-#. Tag: programlisting
-#: reference_exception.xml:42
-#, fuzzy, no-c-format
-msgid ""
-"UPDATE sometable\n"
-" SET geom =  PostGIS_AddBBox(geom)\n"
-" WHERE PostGIS_HasBBox(geom) = false;"
-msgstr ""
-"UPDATE sometable\n"
-" SET the_geom =  PostGIS_AddBBox(the_geom)\n"
-" WHERE PostGIS_HasBBox(the_geom) = false;"
-
 #. Tag: title
 #: reference_exception.xml:47 reference_exception.xml:95
 #: reference_exception.xml:136
@@ -128,12 +110,6 @@ msgstr "Siehe auch"
 #, no-c-format
 msgid ", <xref linkend=\"PostGIS_HasBBox\"/>"
 msgstr ", <xref linkend=\"PostGIS_HasBBox\"/>"
-
-#. Tag: refname
-#: reference_exception.xml:55
-#, no-c-format
-msgid "PostGIS_DropBBox"
-msgstr "PostGIS_DropBBox"
 
 #. Tag: refpurpose
 #: reference_exception.xml:57
@@ -194,48 +170,11 @@ msgstr ""
 "korrigiert werden, indem man die umschreibenden Rechtecke (BBox) wie unten "
 "angeführt neu hinzufügt, oder einen PostgreSQL-Dump einspielt."
 
-#. Tag: programlisting
-#: reference_exception.xml:90
-#, fuzzy, no-c-format
-msgid ""
-"--This example drops bounding boxes where the cached box is not correct\n"
-"                        --The force to ST_AsBinary before applying Box2D "
-"forces a recalculation of the box, and Box2D applied to the table geometry "
-"always\n"
-"                        -- returns the cached bounding box.\n"
-"                        UPDATE sometable\n"
-" SET geom =  PostGIS_DropBBox(geom)\n"
-" WHERE Not (Box2D(ST_AsBinary(geom)) = Box2D(geom));\n"
-"\n"
-"        UPDATE sometable\n"
-" SET geom =  PostGIS_AddBBox(geom)\n"
-" WHERE Not PostGIS_HasBBOX(geom);"
-msgstr ""
-"--Dieses Beispiel löscht umschreibende Rechtecke bei denen das Rechteck "
-"nicht korrekt zwischengespeichert wurde\n"
-"--Durch die Anwendung von ST_AsBinary - vor Box2D - wird die Neuberechnung "
-"des umschreibenden Rechteckes erzwungen,\n"
-"--und Box2D auf die Tabellengeometrie angewendet\n"
-"--gibt immer das zwischengespeicherte  umschreibende Rechteck zurück.\n"
-"                        UPDATE sometable\n"
-" SET the_geom =  PostGIS_DropBBox(the_geom)\n"
-" WHERE Not (Box2D(ST_AsBinary(the_geom)) = Box2D(the_geom));\n"
-"\n"
-"        UPDATE sometable\n"
-" SET the_geom =  PostGIS_AddBBox(the_geom)\n"
-" WHERE Not PostGIS_HasBBOX(the_geom);"
-
 #. Tag: para
 #: reference_exception.xml:97
 #, no-c-format
 msgid ", <xref linkend=\"PostGIS_HasBBox\"/>, <xref linkend=\"Box2D\"/>"
 msgstr ", <xref linkend=\"PostGIS_HasBBox\"/>, <xref linkend=\"Box2D\"/>"
-
-#. Tag: refname
-#: reference_exception.xml:104
-#, no-c-format
-msgid "PostGIS_HasBBox"
-msgstr "PostGIS_HasBBox"
 
 #. Tag: refpurpose
 #: reference_exception.xml:106
@@ -266,16 +205,6 @@ msgstr ""
 "Gibt TRUE zurück, wenn die BBox der Geometrie zwischengespeichert ist, sonst "
 "FALSE. Benutzen Sie bitte <xref linkend=\"PostGIS_AddBBox\"/> und <xref "
 "linkend=\"PostGIS_DropBBox\"/> um das Zwischenspeichern zu steuern."
-
-#. Tag: programlisting
-#: reference_exception.xml:131
-#, fuzzy, no-c-format
-msgid ""
-"SELECT geom\n"
-"FROM sometable WHERE PostGIS_HasBBox(geom) = false;"
-msgstr ""
-"SELECT the_geom\n"
-"FROM sometable WHERE PostGIS_HasBBox(the_geom) = false;"
 
 #. Tag: para
 #: reference_exception.xml:138

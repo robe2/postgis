@@ -398,6 +398,12 @@ CREATE OR REPLACE FUNCTION geometry_eq(geom1 geometry, geom2 geometry)
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_DEFAULT;
 
+CREATE OR REPLACE FUNCTION geometry_neq(geom1 geometry, geom2 geometry)
+	RETURNS bool
+	AS 'MODULE_PATHNAME', 'lwgeom_neq'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_DEFAULT;
+
 CREATE OR REPLACE FUNCTION geometry_cmp(geom1 geometry, geom2 geometry)
 	RETURNS integer
 	AS 'MODULE_PATHNAME', 'lwgeom_cmp'
@@ -431,7 +437,14 @@ CREATE OPERATOR <= (
 -- Availability: 0.9.0
 CREATE OPERATOR = (
 	LEFTARG = geometry, RIGHTARG = geometry, PROCEDURE = geometry_eq,
-	COMMUTATOR = '=', -- we might implement a faster negator here
+	COMMUTATOR = '=', NEGATOR = '<>',
+	RESTRICT = contsel, JOIN = contjoinsel, HASHES, MERGES
+);
+
+-- Availability: 3.5.0
+CREATE OPERATOR <> (
+	LEFTARG = geometry, RIGHTARG = geometry, PROCEDURE = geometry_neq,
+	COMMUTATOR = '<>', NEGATOR = '=',
 	RESTRICT = contsel, JOIN = contjoinsel, HASHES, MERGES
 );
 
@@ -1390,10 +1403,31 @@ CREATE OR REPLACE FUNCTION ST_azimuth(geom1 geometry, geom2 geometry)
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_LOW;
 
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION ST_Project(geom1 geometry, distance float8, azimuth float8)
+	RETURNS geometry
+	AS 'MODULE_PATHNAME', 'geometry_project_direction'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_LOW;
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION ST_Project(geom1 geometry, geom2 geometry, distance float8)
+	RETURNS geometry
+	AS 'MODULE_PATHNAME', 'geometry_project_geometry'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_LOW;
+
 -- Availability: 2.5.0
 CREATE OR REPLACE FUNCTION ST_Angle(pt1 geometry, pt2 geometry, pt3 geometry, pt4 geometry default 'POINT EMPTY'::geometry)
 	RETURNS float8
 	AS 'MODULE_PATHNAME', 'LWGEOM_angle'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_LOW;
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION ST_LineExtend(geom geometry, distance_forward float8, distance_backward float8 DEFAULT 0.0)
+	RETURNS geometry
+	AS 'MODULE_PATHNAME', 'geometry_line_extend'
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_LOW;
 
@@ -1910,6 +1944,7 @@ CREATE OR REPLACE FUNCTION ST_LineMerge(geometry, boolean)
 	AS 'MODULE_PATHNAME', 'linemerge'
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_HIGH;
+
 
 -----------------------------------------------------------------------------
 -- Affine transforms
@@ -2871,6 +2906,65 @@ CREATE OR REPLACE FUNCTION postgis_transform_geometry(geom geometry, text, text,
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_MEDIUM;
 
+------------------------------------------------------------------------
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION postgis_srs_codes(auth_name text)
+	RETURNS SETOF TEXT
+	AS 'MODULE_PATHNAME', 'postgis_srs_codes'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_MEDIUM;
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION postgis_srs(auth_name text, auth_srid text)
+	RETURNS TABLE(
+		auth_name TEXT,
+		auth_srid TEXT,
+		srname TEXT,
+		srtext TEXT,
+		proj4text TEXT,
+		point_sw GEOMETRY,
+		point_ne GEOMETRY
+		)
+	AS 'MODULE_PATHNAME', 'postgis_srs_entry'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_MEDIUM;
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION postgis_srs_all()
+	RETURNS TABLE(
+		auth_name TEXT,
+		auth_srid TEXT,
+		srname TEXT,
+		srtext TEXT,
+		proj4text TEXT,
+		point_sw GEOMETRY,
+		point_ne GEOMETRY
+		)
+	AS 'MODULE_PATHNAME', 'postgis_srs_entry_all'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_HIGH;
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION postgis_srs_search(
+		bounds geometry,
+		authname text DEFAULT 'EPSG')
+	RETURNS TABLE(
+		auth_name TEXT,
+		auth_srid TEXT,
+		srname TEXT,
+		srtext TEXT,
+		proj4text TEXT,
+		point_sw GEOMETRY,
+		point_ne GEOMETRY
+		)
+	AS 'MODULE_PATHNAME', 'postgis_srs_search'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_HIGH;
+
+
+------------------------------------------------------------------------
+
 -- PostGIS equivalent of old function: transform(geometry,integer)
 CREATE OR REPLACE FUNCTION ST_Transform(geometry,integer)
 	RETURNS geometry
@@ -3733,6 +3827,12 @@ CREATE OR REPLACE FUNCTION ST_MaximumInscribedCircle(geometry, OUT center geomet
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_HIGH;
 
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION ST_LargestEmptyCircle(geom geometry, tolerance float8 DEFAULT 0.0, boundary geometry DEFAULT 'POINT EMPTY'::geometry, OUT center geometry, OUT nearest geometry, OUT radius double precision)
+	AS 'MODULE_PATHNAME', 'ST_LargestEmptyCircle'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_HIGH;
+
 -- PostGIS equivalent function: ST_difference(geom1 geometry, geom2 geometry)
 -- Changed: 3.1.0 to add gridSize default argument
 -- Replaces ST_Difference(geometry, geometry) deprecated in 3.1.0
@@ -4192,6 +4292,13 @@ CREATE OR REPLACE FUNCTION pgis_geometry_makeline_finalfn(internal)
 	LANGUAGE 'c' PARALLEL SAFE
 	_COST_MEDIUM;
 
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION pgis_geometry_coverageunion_finalfn(internal)
+	RETURNS geometry
+	AS 'MODULE_PATHNAME'
+	LANGUAGE 'c' PARALLEL SAFE
+	_COST_MEDIUM;
+
 -- Availability: 3.3.0
 CREATE OR REPLACE FUNCTION pgis_geometry_union_parallel_transfn(internal, geometry)
 	RETURNS internal
@@ -4318,6 +4425,40 @@ CREATE AGGREGATE ST_MakeLine (geometry) (
 	parallel = safe,
 	FINALFUNC = pgis_geometry_makeline_finalfn
 	);
+
+
+-----------------------------------------------------------------------
+-- Polygonal coverage functions
+---------------------------------------------------------------------
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION ST_CoverageUnion (geometry[])
+	RETURNS geometry
+	AS 'MODULE_PATHNAME', 'ST_CoverageUnion'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_MEDIUM;
+
+-- Availability: 3.4.0
+CREATE AGGREGATE ST_CoverageUnion (geometry) (
+	SFUNC = pgis_geometry_accum_transfn,
+	STYPE = internal,
+	PARALLEL = safe,
+	FINALFUNC = pgis_geometry_coverageunion_finalfn
+	);
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION ST_CoverageSimplify (geom geometry, tolerance float8, simplifyBoundary boolean default true)
+	RETURNS geometry
+	AS 'MODULE_PATHNAME', 'ST_CoverageSimplify'
+	LANGUAGE 'c' IMMUTABLE STRICT WINDOW PARALLEL SAFE
+	_COST_HIGH;
+
+-- Availability: 3.4.0
+CREATE OR REPLACE FUNCTION ST_CoverageInvalidEdges (geom geometry, tolerance float8 default 0.0)
+	RETURNS geometry
+	AS 'MODULE_PATHNAME', 'ST_CoverageInvalidEdges'
+	LANGUAGE 'c' IMMUTABLE STRICT WINDOW PARALLEL SAFE
+	_COST_HIGH;
 
 --------------------------------------------------------------------------------
 

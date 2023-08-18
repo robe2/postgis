@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2022-11-01 14:51+0000\n"
-"PO-Revision-Date: 2023-04-14 03:08+0000\n"
+"POT-Creation-Date: 2023-07-18 20:22+0000\n"
+"PO-Revision-Date: 2023-06-05 11:08+0000\n"
 "Last-Translator: Teramoto Ikuhiro <yellow@affrc.go.jp>\n"
 "Language-Team: Japanese <https://weblate.osgeo.org/projects/postgis/"
 "reference_srsxml/ja/>\n"
@@ -33,12 +33,6 @@ msgstr ""
 msgid "Spatial Reference System Functions"
 msgstr "空間参照系関数"
 
-#. Tag: refname
-#: reference_srs.xml:14
-#, no-c-format
-msgid "ST_InverseTransformPipeline"
-msgstr "ST_InverseTransformPipeline"
-
 #. Tag: refpurpose
 #: reference_srs.xml:16
 #, no-c-format
@@ -46,7 +40,8 @@ msgid ""
 "Return a new geometry with coordinates transformed to a different spatial "
 "reference system using the inverse of a defined coordinate transformation "
 "pipeline."
-msgstr "定義した座標変換パイプラインの逆変換を使って、異なる空間参照系に座標値を変換"
+msgstr ""
+"定義した座標変換パイプラインの逆変換を使って、異なる空間参照系に座標値を変換"
 "した新しいジオメトリを返します。"
 
 #. Tag: funcprototype
@@ -62,12 +57,13 @@ msgstr ""
 "<funcdef>geometry <function>ST_InverseTransformPipeline</function></funcdef> "
 "<paramdef><type>geometry </type> <parameter>geom</parameter></paramdef> "
 "<paramdef><type>text </type> <parameter>pipeline</parameter></paramdef> "
-"<paramdef choice=\"opt\"><type>integer </type> "
-"<parameter>to_srid</parameter></paramdef>"
+"<paramdef choice=\"opt\"><type>integer </type> <parameter>to_srid</"
+"parameter></paramdef>"
 
 #. Tag: title
 #: reference_srs.xml:33 reference_srs.xml:95 reference_srs.xml:142
-#: reference_srs.xml:206 reference_srs.xml:310
+#: reference_srs.xml:206 reference_srs.xml:310 reference_srs.xml:392
+#: reference_srs.xml:434 reference_srs.xml:475 reference_srs.xml:519
 #, no-c-format
 msgid "Description"
 msgstr "説明"
@@ -79,7 +75,8 @@ msgid ""
 "Return a new geometry with coordinates transformed to a different spatial "
 "reference system using a defined coordinate transformation pipeline to go in "
 "the inverse direction."
-msgstr "定義した座標変換パイプラインの逆方向への変換を使って、異なる空間参照系に座標"
+msgstr ""
+"定義した座標変換パイプラインの逆方向への変換を使って、異なる空間参照系に座標"
 "値を変換した新しいジオメトリを返します。"
 
 #. Tag: para
@@ -88,11 +85,13 @@ msgstr "定義した座標変換パイプラインの逆方向への変換を使
 msgid ""
 "Refer to <xref linkend=\"ST_TransformPipeline\"/> for details on writing a "
 "transformation pipeline."
-msgstr "変換パイプラインの記述に関する詳細については<xref linkend="
-"\"ST_TransformPipeline\"/>を参照して下さい。"
+msgstr ""
+"変換パイプラインの記述に関する詳細については<xref "
+"linkend=\"ST_TransformPipeline\"/>を参照して下さい。"
 
 #. Tag: para
-#: reference_srs.xml:42 reference_srs.xml:343
+#: reference_srs.xml:42 reference_srs.xml:343 reference_srs.xml:396
+#: reference_srs.xml:438 reference_srs.xml:479 reference_srs.xml:526
 #, no-c-format
 msgid "Availability: 3.4.0"
 msgstr "Availability: 3.4.0"
@@ -108,8 +107,8 @@ msgid ""
 "direction. Using `ST_InverseTransformPipeline()` the pipeline is executed in "
 "the inverse direction."
 msgstr ""
-"入力ジオメトリのSRIDは無視され、任意パラメータ <varname>to_srid</varname> "
-"から値が提供されていない場合には出力ジオメトリのSRIDは0に設定されます。<xref "
+"入力ジオメトリのSRIDは無視され、任意パラメータ <varname>to_srid</varname> か"
+"ら値が提供されていない場合には出力ジオメトリのSRIDは0に設定されます。<xref "
 "linkend=\"ST_TransformPipeline\"/>を使うときには、パイプラインが順方向に実行"
 "されます。`ST_InverseTransformPipeline()`を使うと、パイプラインは逆方向に実行"
 "されます。"
@@ -129,7 +128,8 @@ msgstr ""
 
 #. Tag: title
 #: reference_srs.xml:57 reference_srs.xml:111 reference_srs.xml:155
-#: reference_srs.xml:249 reference_srs.xml:358
+#: reference_srs.xml:249 reference_srs.xml:358 reference_srs.xml:402
+#: reference_srs.xml:444 reference_srs.xml:485 reference_srs.xml:532
 #, no-c-format
 msgid "Examples"
 msgstr "例"
@@ -140,61 +140,16 @@ msgstr "例"
 msgid "Change WGS 84 long lat to UTM 31N using the EPSG:16031 conversion"
 msgstr "EPSG:16031変換を使ったWGS 84 経度緯度から UTM31Nへの変換"
 
-#. Tag: programlisting
-#: reference_srs.xml:59
-#, no-c-format
-msgid ""
-"-- Inverse direction\n"
-"SELECT ST_AsText(ST_InverseTransformPipeline('POINT(426857.9877165967 "
-"5427937.523342293)'::geometry,\n"
-"  'urn:ogc:def:coordinateOperation:EPSG::16031')) AS wgs_geom;\n"
-"\n"
-"          wgs_geom\n"
-"----------------------------\n"
-" POINT(2 48.99999999999999)\n"
-"(1 row)"
-msgstr ""
-"-- 逆方向\n"
-"SELECT ST_AsText(ST_InverseTransformPipeline('POINT(426857.9877165967 5427937"
-".523342293)'::geometry,\n"
-"  'urn:ogc:def:coordinateOperation:EPSG::16031')) AS wgs_geom;\n"
-"\n"
-"          wgs_geom\n"
-"----------------------------\n"
-" POINT(2 48.99999999999999)\n"
-"(1 row)"
-
 #. Tag: para
 #: reference_srs.xml:61 reference_srs.xml:362
 #, no-c-format
 msgid "GDA2020 example."
 msgstr "GDA2020の例。"
 
-#. Tag: programlisting
-#: reference_srs.xml:62
-#, no-c-format
-msgid ""
-"-- using ST_Transform with automatic selection of a conversion pipeline.\n"
-"SELECT ST_AsText(ST_Transform('SRID=4939;POINT(143.0 -37.0)'::geometry, "
-"7844)) AS gda2020_auto;\n"
-"\n"
-"                 gda2020_auto\n"
-"-----------------------------------------------\n"
-" POINT(143.00000635638918 -36.999986706128176)\n"
-"(1 row)"
-msgstr ""
-"-- 変換パイプラインの自動選択でST_Transformを使用します\n"
-"SELECT ST_AsText(ST_Transform('SRID=4939;POINT(143.0 -37.0)'::geometry, "
-"7844)) AS gda2020_auto;\n"
-"\n"
-"                 gda2020_auto\n"
-"-----------------------------------------------\n"
-" POINT(143.00000635638918 -36.999986706128176)\n"
-"(1 row)"
-
 #. Tag: title
 #: reference_srs.xml:67 reference_srs.xml:119 reference_srs.xml:160
-#: reference_srs.xml:283 reference_srs.xml:368
+#: reference_srs.xml:283 reference_srs.xml:368 reference_srs.xml:409
+#: reference_srs.xml:451 reference_srs.xml:492 reference_srs.xml:544
 #, no-c-format
 msgid "See Also"
 msgstr "関連情報"
@@ -204,12 +159,6 @@ msgstr "関連情報"
 #, no-c-format
 msgid ", <xref linkend=\"ST_TransformPipeline\"/>"
 msgstr ", <xref linkend=\"ST_TransformPipeline\"/>"
-
-#. Tag: refname
-#: reference_srs.xml:75
-#, no-c-format
-msgid "ST_SetSRID"
-msgstr "ST_SetSRID"
 
 #. Tag: refpurpose
 #: reference_srs.xml:77
@@ -270,18 +219,6 @@ msgstr "&curve_support;"
 msgid "-- Mark a point as WGS 84 long lat --"
 msgstr "-- ポイントをWGS84経度緯度に設定 --"
 
-#. Tag: programlisting
-#: reference_srs.xml:113
-#, no-c-format
-msgid ""
-"SELECT ST_SetSRID(ST_Point(-123.365556, 48.428611),4326) As wgs84long_lat;\n"
-"-- the ewkt representation (wrap with ST_AsEWKT) -\n"
-"SRID=4326;POINT(-123.365556 48.428611)"
-msgstr ""
-"SELECT ST_SetSRID(ST_Point(-123.365556, 48.428611),4326) As wgs84long_lat;\n"
-"-- EWKT表現 (ST_AsEWKTでラップして表示します) --\n"
-"SRID=4326;POINT(-123.365556 48.428611)"
-
 #. Tag: para
 #: reference_srs.xml:114
 #, no-c-format
@@ -292,20 +229,6 @@ msgstr ""
 "-- ポイントをWGS84経度緯度に設定したうえで、WEBメルカトル(球面メルカトル)に変"
 "換 --"
 
-#. Tag: programlisting
-#: reference_srs.xml:115
-#, no-c-format
-msgid ""
-"SELECT ST_Transform(ST_SetSRID(ST_Point(-123.365556, 48.428611),4326),3785) "
-"As spere_merc;\n"
-"-- the ewkt representation (wrap with ST_AsEWKT) -\n"
-"SRID=3785;POINT(-13732990.8753491 6178458.96425423)"
-msgstr ""
-"SELECT ST_Transform(ST_SetSRID(ST_Point(-123.365556, 48.428611),4326),3785) "
-"As spere_merc;\n"
-"-- EWKT表現 (ST_AsEWKTでラップします) --\n"
-"SRID=3785;POINT(-13732990.8753491 6178458.96425423)"
-
 #. Tag: para
 #: reference_srs.xml:121
 #, no-c-format
@@ -315,12 +238,6 @@ msgid ""
 msgstr ""
 ", <xref linkend=\"ST_SRID\"/>, <xref linkend=\"ST_Transform\"/>, <xref "
 "linkend=\"UpdateGeometrySRID\"/>"
-
-#. Tag: refname
-#: reference_srs.xml:128
-#, no-c-format
-msgid "ST_SRID"
-msgstr "ST_SRID"
 
 #. Tag: refpurpose
 #: reference_srs.xml:129
@@ -374,18 +291,6 @@ msgstr "&sfs_compliant; s2.1.1.1"
 msgid "&sqlmm_compliant; SQL-MM 3: 5.1.5"
 msgstr "&sqlmm_compliant; SQL-MM 3: 5.1.5"
 
-#. Tag: programlisting
-#: reference_srs.xml:157
-#, no-c-format
-msgid ""
-"SELECT ST_SRID(ST_GeomFromText('POINT(-71.1043 42.315)',4326));\n"
-"    --result\n"
-"    4326"
-msgstr ""
-"SELECT ST_SRID(ST_GeomFromText('POINT(-71.1043 42.315)',4326));\n"
-"    -- 結果 --\n"
-"    4326"
-
 #. Tag: para
 #: reference_srs.xml:162
 #, no-c-format
@@ -396,12 +301,6 @@ msgstr ""
 ", <xref linkend=\"ST_SetSRID\"/>, <xref linkend=\"ST_Transform\"/>, <xref "
 "linkend=\"RT_ST_SRID\"/>, <xref linkend=\"TG_ST_SRID\"/>"
 
-#. Tag: refname
-#: reference_srs.xml:168
-#, no-c-format
-msgid "ST_Transform"
-msgstr "ST_Transform"
-
 #. Tag: refpurpose
 #: reference_srs.xml:170
 #, no-c-format
@@ -409,44 +308,6 @@ msgid ""
 "Return a new geometry with coordinates transformed to a different spatial "
 "reference system."
 msgstr "異なる空間参照系に投影変換された新しいジオメトリを返します。"
-
-#. Tag: funcsynopsis
-#: reference_srs.xml:175
-#, no-c-format
-msgid ""
-"<funcprototype> <funcdef>geometry <function>ST_Transform</function></"
-"funcdef> <paramdef><type>geometry </type> <parameter>g1</parameter></"
-"paramdef> <paramdef><type>integer </type> <parameter>srid</parameter></"
-"paramdef> </funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Transform</function></funcdef> <paramdef><type>geometry </type> "
-"<parameter>geom</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>to_proj</parameter></paramdef> </funcprototype> <funcprototype> "
-"<funcdef>geometry <function>ST_Transform</function></funcdef> "
-"<paramdef><type>geometry </type> <parameter>geom</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>from_proj</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>to_proj</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry <function>ST_Transform</"
-"function></funcdef> <paramdef><type>geometry </type> <parameter>geom</"
-"parameter></paramdef> <paramdef><type>text </type> <parameter>from_proj</"
-"parameter></paramdef> <paramdef><type>integer </type> <parameter>to_srid</"
-"parameter></paramdef> </funcprototype>"
-msgstr ""
-"<funcprototype> <funcdef>geometry <function>ST_Transform</function></"
-"funcdef> <paramdef><type>geometry </type> <parameter>g1</parameter></"
-"paramdef> <paramdef><type>integer </type> <parameter>srid</parameter></"
-"paramdef> </funcprototype> <funcprototype> <funcdef>geometry "
-"<function>ST_Transform</function></funcdef> <paramdef><type>geometry </type> "
-"<parameter>geom</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>to_proj</parameter></paramdef> </funcprototype> <funcprototype> "
-"<funcdef>geometry <function>ST_Transform</function></funcdef> "
-"<paramdef><type>geometry </type> <parameter>geom</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>from_proj</parameter></paramdef> "
-"<paramdef><type>text </type> <parameter>to_proj</parameter></paramdef> </"
-"funcprototype> <funcprototype> <funcdef>geometry <function>ST_Transform</"
-"function></funcdef> <paramdef><type>geometry </type> <parameter>geom</"
-"parameter></paramdef> <paramdef><type>text </type> <parameter>from_proj</"
-"parameter></paramdef> <paramdef><type>integer </type> <parameter>to_srid</"
-"parameter></paramdef> </funcprototype>"
 
 #. Tag: para
 #: reference_srs.xml:208
@@ -561,62 +422,6 @@ msgstr ""
 "マサチューセッツ州平面座標系 (アメリカ測量フィート)をWGS84経度緯度に変更しま"
 "す。"
 
-#. Tag: programlisting
-#: reference_srs.xml:251
-#, no-c-format
-msgid ""
-"SELECT ST_AsText(ST_Transform(ST_GeomFromText('POLYGON((743238 "
-"2967416,743238 2967450,\n"
-"  743265 2967450,743265.625 2967416,743238 2967416))',2249),4326)) As "
-"wgs_geom;\n"
-"\n"
-" wgs_geom\n"
-"---------------------------\n"
-" POLYGON((-71.1776848522251 42.3902896512902,-71.1776843766326 "
-"42.3903829478009,\n"
-"-71.1775844305465 42.3903826677917,-71.1775825927231 "
-"42.3902893647987,-71.177684\n"
-"8522251 42.3902896512902));\n"
-"(1 row)\n"
-"\n"
-"--3D Circular String example\n"
-"SELECT ST_AsEWKT(ST_Transform(ST_GeomFromEWKT('SRID=2249;"
-"CIRCULARSTRING(743238 2967416 1,743238 2967450 2,743265 2967450 3,743265.625 "
-"2967416 3,743238 2967416 4)'),4326));\n"
-"\n"
-"         st_asewkt\n"
-"--------------------------------------------------------------------------------------\n"
-" SRID=4326;CIRCULARSTRING(-71.1776848522251 42.3902896512902 "
-"1,-71.1776843766326 42.3903829478009 2,\n"
-" -71.1775844305465 42.3903826677917 3,\n"
-" -71.1775825927231 42.3902893647987 3,-71.1776848522251 42.3902896512902 4)"
-msgstr ""
-"SELECT ST_AsText(ST_Transform(ST_GeomFromText('POLYGON((743238 "
-"2967416,743238 2967450,\n"
-"  743265 2967450,743265.625 2967416,743238 2967416))',2249),4326)) As "
-"wgs_geom;\n"
-"\n"
-" wgs_geom\n"
-"---------------------------\n"
-" POLYGON((-71.1776848522251 42.3902896512902,-71.1776843766326 "
-"42.3903829478009,\n"
-"-71.1775844305465 42.3903826677917,-71.1775825927231 "
-"42.3902893647987,-71.177684\n"
-"8522251 42.3902896512902));\n"
-"(1 row)\n"
-"\n"
-"-- 3次元曲線ストリングの例\n"
-"SELECT ST_AsEWKT(ST_Transform(ST_GeomFromEWKT('SRID=2249;"
-"CIRCULARSTRING(743238 2967416 1,743238 2967450 2,743265 2967450 3,743265.625 "
-"2967416 3,743238 2967416 4)'),4326));\n"
-"\n"
-"         st_asewkt\n"
-"--------------------------------------------------------------------------------------\n"
-" SRID=4326;CIRCULARSTRING(-71.1776848522251 42.3902896512902 "
-"1,-71.1776843766326 42.3903829478009 2,\n"
-" -71.1775844305465 42.3903826677917 3,\n"
-" -71.1775825927231 42.3902893647987 3,-71.1776848522251 42.3902896512902 4)"
-
 #. Tag: para
 #: reference_srs.xml:252
 #, no-c-format
@@ -630,74 +435,12 @@ msgstr ""
 "テーブルのためには、スペースの節約とインデクスを小さく効率的にするために、"
 "NULLジオメトリを無視する部分インデクスを使うのが最善です。"
 
-#. Tag: programlisting
-#: reference_srs.xml:254
-#, no-c-format
-msgid ""
-"CREATE INDEX idx_geom_26986_parcels\n"
-"  ON parcels\n"
-"  USING gist\n"
-"  (ST_Transform(geom, 26986))\n"
-"  WHERE geom IS NOT NULL;"
-msgstr ""
-"CREATE INDEX idx_geom_26986_parcels\n"
-"  ON parcels\n"
-"  USING gist\n"
-"  (ST_Transform(geom, 26986))\n"
-"  WHERE geom IS NOT NULL;"
-
 #. Tag: para
 #: reference_srs.xml:256
 #, no-c-format
 msgid ""
 "Examples of using PROJ.4 text to transform with custom spatial references."
 msgstr "PROJ.4テキストを使って、独自の空間参照系に投影変換する例です。"
-
-#. Tag: programlisting
-#: reference_srs.xml:257
-#, no-c-format
-msgid ""
-"-- Find intersection of two polygons near the North pole, using a custom "
-"Gnomic projection\n"
-"-- See http://boundlessgeo.com/2012/02/flattening-the-peel/\n"
-" WITH data AS (\n"
-"   SELECT\n"
-"     ST_GeomFromText('POLYGON((170 50,170 72,-130 72,-130 50,170 50))', "
-"4326) AS p1,\n"
-"     ST_GeomFromText('POLYGON((-170 68,-170 90,-141 90,-141 68,-170 68))', "
-"4326) AS p2,\n"
-"     '+proj=gnom +ellps=WGS84 +lat_0=70 +lon_0=-160 +no_defs'::text AS gnom\n"
-" )\n"
-" SELECT ST_AsText(\n"
-"   ST_Transform(\n"
-"     ST_Intersection(ST_Transform(p1, gnom), ST_Transform(p2, gnom)),\n"
-"   gnom, 4326))\n"
-" FROM data;\n"
-"                                          st_astext\n"
-" --------------------------------------------------------------------------------\n"
-"  POLYGON((-170 74.053793645338,-141 73.4268621378904,-141 68,-170 68,-170 "
-"74.053793645338))"
-msgstr ""
-"-- 独自の心射方位図法を使って北極付近の二つのポリゴンのインタセクションを探し"
-"ます\n"
-"-- http://boundlessgeo.com/2012/02/flattening-the-peel/ を参照して下さい。\n"
-" WITH data AS (\n"
-"   SELECT\n"
-"     ST_GeomFromText('POLYGON((170 50,170 72,-130 72,-130 50,170 50))', "
-"4326) AS p1,\n"
-"     ST_GeomFromText('POLYGON((-170 68,-170 90,-141 90,-141 68,-170 68))', "
-"4326) AS p2,\n"
-"     '+proj=gnom +ellps=WGS84 +lat_0=70 +lon_0=-160 +no_defs'::text AS gnom\n"
-" )\n"
-" SELECT ST_AsText(\n"
-"   ST_Transform(\n"
-"     ST_Intersection(ST_Transform(p1, gnom), ST_Transform(p2, gnom)),\n"
-"   gnom, 4326))\n"
-" FROM data;\n"
-"                                          st_astext\n"
-" --------------------------------------------------------------------------------\n"
-"  POLYGON((-170 74.053793645338,-141 73.4268621378904,-141 68,-170 68,-170 "
-"74.053793645338))"
 
 #. Tag: title
 #: reference_srs.xml:261
@@ -736,12 +479,6 @@ msgstr ""
 "たとえば、proj4textパラメータ +datum=NAD87 は次に示す+nadgridsパラメータの短"
 "縮形です。"
 
-#. Tag: programlisting
-#: reference_srs.xml:273
-#, no-c-format
-msgid "+nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat"
-msgstr "+nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat"
-
 #. Tag: para
 #: reference_srs.xml:274
 #, no-c-format
@@ -765,12 +502,6 @@ msgstr ""
 "逆に、少なくとも標準的なファイルが確実にあって欲しいけれども、該当が無いまま"
 "全てのファイルが走査された場合に、NULL変換としたいなら、次が使えます。"
 
-#. Tag: programlisting
-#: reference_srs.xml:276
-#, no-c-format
-msgid "+nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat,null"
-msgstr "+nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat,null"
-
 #. Tag: para
 #: reference_srs.xml:277
 #, no-c-format
@@ -784,18 +515,6 @@ msgstr ""
 "グリッドシフトファイルです。 完全な例のために、正しい範囲にないSRID 4267への"
 "変換でエラーが投げられないようPostGISを変えたいなら、次のようにします。"
 
-#. Tag: programlisting
-#: reference_srs.xml:278
-#, no-c-format
-msgid ""
-"UPDATE spatial_ref_sys SET proj4text = '+proj=longlat +ellps=clrk66 "
-"+nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat,null +no_defs' WHERE srid "
-"= 4267;"
-msgstr ""
-"UPDATE spatial_ref_sys SET proj4text = '+proj=longlat +ellps=clrk66 "
-"+nadgrids=@conus,@alaska,@ntv2_0.gsb,@ntv1_can.dat,null +no_defs' WHERE srid "
-"= 4267;"
-
 #. Tag: para
 #: reference_srs.xml:285
 #, no-c-format
@@ -805,12 +524,6 @@ msgid ""
 msgstr ""
 ", <xref linkend=\"ST_SetSRID\"/>, <xref linkend=\"ST_SRID\"/>, <xref "
 "linkend=\"UpdateGeometrySRID\"/>, <xref linkend=\"ST_TransformPipeline\"/>"
-
-#. Tag: refname
-#: reference_srs.xml:291
-#, no-c-format
-msgid "ST_TransformPipeline"
-msgstr "ST_TransformPipeline"
 
 #. Tag: refpurpose
 #: reference_srs.xml:293
@@ -836,8 +549,8 @@ msgstr ""
 "<funcdef>geometry <function>ST_TransformPipeline</function></funcdef> "
 "<paramdef><type>geometry </type> <parameter>g1</parameter></paramdef> "
 "<paramdef><type>text </type> <parameter>pipeline</parameter></paramdef> "
-"<paramdef choice=\"opt\"><type>integer </type> "
-"<parameter>to_srid</parameter></paramdef>"
+"<paramdef choice=\"opt\"><type>integer </type> <parameter>to_srid</"
+"parameter></paramdef>"
 
 #. Tag: para
 #: reference_srs.xml:312
@@ -906,126 +619,10 @@ msgid ""
 "inverse direction."
 msgstr ""
 "入力ジオメトリのSRIDは無視され、任意パラメータ <varname>to_srid</varname> か"
-"ら値が提供されていない場合には出力ジオメトリのSRIDは0に設定されます。`ST_Tran"
-"sformPipeline()`を使うときには、パイプラインが順方向に実行されます。<xref "
-"linkend=\"ST_InverseTransformPipeline\""
-"/>を使うと、パイプラインは逆方向に実行されます。"
-
-#. Tag: programlisting
-#: reference_srs.xml:360
-#, no-c-format
-msgid ""
-"-- Forward direction\n"
-"SELECT ST_AsText(ST_TransformPipeline('SRID=4326;POINT(2 49)'::geometry,\n"
-"  'urn:ogc:def:coordinateOperation:EPSG::16031') AS utm_geom);\n"
-"\n"
-"                  utm_geom\n"
-"--------------------------------------------\n"
-" POINT(426857.9877165967 5427937.523342293)\n"
-"(1 row)\n"
-"\n"
-"-- Inverse direction\n"
-"SELECT ST_AsText(ST_InverseTransformPipeline('POINT(426857.9877165967 "
-"5427937.523342293)'::geometry,\n"
-"  'urn:ogc:def:coordinateOperation:EPSG::16031')) AS wgs_geom;\n"
-"\n"
-"          wgs_geom\n"
-"----------------------------\n"
-" POINT(2 48.99999999999999)\n"
-"(1 row)"
-msgstr ""
-"-- 順方向\n"
-"SELECT ST_AsText(ST_TransformPipeline('SRID=4326;POINT(2 49)'::geometry,\n"
-"  'urn:ogc:def:coordinateOperation:EPSG::16031') AS utm_geom);\n"
-"\n"
-"                  utm_geom\n"
-"--------------------------------------------\n"
-" POINT(426857.9877165967 5427937.523342293)\n"
-"(1 row)\n"
-"\n"
-"-- 逆方向\n"
-"SELECT ST_AsText(ST_InverseTransformPipeline('POINT(426857.9877165967 "
-"5427937.523342293)'::geometry,\n"
-"  'urn:ogc:def:coordinateOperation:EPSG::16031')) AS wgs_geom;\n"
-"\n"
-"          wgs_geom\n"
-"----------------------------\n"
-" POINT(2 48.99999999999999)\n"
-"(1 row)"
-
-#. Tag: programlisting
-#: reference_srs.xml:363
-#, no-c-format
-msgid ""
-"-- using ST_Transform with automatic selection of a conversion pipeline.\n"
-"SELECT ST_AsText(ST_Transform('SRID=4939;POINT(143.0 -37.0)'::geometry, "
-"7844)) AS gda2020_auto;\n"
-"\n"
-"                 gda2020_auto\n"
-"-----------------------------------------------\n"
-" POINT(143.00000635638918 -36.999986706128176)\n"
-"(1 row)\n"
-"\n"
-"-- using a defined conversion (EPSG:8447)\n"
-"SELECT ST_AsText(ST_TransformPipeline('SRID=4939;POINT(143.0 -37.0)'::"
-"geometry,\n"
-"  'urn:ogc:def:coordinateOperation:EPSG::8447')) AS gda2020_code;\n"
-"\n"
-"                   gda2020_code\n"
-"----------------------------------------------\n"
-" POINT(143.0000063280214 -36.999986718287545)\n"
-"(1 row)\n"
-"\n"
-"-- using a PROJ pipeline definition matching EPSG:8447, as returned from\n"
-"-- 'projinfo -s EPSG:4939 -t EPSG:7844'.\n"
-"-- NOTE: any 'axisswap' steps must be removed.\n"
-"SELECT ST_AsText(ST_TransformPipeline('SRID=4939;POINT(143.0 -37.0)'::"
-"geometry,\n"
-"  '+proj=pipeline\n"
-"   +step +proj=unitconvert +xy_in=deg +xy_out=rad\n"
-"   +step +proj=hgridshift "
-"+grids=au_icsm_GDA94_GDA2020_conformal_and_distortion.tif\n"
-"   +step +proj=unitconvert +xy_in=rad +xy_out=deg')) AS gda2020_pipeline;\n"
-"\n"
-"                   gda2020_pipeline\n"
-"----------------------------------------------\n"
-" POINT(143.0000063280214 -36.999986718287545)\n"
-"(1 row)"
-msgstr ""
-"-- 変換パイプラインの自動選択を用いたST_Transform。\n"
-"SELECT ST_AsText(ST_Transform('SRID=4939;POINT(143.0 -37.0)'::geometry, "
-"7844)) AS gda2020_auto;\n"
-"\n"
-"                 gda2020_auto\n"
-"-----------------------------------------------\n"
-" POINT(143.00000635638918 -36.999986706128176)\n"
-"(1 row)\n"
-"\n"
-"-- 定義されている変換 (EPSG:8447)の使用\n"
-"SELECT ST_AsText(ST_TransformPipeline('SRID=4939;POINT(143.0 -37.0)'::"
-"geometry,\n"
-"  'urn:ogc:def:coordinateOperation:EPSG::8447')) AS gda2020_code;\n"
-"\n"
-"                   gda2020_code\n"
-"----------------------------------------------\n"
-" POINT(143.0000063280214 -36.999986718287545)\n"
-"(1 row)\n"
-"\n"
-"-- EPSG:8447に合致するPROJパイプライン定義を使って\n"
-"-- 'projinfo -s EPSG:4939 -t EPSG:7844'から返されます。\n"
-"-- ご注意: 'axisswap'段階は削除しなければなりません。\n"
-"SELECT ST_AsText(ST_TransformPipeline('SRID=4939;POINT(143.0 -37.0)'::"
-"geometry,\n"
-"  '+proj=pipeline\n"
-"   +step +proj=unitconvert +xy_in=deg +xy_out=rad\n"
-"   +step +proj=hgridshift "
-"+grids=au_icsm_GDA94_GDA2020_conformal_and_distortion.tif\n"
-"   +step +proj=unitconvert +xy_in=rad +xy_out=deg')) AS gda2020_pipeline;\n"
-"\n"
-"                   gda2020_pipeline\n"
-"----------------------------------------------\n"
-" POINT(143.0000063280214 -36.999986718287545)\n"
-"(1 row)"
+"ら値が提供されていない場合には出力ジオメトリのSRIDは0に設定されます。"
+"`ST_TransformPipeline()`を使うときには、パイプラインが順方向に実行されます。"
+"<xref linkend=\"ST_InverseTransformPipeline\"/>を使うと、パイプラインは逆方向"
+"に実行されます。"
 
 #. Tag: para
 #: reference_srs.xml:370
@@ -1033,114 +630,207 @@ msgstr ""
 msgid ", <xref linkend=\"ST_InverseTransformPipeline\"/>"
 msgstr ", <xref linkend=\"ST_InverseTransformPipeline\"/>"
 
+#. Tag: refpurpose
+#: reference_srs.xml:379
 #, no-c-format
-#~ msgid ""
-#~ "<funcprototype> <funcdef>geometry <function>ST_TransformPipeline</"
-#~ "function></funcdef> <paramdef><type>geometry </type> <parameter>g1</"
-#~ "parameter></paramdef> <paramdef><type>text </type> <parameter>pipeline</"
-#~ "parameter></paramdef> <paramdef choice=\"opt\"><type>integer </type> "
-#~ "<parameter>to_srid</parameter></paramdef> </funcprototype> "
-#~ "<funcprototype> <funcdef>geometry <function>ST_InverseTransformPipeline</"
-#~ "function></funcdef> <paramdef><type>geometry </type> <parameter>geom</"
-#~ "parameter></paramdef> <paramdef><type>text </type> <parameter>pipeline</"
-#~ "parameter></paramdef> <paramdef choice=\"opt\"><type>integer </type> "
-#~ "<parameter>to_srid</parameter></paramdef> </funcprototype>"
-#~ msgstr ""
-#~ "<funcprototype> <funcdef>geometry <function>ST_TransformPipeline</"
-#~ "function></funcdef> <paramdef><type>geometry </type> <parameter>g1</"
-#~ "parameter></paramdef> <paramdef><type>text </type> <parameter>pipeline</"
-#~ "parameter></paramdef> <paramdef choice=\"opt\"><type>integer </type> "
-#~ "<parameter>to_srid</parameter></paramdef> </funcprototype> "
-#~ "<funcprototype> <funcdef>geometry <function>ST_InverseTransformPipeline</"
-#~ "function></funcdef> <paramdef><type>geometry </type> <parameter>geom</"
-#~ "parameter></paramdef> <paramdef><type>text </type> <parameter>pipeline</"
-#~ "parameter></paramdef> <paramdef choice=\"opt\"><type>integer </type> "
-#~ "<parameter>to_srid</parameter></paramdef> </funcprototype>"
+msgid "Return the list of SRS codes associated with the given authority."
+msgstr "指定した機関に関連付けられたSRSコードの一覧を返します。"
 
+#. Tag: funcprototype
+#: reference_srs.xml:384
 #, no-c-format
-#~ msgid ""
-#~ "The SRID of the input geometry is ignored, and the SRID of the output "
-#~ "geometry will be set to zero unless a value is provided via the optional "
-#~ "<varname>to_srid</varname> parameter. When using `ST_TransformPipeline()` "
-#~ "the pipeline is executed in a forward direction. Using "
-#~ "`ST_InverseTransformPipeline()` the pipeline is executed in the inverse "
-#~ "direction."
-#~ msgstr ""
-#~ "入力ジオメトリのSRIDは無視され、任意パラメータの<varname>to_srid</varname>"
-#~ "から値が提供されていない場合には、出力ジオメトリのSRIDは0になります。"
-#~ "`ST_TransformPipeline()`使用時はパイプラインは順方向に実行されます。"
-#~ "`ST_InverseTransformPipeline()`を使うとパイプラインは逆方向に実行します。"
+msgid ""
+"<funcdef>setof text <function>postgis_srs_codes</function></funcdef> "
+"<paramdef><type>text </type> <parameter>auth_name</parameter></paramdef>"
+msgstr ""
+"<funcdef>setof text <function>postgis_srs_codes</function></funcdef> "
+"<paramdef><type>text </type> <parameter>auth_name</parameter></paramdef>"
 
+#. Tag: para
+#: reference_srs.xml:394
 #, no-c-format
-#~ msgid ""
-#~ "SELECT ST_SRID(ST_GeomFromText('POINT(-71.1043 42.315)',4326));\n"
-#~ "                --result\n"
-#~ "                4326"
-#~ msgstr ""
-#~ "SELECT ST_SRID(ST_GeomFromText('POINT(-71.1043 42.315)',4326));\n"
-#~ "                -- 結果\n"
-#~ "                4326"
+msgid ""
+"Returns a set of all <varname>auth_srid</varname> for the given "
+"<varname>auth_name</varname>."
+msgstr ""
+"与えられた<varname>auth_name</varname>に関する全ての<varname>auth_srid</"
+"varname>の集合を返します。"
 
+#. Tag: para
+#: reference_srs.xml:397 reference_srs.xml:439 reference_srs.xml:480
+#: reference_srs.xml:527
 #, no-c-format
-#~ msgid ""
-#~ "SELECT ST_AsText(ST_Transform(ST_GeomFromText('POLYGON((743238 "
-#~ "2967416,743238 2967450,\n"
-#~ "        743265 2967450,743265.625 2967416,743238 2967416))',2249),4326)) "
-#~ "As wgs_geom;\n"
-#~ "\n"
-#~ " wgs_geom\n"
-#~ "---------------------------\n"
-#~ " POLYGON((-71.1776848522251 42.3902896512902,-71.1776843766326 "
-#~ "42.3903829478009,\n"
-#~ "-71.1775844305465 42.3903826677917,-71.1775825927231 "
-#~ "42.3902893647987,-71.177684\n"
-#~ "8522251 42.3902896512902));\n"
-#~ "(1 row)\n"
-#~ "\n"
-#~ "--3D Circular String example\n"
-#~ "SELECT ST_AsEWKT(ST_Transform(ST_GeomFromEWKT('SRID=2249;"
-#~ "CIRCULARSTRING(743238 2967416 1,743238 2967450 2,743265 2967450 "
-#~ "3,743265.625 2967416 3,743238 2967416 4)'),4326));\n"
-#~ "\n"
-#~ "                                 st_asewkt\n"
-#~ "--------------------------------------------------------------------------------------\n"
-#~ " SRID=4326;CIRCULARSTRING(-71.1776848522251 42.3902896512902 "
-#~ "1,-71.1776843766326 42.3903829478009 2,\n"
-#~ " -71.1775844305465 42.3903826677917 3,\n"
-#~ " -71.1775825927231 42.3902893647987 3,-71.1776848522251 42.3902896512902 "
-#~ "4)"
-#~ msgstr ""
-#~ "SELECT ST_AsText(ST_Transform(ST_GeomFromText('POLYGON((743238 "
-#~ "2967416,743238 2967450,\n"
-#~ "        743265 2967450,743265.625 2967416,743238 2967416))',2249),4326)) "
-#~ "As wgs_geom;\n"
-#~ "\n"
-#~ " wgs_geom\n"
-#~ "---------------------------\n"
-#~ " POLYGON((-71.1776848522251 42.3902896512902,-71.1776843766326 "
-#~ "42.3903829478009,\n"
-#~ "-71.1775844305465 42.3903826677917,-71.1775825927231 "
-#~ "42.3902893647987,-71.177684\n"
-#~ "8522251 42.3902896512902));\n"
-#~ "(1 row)\n"
-#~ "\n"
-#~ "-- 3次元曲線ストリングの例\n"
-#~ "SELECT ST_AsEWKT(ST_Transform(ST_GeomFromEWKT('SRID=2249;"
-#~ "CIRCULARSTRING(743238 2967416 1,743238 2967450 2,743265 2967450 "
-#~ "3,743265.625 2967416 3,743238 2967416 4)'),4326));\n"
-#~ "\n"
-#~ "                                 st_asewkt\n"
-#~ "--------------------------------------------------------------------------------------\n"
-#~ " SRID=4326;CIRCULARSTRING(-71.1776848522251 42.3902896512902 "
-#~ "1,-71.1776843766326 42.3903829478009 2,\n"
-#~ " -71.1775844305465 42.3903826677917 3,\n"
-#~ " -71.1775825927231 42.3902893647987 3,-71.1776848522251 42.3902896512902 "
-#~ "4)"
+msgid "Proj version 6+"
+msgstr "Proj 6以上"
 
+#. Tag: para
+#: reference_srs.xml:403
 #, no-c-format
-#~ msgid ""
-#~ ", <xref linkend=\"ST_SetSRID\"/>, <xref linkend=\"ST_SRID\"/>, <xref "
-#~ "linkend=\"UpdateGeometrySRID\"/>"
-#~ msgstr ""
-#~ ", <xref linkend=\"ST_SetSRID\"/>, <xref linkend=\"ST_SRID\"/>, <xref "
-#~ "linkend=\"UpdateGeometrySRID\"/>"
+msgid "List the first ten codes associated with the EPSG authority."
+msgstr "EPSG機関に関連付けられているコードの最初の10件の一覧を得ます。"
+
+#. Tag: para
+#: reference_srs.xml:410 reference_srs.xml:452
+#, no-c-format
+msgid ""
+", <xref linkend=\"postgis_srs_all\"/>, <xref linkend=\"postgis_srs_search\"/>"
+msgstr ""
+", <xref linkend=\"postgis_srs_all\"/>, <xref linkend=\"postgis_srs_search\"/>"
+
+#. Tag: refpurpose
+#: reference_srs.xml:420
+#, no-c-format
+msgid "Return a metadata record for the requested authority and srid."
+msgstr "求める機関と空間参照識別子に関するメタデータレコードを返します。"
+
+#. Tag: funcprototype
+#: reference_srs.xml:425
+#, no-c-format
+msgid ""
+"<funcdef>setof record <function>postgis_srs</function></funcdef> "
+"<paramdef><type>text </type> <parameter>auth_name</parameter></paramdef> "
+"<paramdef><type>text </type> <parameter>auth_srid</parameter></paramdef>"
+msgstr ""
+"<funcdef>setof record <function>postgis_srs</function></funcdef> "
+"<paramdef><type>text </type> <parameter>auth_name</parameter></paramdef> "
+"<paramdef><type>text </type> <parameter>auth_srid</parameter></paramdef>"
+
+#. Tag: para
+#: reference_srs.xml:436
+#, no-c-format
+msgid ""
+"Returns a metadata record for the requested <varname>auth_srid</varname> for "
+"the given <varname>auth_name</varname>. The record will have the "
+"<varname>auth_name</varname>, <varname>auth_srid</varname>, <varname>srname</"
+"varname>, <varname>srtext</varname>, <varname>proj4text</varname>, and the "
+"corners of the area of usage, <varname>point_sw</varname> and "
+"<varname>point_ne</varname>."
+msgstr ""
+"指定した<varname>auth_name</varname>に関して求める<varname>auth_srid</"
+"varname>のメタデータレコードを貸します。レコードには<varname>auth_name</"
+"varname>, <varname>auth_srid</varname>, <varname>srname</varname>, "
+"<varname>srtext</varname>, <varname>proj4text</varname>と適用範囲の隅を示す"
+"<varname>point_sw</varname>と<varname>point_ne</varname>が含まれます。"
+
+#. Tag: para
+#: reference_srs.xml:445
+#, no-c-format
+msgid "Get the metadata for EPSG:3005."
+msgstr "EPSG:3005のメタデータを取得します。"
+
+#. Tag: refpurpose
+#: reference_srs.xml:462
+#, no-c-format
+msgid ""
+"Return metadata records for every spatial reference system in the underlying "
+"Proj database."
+msgstr "Projデータベース内のあらゆる空間参照系のメタデータレコードを返します。"
+
+#. Tag: funcdef
+#: reference_srs.xml:468
+#, no-c-format
+msgid "setof record <function>postgis_srs_all</function>"
+msgstr "<function>postgis_srs_all</function>レコードの集合"
+
+#. Tag: para
+#: reference_srs.xml:477
+#, no-c-format
+msgid ""
+"Returns a set of all metadata records in the underlying Proj database. The "
+"records will have the <varname>auth_name</varname>, <varname>auth_srid</"
+"varname>, <varname>srname</varname>, <varname>srtext</varname>, "
+"<varname>proj4text</varname>, and the corners of the area of usage, "
+"<varname>point_sw</varname> and <varname>point_ne</varname>."
+msgstr ""
+"Projデータベース内にある全てのメタデータレコードを返します。レコードには"
+"<varname>auth_name</varname>, <varname>auth_srid</varname>, <varname>srname</"
+"varname>, <varname>srtext</varname>, <varname>proj4text</varname>と適用範囲の"
+"隅を示す<varname>point_sw</varname>と<varname>point_ne</varname>が含まれま"
+"す。"
+
+#. Tag: para
+#: reference_srs.xml:486
+#, no-c-format
+msgid "Get the first 10 metadata records from the Proj database."
+msgstr "Projデータベースから最初の10件のメタデータレコードを得ます。"
+
+#. Tag: para
+#: reference_srs.xml:493
+#, no-c-format
+msgid ""
+", <xref linkend=\"postgis_srs\"/>, <xref linkend=\"postgis_srs_search\"/>"
+msgstr ""
+", <xref linkend=\"postgis_srs\"/>, <xref linkend=\"postgis_srs_search\"/>"
+
+#. Tag: refpurpose
+#: reference_srs.xml:505
+#, no-c-format
+msgid ""
+"Return metadata records for projected coordinate systems that have areas of "
+"useage that fully contain the bounds parameter."
+msgstr ""
+"boundsパラメータを完全に含む適用範囲を持つ投影座標系のメタデータレコードを返"
+"します。"
+
+#. Tag: funcprototype
+#: reference_srs.xml:510
+#, no-c-format
+msgid ""
+"<funcdef>setof record <function>postgis_srs_search</function></funcdef> "
+"<paramdef><type>geometry </type> <parameter>bounds</parameter></paramdef> "
+"<paramdef choice=\"opt\"><type>text </type> <parameter>auth_name=EPSG</"
+"parameter></paramdef>"
+msgstr ""
+"<funcdef>setof record <function>postgis_srs_search</function></funcdef> "
+"<paramdef><type>geometry </type> <parameter>bounds</parameter></paramdef> "
+"<paramdef choice=\"opt\"><type>text </type> <parameter>auth_name=EPSG</"
+"parameter></paramdef>"
+
+#. Tag: para
+#: reference_srs.xml:521
+#, no-c-format
+msgid ""
+"Return a set of metadata records for projected coordinate systems that have "
+"areas of useage that fully contain the bounds parameter. Each record will "
+"have the <varname>auth_name</varname>, <varname>auth_srid</varname>, "
+"<varname>srname</varname>, <varname>srtext</varname>, <varname>proj4text</"
+"varname>, and the corners of the area of usage, <varname>point_sw</varname> "
+"and <varname>point_ne</varname>."
+msgstr ""
+"boundsパラメータを完全に含む適用範囲を持つ投影座標系のメタデータレコードを返"
+"します。レコードには<varname>auth_name</varname>, <varname>auth_srid</"
+"varname>, <varname>srname</varname>, <varname>srtext</varname>, "
+"<varname>proj4text</varname>と適用範囲の隅を示す<varname>point_sw</varname>と"
+"<varname>point_ne</varname>が含まれます。"
+
+#. Tag: para
+#: reference_srs.xml:524
+#, no-c-format
+msgid ""
+"The search only looks for projected coordinate systems, and is intended for "
+"users to explore the possible systems that work for the extent of their data."
+msgstr ""
+"この検索では、投影座標系のみが対象となります。お持ちのデータの範囲で動作しう"
+"る座標系を探索することを目的としています。"
+
+#. Tag: para
+#: reference_srs.xml:533
+#, no-c-format
+msgid "Search for projected coordinate systems in Louisiana."
+msgstr "ルイジアナ州の投影座標系を探索します。"
+
+#. Tag: para
+#: reference_srs.xml:536
+#, no-c-format
+msgid ""
+"Scan a table for max extent and find projected coordinate systems that might "
+"suit."
+msgstr ""
+"最大範囲を得るためにテーブルをスキャンして、適していると言えそうな投影座標系"
+"を見つけます。"
+
+#. Tag: para
+#: reference_srs.xml:545
+#, no-c-format
+msgid ", <xref linkend=\"postgis_srs_all\"/>, <xref linkend=\"postgis_srs\"/>"
+msgstr ", <xref linkend=\"postgis_srs_all\"/>, <xref linkend=\"postgis_srs\"/>"

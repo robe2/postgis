@@ -63,7 +63,7 @@ sql/test-normalize_address.sql: sql_bits/test_tuples_only_unaligned.sql.in ../..
 	cat $^ > $@
 
 sql/test-upgrade.sql: | sql
-	echo 'ALTER EXTENSION ${EXTENSION} UPDATE TO "$(EXTVERSION)next"' > $@
+	echo 'ALTER EXTENSION ${EXTENSION} UPDATE TO "ANY"; ALTER EXTENSION ${EXTENSION} UPDATE TO "$(EXTVERSION)"' > $@
 
 %.control: %.control.in Makefile
 	cat $< \
@@ -214,9 +214,11 @@ PG_CONFIG := @PG_CONFIG@
 PGXS := @PGXS@
 include $(PGXS)
 PERL=@PERL@
+ifneq (@MKDIR_P@,)
+	MKDIR_P = @MKDIR_P@
+endif
 
 VPATH = @srcdir@
 
 top_srcdir = @top_srcdir@
-top_builddir = @top_builddir@
 abs_topbuilddir=$(abspath $(top_builddir))

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PostGIS\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-11 01:55+0000\n"
+"POT-Creation-Date: 2023-07-18 20:22+0000\n"
 "PO-Revision-Date: 2013-12-27 11:14+0000\n"
 "Last-Translator: rveciana <rveciana@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/postgis-1/"
@@ -34,12 +34,12 @@ msgstr ""
 #, no-c-format
 msgid ""
 "Each data type describes its type casting behavior. A <ulink url=\"https://"
-"www.postgresql.org/docs/current/sql-expressions.html#SQL-SYNTAX-TYPE-CASTS"
-"\">type cast</ulink> converts values of one data type into another type. "
-"PostgreSQL allows defining casting behavior for custom types, along with the "
-"functions used to convert type values. Casts can have <emphasis role=\"bold"
-"\">automatic</emphasis> behavior, which allows automatic conversion of a "
-"function argument to a type supported by the function."
+"www.postgresql.org/docs/current/sql-expressions.html#SQL-SYNTAX-TYPE-"
+"CASTS\">type cast</ulink> converts values of one data type into another "
+"type. PostgreSQL allows defining casting behavior for custom types, along "
+"with the functions used to convert type values. Casts can have <emphasis "
+"role=\"bold\">automatic</emphasis> behavior, which allows automatic "
+"conversion of a function argument to a type supported by the function."
 msgstr ""
 
 #. Tag: para
@@ -70,12 +70,6 @@ msgstr ""
 #, fuzzy, no-c-format
 msgid "PostGIS Geometry/Geography/Box Data Types"
 msgstr "Tipos Geometry/Geography/Box en PostgreSQL PostGIS"
-
-#. Tag: refname
-#: reference_type.xml:31
-#, no-c-format
-msgid "<refname>box2d</refname>"
-msgstr "<refname>box2d</refname>"
 
 #. Tag: refpurpose
 #: reference_type.xml:32
@@ -178,12 +172,6 @@ msgstr "<entry>geometry</entry>"
 msgid "See Also"
 msgstr "Vea también"
 
-#. Tag: refname
-#: reference_type.xml:77
-#, no-c-format
-msgid "<refname>box3d</refname>"
-msgstr "<refname>box3d</refname>"
-
 #. Tag: refpurpose
 #: reference_type.xml:78
 #, no-c-format
@@ -231,12 +219,6 @@ msgstr "<entry>box</entry>"
 #, no-c-format
 msgid "<entry>box2d</entry>"
 msgstr "<entry>box2d</entry>"
-
-#. Tag: refname
-#: reference_type.xml:132
-#, no-c-format
-msgid "<refname>geometry</refname>"
-msgstr "<refname>geometry</refname>"
 
 #. Tag: refpurpose
 #: reference_type.xml:133
@@ -288,12 +270,6 @@ msgstr "text"
 msgid ", <xref linkend=\"PostGIS_SQLMM_Functions\"/>"
 msgstr ", <xref linkend=\"PostGIS_Geography\"/>"
 
-#. Tag: refname
-#: reference_type.xml:189
-#, no-c-format
-msgid "geometry_dump"
-msgstr "geometry_dump"
-
 #. Tag: refpurpose
 #: reference_type.xml:190
 #, no-c-format
@@ -335,12 +311,6 @@ msgid ""
 "output type to explode a complex geometry into its constituent parts."
 msgstr ""
 
-#. Tag: refname
-#: reference_type.xml:221
-#, no-c-format
-msgid "<refname>geography</refname>"
-msgstr "<refname>geography</refname>"
-
 #. Tag: refpurpose
 #: reference_type.xml:222
 #, no-c-format
@@ -379,112 +349,3 @@ msgstr "explicit"
 #, fuzzy, no-c-format
 msgid ", <xref linkend=\"PostGIS_GeographyFunctions\"/>"
 msgstr ", <xref linkend=\"PostGIS_Geography\"/>"
-
-#, fuzzy, no-c-format
-#~ msgid ""
-#~ "A 2-dimensional bounding box. Used to describe the 2D extent of a "
-#~ "geometry or collection of geometries."
-#~ msgstr ""
-#~ "Una caja compuesta por xmin, ymin, zmin, xmax, ymax, zmax. Usada "
-#~ "habitualmente para devolver la extensión 3d de una geometría o grupo de "
-#~ "geometrías."
-
-#, fuzzy, no-c-format
-#~ msgid ""
-#~ "A 3-dimensional bounding box. Used to describe the 3D extent of a "
-#~ "geometry or collection of geometries."
-#~ msgstr ""
-#~ "Una caja compuesta por xmin, ymin, zmin, xmax, ymax, zmax. Usada "
-#~ "habitualmente para devolver la extensión 3d de una geometría o grupo de "
-#~ "geometrías."
-
-#~ msgid ""
-#~ "A Cast is when one type is coerced into another type. PostgreSQL is "
-#~ "unique from most databases in that it allows you to define casting "
-#~ "behavior for custom types and the functions used for casting. A cast can "
-#~ "be specified as automatic in which case, you do not have to do a "
-#~ "CAST(myfoo As otherfootype) or myfoo::otherfootype if you are feeding it "
-#~ "to a function that only works with otherfootype and there is an automatic "
-#~ "cast in place for it."
-#~ msgstr ""
-#~ "Cast es la conversión forzada de un tipo a otro. PostgreSQL se diferencia "
-#~ "de la mayoría de base de datos em que permite defnir el comportamiento de "
-#~ "la conversión de tipos de datos i las funciones usadas para ello. Un cast "
-#~ "se puede especificar como automático, caso en el que no hace falta llamar "
-#~ "CAST(myfoo as otherfootype) o myfoo::otherfootype si se está pasando a "
-#~ "una función que solo  acepta otherfootype como parámetro, en el caso en "
-#~ "que haya un cast automático para hacerlo."
-
-#~ msgid ""
-#~ "The danger of relying on automatic cast behavior is when you have an "
-#~ "overloaded function say one that takes a box2d and one that takes a box3d "
-#~ "but no geometry. What happens is that both functions are equally good to "
-#~ "use with geometry since geometry has an autocast for both -- so you end "
-#~ "up with an ambiguous function error. To force PostgreSQL to choose, you "
-#~ "do a CAST(mygeom As box3d) or mygeom::box3d."
-#~ msgstr ""
-#~ "El peligro de confiar en la conversión de tipo automática es cuando hay "
-#~ "una función que usa sobrecarga que coja, por ejemplo, un box2d en un caso "
-#~ "y un box3d sin geometría en otro. Lo que pasa en este caso es que las dos "
-#~ "funciones son igualmente buenas para usar con un tipo geometry, ya que "
-#~ "geometry tiene autocast para los dos, por lo que se devuelve un error de "
-#~ "función ambigua. Para forzar PostgreSQL a escoger, hay que llamar "
-#~ "CAST(mygeom As box3d) o mygeom::box3d."
-
-#~ msgid ""
-#~ "<emphasis>At least as of PostgreSQL 8.3</emphasis> - Everything can be "
-#~ "CAST to text (presumably because of the magical unknown type), so no "
-#~ "defined CASTS for that need to be present for you to CAST an object to "
-#~ "text."
-#~ msgstr ""
-#~ "<emphasis>Desde la versión PostgreSQL 8.3</emphasis> - Todo puede ser "
-#~ "convertido a texto (presumiblemente debido al tipo mágico unknown), por "
-#~ "lo que no hay necesidad de un CAST definido para convertir un objeto a "
-#~ "texto."
-
-#~ msgid ""
-#~ "A box composed of x min, ymin, xmax, ymax. Often used to return the 2d "
-#~ "enclosing box of a geometry."
-#~ msgstr ""
-#~ "Una caja compuesta por xmin, ymin, xmax, ymax. Usada a menudo para "
-#~ "devolver la caja 2d que contiene una geometría."
-
-#~ msgid ""
-#~ "box2d is a spatial data type used to represent the enclosing box of a "
-#~ "geometry or set of geometries. ST_Extent in earlier versions prior to "
-#~ "PostGIS 1.4 would return a box2d."
-#~ msgstr ""
-#~ "box2d es un tipo de dato espacial usado para representar la caja que "
-#~ "contiene una geometría o un grupo de geometrías. En versiones anteriores "
-#~ "a PostGIS 1.4, ST_Extent devolvía un objeto box2d."
-
-#~ msgid "Planar spatial data type."
-#~ msgstr "Tipo de dato espacial planar"
-
-#~ msgid ""
-#~ "A spatial datatype with two fields - geom (holding a geometry object) and "
-#~ "path[] (a 1-d array holding the position of the geometry within the "
-#~ "dumped object.)"
-#~ msgstr ""
-#~ "Un tipo de datos espacial con dos campos: geom (que contiene el objeto "
-#~ "geometry) y path[] (un array 1-d que contiene la posición de la geometría "
-#~ "dentro el objeto volcado)."
-
-#~ msgid ""
-#~ "geometry_dump is a compound data type consisting of a geometry object "
-#~ "referenced by the .geom field and path[] a 1-dimensional integer array "
-#~ "(starting at 1 e.g. path[1] to get first element) array that defines the "
-#~ "navigation path within the dumped geometry to find this element. It is "
-#~ "used by the ST_Dump* family of functions as an output type to explode a "
-#~ "more complex geometry into its constituent parts and location of parts."
-#~ msgstr ""
-#~ "geometry_dump es un tipo de datos compuesto, que consiste en un objeto "
-#~ "geometry referenciado por el campo .geom y path[], un array 1-dimensional "
-#~ "de integers (que empeza por el elemento 1. path[1] contiene el primer "
-#~ "elemento). Este array define el camino de navegación en la geometría "
-#~ "volcada para encontrar el elemento. Es usado por la familia de funciones "
-#~ "ST_Dump* como tipo de salida para separar un tipo de geometría complejo "
-#~ "en las partes que la componen y su localización."
-
-#~ msgid "Ellipsoidal spatial data type."
-#~ msgstr "Tipo de dato espacial elipsoidal"

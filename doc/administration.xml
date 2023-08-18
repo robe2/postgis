@@ -124,33 +124,6 @@ environment).</para></note>
 
   </sect2>
 
-  <sect2 id="templatepostgis">
-	<title>Create a spatially-enabled database from a template</title>
-
-	<para>
-	  Some packaged distributions of PostGIS (in particular the Win32 installers
-	  for PostGIS &gt;= 1.1.5) load the PostGIS functions into a template
-	  database called <varname>template_postgis</varname>. If the
-	  <varname>template_postgis</varname> database exists in your PostgreSQL
-	  installation then it is possible for users and/or applications to create
-	  spatially-enabled databases using a single command. Note that in both
-	  cases, the database user must have been granted the privilege to create
-	  new databases.
-	</para>
-
-	<para>
-	  From the shell:
-	</para>
-
-	<programlisting># createdb -T template_postgis my_spatial_db</programlisting>
-
-	<para>
-	  From SQL:
-	</para>
-
-	<programlisting>postgres=# CREATE DATABASE my_spatial_db TEMPLATE=template_postgis</programlisting>
-  </sect2>
-
   </sect1>
 
   <sect1 id="upgrading">
@@ -299,7 +272,7 @@ ALTER EXTENSION postgis_topology UPDATE TO "&last_release_version;next";</progra
 	  </para>
 
 	  <para>
-		The dump/reload process is assisted by the postgis_restore.pl
+		The dump/reload process is assisted by the postgis_restore
 		script which takes care of skipping from the dump all
 		definitions which belong to PostGIS (including old ones),
 		allowing you to restore your schemas and data into a
@@ -368,12 +341,12 @@ ALTER EXTENSION postgis_topology UPDATE TO "&last_release_version;next";</progra
 	  <para>
 		Restore your backup into your fresh
 		<varname>newdb</varname> database using
-		postgis_restore.pl.
+		postgis_restore.
 		Unexpected errors, if any, will be printed to the standard
 		error stream by psql. Keep a log of those.
 	  </para>
 
-	  <programlisting>perl utils/postgis_restore.pl "/somepath/olddb.backup" | psql -h localhost -p 5432 -U postgres newdb 2> errors.txt</programlisting>
+	  <programlisting>postgis_restore "/somepath/olddb.backup" | psql -h localhost -p 5432 -U postgres newdb 2> errors.txt</programlisting>
 
 	</listitem>
 
@@ -397,7 +370,7 @@ ALTER EXTENSION postgis_topology UPDATE TO "&last_release_version;next";</progra
 	</para>
 	</listitem>
 	<listitem>
-	<para>
+    <para>
 		Some custom records of spatial_ref_sys in dump file have
 		an invalid SRID value. Valid SRID values are bigger than 0
 		and smaller than 999000. Values in the 999000.999999 range
@@ -409,36 +382,48 @@ ALTER EXTENSION postgis_topology UPDATE TO "&last_release_version;next";</progra
     for that invariant to hold and possibly also its primary key
     ( when multiple invalid SRIDS get converted to the same reserved
     SRID value ).
-  </para>
+    </para>
 
-  <para>
+    <para>
 		In order to fix this you should copy your custom SRS to
 		a SRID with a valid value (maybe in the 910000..910999
 		range), convert all your tables to the new srid (see
 		<xref linkend="UpdateGeometrySRID"/>), delete the invalid
 		entry from spatial_ref_sys and re-construct the check(s) with:
+    </para>
 
-		<programlisting>ALTER TABLE spatial_ref_sys ADD CONSTRAINT spatial_ref_sys_srid_check check (srid &gt; 0 AND srid &lt; 999000 );</programlisting>
+    <programlisting>
+ALTER TABLE spatial_ref_sys ADD CONSTRAINT spatial_ref_sys_srid_check check (srid &gt; 0 AND srid &lt; 999000 );
+    </programlisting>
 
-		<programlisting>ALTER TABLE spatial_ref_sys ADD PRIMARY KEY(srid));</programlisting>
+    <programlisting>
+ALTER TABLE spatial_ref_sys ADD PRIMARY KEY(srid));
+    </programlisting>
 
+    <para>
 		If you are upgrading an old database containing french <ulink url="https://en.wikipedia.org/wiki/Institut_g%C3%A9ographique_national">
 			IGN
 		  </ulink> cartography, you will have probably SRIDs out
 		of range and you will see, when importing your database, issues like this :
+    </para>
 
 		<programlisting> WARNING: SRID 310642222 converted to 999175 (in reserved zone)</programlisting>
 
+    <para>
 		In this case, you can try following steps : first throw
 		out completely the IGN from the sql which is resulting
-		from postgis_restore.pl. So, after having run :
+		from postgis_restore. So, after having run :
+    </para>
 
-		<programlisting>perl utils/postgis_restore.pl "/somepath/olddb.backup" > olddb.sql</programlisting>
+		<programlisting>postgis_restore "/somepath/olddb.backup" > olddb.sql</programlisting>
 
+    <para>
 		run this command :
+    </para>
 
 		<programlisting>grep -v IGNF olddb.sql > olddb-without-IGN.sql</programlisting>
 
+    <para>
 		Create then your newdb, activate the required Postgis extensions,
 		and insert properly the french system IGN with :
 
@@ -448,9 +433,10 @@ ALTER EXTENSION postgis_topology UPDATE TO "&last_release_version;next";</progra
 
 		After these operations, import your data :
 
+    </para>
+
 		<programlisting>psql -h localhost -p 5432 -U postgres -d newdb -f olddb-without-IGN.sql  2> errors.txt</programlisting>
 
-	</para>
 	</listitem>
 	</orderedlist>
 

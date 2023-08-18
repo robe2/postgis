@@ -9,7 +9,7 @@ dnl * the terms of the GNU General Public Licence. See the COPYING file.
 dnl *
 dnl **********************************************************************
 
-AC_INIT
+AC_INIT( [postgis], m4_esyscmd_s([utils/extract_majmin_version.sh]) )
 
 # test to see if srcdir already configured, when
 # building out of tree
@@ -53,7 +53,7 @@ dnl SQL Preprocessor
 dnl
 AC_PATH_PROG([CPPBIN], [cpp], [])
 if test "x$CPPBIN" != "x"; then
-  SQLPP="${CPPBIN} -traditional-cpp -w -P"
+  SQLPP="${CPPBIN} -traditional-cpp -w -P -Upixel -Ubool"
 else
   AC_PATH_PROG([GPP], [gpp_], [])
   if test "x$GPP" != "x"; then
@@ -215,6 +215,11 @@ if test "x$MSGMERGE" = "x"; then
 	AC_MSG_WARN([msgmerge is not installed so translations cannot be updated])
 fi
 
+AC_PATH_PROG([MSGATTRIB], [msgattrib], [])
+if test "x$MSGATTRIB" = "x"; then
+	AC_MSG_WARN([msgattrib is not installed so translations cannot be updated])
+fi
+
 AC_PATH_PROG([MSGINIT], [msginit], [])
 if test "x$MSGINIT" = "x"; then
 	AC_MSG_WARN([msginit is not installed so new translations cannot be initialized])
@@ -236,6 +241,14 @@ fi
 
 AC_SUBST(CAN_BUILD_COMMENTS)
 AC_SUBST(CAN_BUILD_PDF)
+
+CAN_BUILD_EPUB=${CAN_BUILD_COMMENTS}
+AC_PATH_PROG([DBTOEPUB], [dbtoepub], [])
+if test "x$DBTOEPUB" = "x"; then
+  AC_MSG_WARN([dbtoepub is not installed so EPUB documentation cannot be built])
+  CAN_BUILD_EPUB=no
+fi
+AC_SUBST(CAN_BUILD_EPUB)
 
 AC_PATH_PROG([XMLLINT], [xmllint], [])
 if test "x$XMLLINT" = "x"; then
@@ -591,14 +604,13 @@ dnl ===========================================================================
 dnl Explain our prefix policy if necessary.
 dnl ===========================================================================
 
-if test "$prefix" != "NONE"; then
+if test "$prefix" != "NONE" -a "x$PG_CONFIG" != "xno"; then
   AC_MSG_RESULT([------------------------------------------------------------------------])
   AC_MSG_RESULT([  WARNING: You have set the --prefix to '$prefix'. But we mostly    ])
   AC_MSG_RESULT([  ignore the --prefix. For your info, using the values determined from ])
   AC_MSG_RESULT([  $PG_CONFIG we will be installing:   ])
   AC_MSG_RESULT([    * postgis shared library in $PGSQL_LIBDIR ])
   AC_MSG_RESULT([    * postgis SQL files in $PGSQL_SHAREDIR/contrib/postgis-$POSTGIS_MAJOR_VERSION.$POSTGIS_MINOR_VERSION ])
-  AC_MSG_RESULT([    * postgis executables in $PGSQL_BINDIR ])
   AC_MSG_RESULT([------------------------------------------------------------------------])
 fi
 
@@ -1326,10 +1338,13 @@ if test "x$with_address_standardizer" != "xno"; then
     AC_SUBST([PCRE_LDFLAGS])
     AC_SUBST([PCRE_LDFLAGS])
     AC_SUBST([PCRE_VERSION])
+    ADDRESS_STANDARDIZER_MAKEFILE_LIST=extensions/address_standardizer/Makefile
+
 
 else
     ADDRESS_STANDARDIZER=""
     AC_MSG_RESULT([ADDRESS_STANDARDIZER support: disabled])
+    ADDRESS_STANDARDIZER_MAKEFILE_LIST=""
 fi
 
 AC_SUBST([ADDRESS_STANDARDIZER])
@@ -1362,11 +1377,11 @@ AC_SUBST([TOPOLOGY])
 dnl ====================================
 dnl interrupt tests
 dnl ====================================
-INTERRUPTTESTS="no"
+INTERRUPTTESTS="yes"
 AC_ARG_WITH([interrupt-tests],
-    [AS_HELP_STRING([--with-interrupt-tests],
-                    [Enable the interrupt tests])],
-    [INTERRUPTTESTS="yes"], [])
+    [AS_HELP_STRING([--without-interrupt-tests],
+                    [Disable the interrupt tests])],
+    [INTERRUPTTESTS="yes"], [INTERRUPTTEST="no"])
 
 if test "x$with_interrupt_tests" = "xno"; then
     INTERRUPTTESTS="no"
@@ -1483,9 +1498,12 @@ if test "x$with_raster" != "xno"; then
 		CPPFLAGS_SAVE="$CPPFLAGS"
 		CPPFLAGS="$LIBGDAL_CFLAGS"
 		CFLAGS_SAVE="$CFLAGS"
-		CFLAGS=`"$PG_CONFIG" --cflags`
 		CC_SAVE="$CC"
-		CC=`"$PG_CONFIG" --cc`
+
+		if test "x$PG_CONFIG" != "xno"; then
+			CFLAGS=`"$PG_CONFIG" --cflags`
+			CC=`"$PG_CONFIG" --cc`
+		fi
 
 		LIBS_SAVE="$LIBS"
 		LIBS="$LIBGDAL_LDFLAGS"
@@ -1521,9 +1539,11 @@ if test "x$with_raster" != "xno"; then
 
 	dnl Define raster objects, for makefiles
 	RT_CORE_LIB=corelib
-	RT_PG_LIB=pglib
 	RT_LOADER=rtloader
-	RT_POSTGIS_SQL=rtpostgis.sql
+	if test "x$PG_CONFIG" != "xno"; then
+		RT_PG_LIB=pglib
+		RT_POSTGIS_SQL=rtpostgis.sql
+	fi
 
 	AC_SUBST([RASTER])
 	AC_SUBST([RT_CORE_LIB])
@@ -1709,14 +1729,16 @@ dnl the xlstproc tool for generating the comments SQL file.
 dnl ===========================================================================
 
 EXTENSIONS=""
-if test \
-        "x$XSLTPROC" != "x" -o \
-        -e doc/postgis_comments.sql -a \
-        -e doc/raster_comments.sql;
-then
-    AC_MSG_RESULT([enabling PostgreSQL extension support...])
-    EXTENSIONS=extensions
-    AC_SUBST([EXTENSIONS])
+if test "x$PG_CONFIG" != "xno"; then
+  if test \
+          "x$XSLTPROC" != "x" -o \
+          -e doc/postgis_comments.sql -a \
+          -e doc/raster_comments.sql;
+  then
+      AC_MSG_RESULT([enabling PostgreSQL extension support...])
+      EXTENSIONS=extensions
+      AC_SUBST([EXTENSIONS])
+  fi
 fi
 
 INSTALL_EXTENSION_UPGRADES=yes
@@ -1742,7 +1764,7 @@ AC_CONFIG_FILES([GNUmakefile
    extensions/postgis/Makefile
    extensions/postgis_topology/Makefile
    extensions/postgis_tiger_geocoder/Makefile
-   extensions/address_standardizer/Makefile
+   $ADDRESS_STANDARDIZER_MAKEFILE_LIST
    liblwgeom/Makefile
    liblwgeom/cunit/Makefile
    liblwgeom/liblwgeom.h
@@ -1764,7 +1786,7 @@ AC_CONFIG_FILES([GNUmakefile
    doc/Makefile
    doc/Makefile.comments
    $TRANSLATIONS_MAKEFILE_LIST
-   doc/html/image_src/Makefile
+   doc/html/images/Makefile
    utils/Makefile
    $RT_MAKEFILE_LIST
    $DEPS_MAKEFILE_LIST])
@@ -1875,16 +1897,12 @@ AC_MSG_RESULT([  convert:              ${CONVERT}])
 AC_MSG_RESULT([  mathml2.dtd:          ${MATHML2_DTD}])
 AC_MSG_RESULT()
 
-if test "$POSTGIS_GEOS_VERSION" -lt 30900; then
+if test "$POSTGIS_GEOS_VERSION" -lt 31200; then
 AC_MSG_WARN([ --------- GEOS VERSION WARNING ------------ ])
 AC_MSG_WARN([  You are building against GEOS ${GEOS_FULL_VERSION}.])
 AC_MSG_WARN([])
 AC_MSG_WARN([  To take advantage of _all_ the features of ])
-AC_MSG_WARN([  PostGIS, GEOS 3.9.0 or higher is required.])
-AC_MSG_WARN([])
-AC_MSG_WARN([  For _many_ features, GEOS 3.6.0 is enough.])
-AC_MSG_WARN([])
-AC_MSG_WARN([  We recommend GEOS 3.8.0 or higher])
+AC_MSG_WARN([  PostGIS, GEOS 3.12.0 or higher is required.])
 AC_MSG_WARN([])
 AC_MSG_WARN([  You can download the latest versions from ])
 AC_MSG_WARN([  http://geos.osgeo.org/ ])

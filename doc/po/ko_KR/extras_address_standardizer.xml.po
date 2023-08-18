@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PostGIS\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2021-09-11 01:55+0000\n"
+"POT-Creation-Date: 2023-07-18 20:22+0000\n"
 "PO-Revision-Date: 2022-05-07 19:23+0000\n"
 "Last-Translator: Regina Obe <regina@arrival3d.com>\n"
 "Language-Team: Korean <https://weblate.osgeo.org/projects/postgis/"
@@ -36,8 +36,8 @@ msgid ""
 "postgresql\">PAGC PostgreSQL Address Standardizer</ulink>)."
 msgstr ""
 "이 도구는 <ulink url=\"http://www.pagcgeo.org/docs/html/pagc-11.html\">PAGC "
-"standardizer</ulink> 의 한 갈래(fork)입니다(이 갈래의 원본 코드는 <ulink url="
-"\"http://sourceforge.net/p/pagc/code/360/tree/branches/sew-refactor/"
+"standardizer</ulink> 의 한 갈래(fork)입니다(이 갈래의 원본 코드는 <ulink "
+"url=\"http://sourceforge.net/p/pagc/code/360/tree/branches/sew-refactor/"
 "postgresql\">PAGC PostgreSQL 주소 표준화 도구</ulink> 였습니다)."
 
 #. Tag: para
@@ -88,11 +88,11 @@ msgstr ""
 #: extras_address_standardizer.xml:8
 #, no-c-format
 msgid ""
-"For installation instructions refer to: <xref linkend="
-"\"installing_pagc_address_standardizer\"/>."
+"For installation instructions refer to: <xref "
+"linkend=\"installing_pagc_address_standardizer\"/>."
 msgstr ""
-"설치에 대한 지침을 보고 싶다면 <xref linkend="
-"\"installing_pagc_address_standardizer\"/> 를 참조하십시오."
+"설치에 대한 지침을 보고 싶다면 <xref "
+"linkend=\"installing_pagc_address_standardizer\"/> 를 참조하십시오."
 
 #. Tag: title
 #: extras_address_standardizer.xml:9
@@ -186,12 +186,6 @@ msgstr ""
 msgid "Address Standardizer Types"
 msgstr "주소 표준화 도구 유형"
 
-#. Tag: refname
-#: extras_address_standardizer.xml:45
-#, no-c-format
-msgid "stdaddr"
-msgstr "stdaddr"
-
 #. Tag: refpurpose
 #: extras_address_standardizer.xml:46
 #, no-c-format
@@ -205,7 +199,8 @@ msgstr ""
 #. Tag: title
 #: extras_address_standardizer.xml:49 extras_address_standardizer.xml:153
 #: extras_address_standardizer.xml:486 extras_address_standardizer.xml:528
-#: extras_address_standardizer.xml:586 extras_address_standardizer.xml:646
+#: extras_address_standardizer.xml:590 extras_address_standardizer.xml:667
+#: extras_address_standardizer.xml:727
 #, no-c-format
 msgid "Description"
 msgstr "설명"
@@ -219,24 +214,24 @@ msgid ""
 "for elements are borrowed from <ulink url=\"http://www.pagcgeo.org/docs/html/"
 "pagc-12.html#ss12.1\">PAGC Postal Attributes</ulink>."
 msgstr ""
-"주소의 요소들로 이루어진 합성 유형입니다. <xref linkend=\"standardize_address"
-"\"/> 함수가 이 유형을 반환합니다. <ulink url=\"http://www.pagcgeo.org/docs/"
-"html/pagc-12.html#ss12.1\">PAGC Postal Attributes</ulink> 에서 요소들에 대한 "
-"몇몇 설명을 빌려왔습니다."
+"주소의 요소들로 이루어진 합성 유형입니다. <xref "
+"linkend=\"standardize_address\"/> 함수가 이 유형을 반환합니다. <ulink "
+"url=\"http://www.pagcgeo.org/docs/html/pagc-12.html#ss12.1\">PAGC Postal "
+"Attributes</ulink> 에서 요소들에 대한 몇몇 설명을 빌려왔습니다."
 
 #. Tag: para
 #: extras_address_standardizer.xml:51
 #, no-c-format
 msgid ""
-"The token numbers denote the output reference number in the <xref linkend="
-"\"rulestab\"/>."
+"The token numbers denote the output reference number in the <xref "
+"linkend=\"rulestab\"/>."
 msgstr ""
 "<xref linkend=\"rulestab\"/> 에서 출력 참조 번호를 표시하는 토큰 번호를 찾아"
 "볼 수 있습니다."
 
 #. Tag: para
-#: extras_address_standardizer.xml:52 extras_address_standardizer.xml:593
-#: extras_address_standardizer.xml:655
+#: extras_address_standardizer.xml:52 extras_address_standardizer.xml:622
+#: extras_address_standardizer.xml:674 extras_address_standardizer.xml:736
 #, no-c-format
 msgid "&address_standardizer_required;"
 msgstr "&address_standardizer_required;"
@@ -513,12 +508,6 @@ msgstr ""
 msgid "Address Standardizer Tables"
 msgstr "주소 표준화 도구 테이블"
 
-#. Tag: refname
-#: extras_address_standardizer.xml:149
-#, no-c-format
-msgid "rules table"
-msgstr "규칙 테이블"
-
 #. Tag: refpurpose
 #: extras_address_standardizer.xml:150
 #, no-c-format
@@ -609,8 +598,8 @@ msgstr ""
 #: extras_address_standardizer.xml:168
 #, no-c-format
 msgid ""
-"Numbers for corresponding output tokens are listed in <xref linkend=\"stdaddr"
-"\"/>."
+"Numbers for corresponding output tokens are listed in <xref "
+"linkend=\"stdaddr\"/>."
 msgstr ""
 "<xref linkend=\"stdaddr\"/>에서 해당 출력 토큰에 대한 번호 목록을 소개하고 있"
 "습니다."
@@ -650,8 +639,8 @@ msgstr "AMPERS"
 #: extras_address_standardizer.xml:181
 #, no-c-format
 msgid ""
-"(13). The ampersand (&amp;) is frequently used to abbreviate the word \"and"
-"\"."
+"(13). The ampersand (&amp;) is frequently used to abbreviate the word "
+"\"and\"."
 msgstr "(13). 앰퍼샌드(&amp;)는 단어 \"and\"를 축약하는 데 자주 쓰입니다."
 
 #. Tag: term
@@ -1257,8 +1246,8 @@ msgid ""
 "(token number <code>15</code>): The <emphasis role=\"bold\">3B</emphasis> in "
 "<code>BOX 3B</code>"
 msgstr ""
-"(토큰 번호 <code>15</code>): <code>BOX 3B</code> 에서 <emphasis role=\"bold"
-"\">3B</emphasis>"
+"(토큰 번호 <code>15</code>): <code>BOX 3B</code> 에서 <emphasis "
+"role=\"bold\">3B</emphasis>"
 
 #. Tag: para
 #: extras_address_standardizer.xml:458
@@ -1267,8 +1256,8 @@ msgid ""
 "(token number <code>8</code>): The <emphasis role=\"bold\">RR</emphasis> in "
 "<code>RR 7</code>"
 msgstr ""
-"(토큰 번호 <code>8</code>): <code>RR 7</code> 에서 <emphasis role=\"bold"
-"\">RR</emphasis>"
+"(토큰 번호 <code>8</code>): <code>RR 7</code> 에서 <emphasis "
+"role=\"bold\">RR</emphasis>"
 
 #. Tag: para
 #: extras_address_standardizer.xml:463
@@ -1277,8 +1266,8 @@ msgid ""
 "(token number <code>16</code>): The <emphasis role=\"bold\">APT</emphasis> "
 "in <code>APT 3B</code>"
 msgstr ""
-"(토큰 번호 <code>16</code>): <code>APT 3B</code> 에서 <emphasis role=\"bold"
-"\">APT</emphasis>"
+"(토큰 번호 <code>16</code>): <code>APT 3B</code> 에서 <emphasis "
+"role=\"bold\">APT</emphasis>"
 
 #. Tag: term
 #: extras_address_standardizer.xml:466
@@ -1293,8 +1282,8 @@ msgid ""
 "(token number <code>17</code>): The <emphasis role=\"bold\">3B</emphasis> in "
 "<code>APT 3B</code>"
 msgstr ""
-"(토큰 번호 <code>17</code>): <code>APT 3B</code> 에서 <emphasis role=\"bold"
-"\">3B</emphasis>"
+"(토큰 번호 <code>17</code>): <code>APT 3B</code> 에서 <emphasis "
+"role=\"bold\">3B</emphasis>"
 
 #. Tag: term
 #: extras_address_standardizer.xml:471
@@ -1307,12 +1296,6 @@ msgstr "UNKNWN"
 #, no-c-format
 msgid "(token number <code>9</code>): An otherwise unclassified output."
 msgstr "(토큰 번호 <code>9</code>): 따로 분류되지 않은 출력물입니다."
-
-#. Tag: refname
-#: extras_address_standardizer.xml:482
-#, no-c-format
-msgid "lex table"
-msgstr "어휘 목록 테이블"
 
 #. Tag: refpurpose
 #: extras_address_standardizer.xml:483
@@ -1402,12 +1385,6 @@ msgstr ""
 "될 것입니다. <ulink url=\"http://www.pagcgeo.org/docs/html/pagc-12.html#--i-"
 "tok--\">PAGC Tokens</ulink> 를 참조하십시오."
 
-#. Tag: refname
-#: extras_address_standardizer.xml:524
-#, no-c-format
-msgid "gaz table"
-msgstr "지명 색인 테이블"
-
 #. Tag: refpurpose
 #: extras_address_standardizer.xml:525
 #, no-c-format
@@ -1453,20 +1430,162 @@ msgstr "정수형: 정의 번호? - 단어의 해당 인스턴스에 쓰이는 �
 msgid "Address Standardizer Functions"
 msgstr "주소 표준화 도구 함수"
 
-#. Tag: refname
-#: extras_address_standardizer.xml:570
+#. Tag: refpurpose
+#: extras_address_standardizer.xml:573
 #, no-c-format
-msgid "parse_address"
-msgstr "parse_address"
+msgid ""
+"Returns a json formatted text listing the parse tokens and standardizations"
+msgstr ""
+
+#. Tag: funcprototype
+#: extras_address_standardizer.xml:578
+#, no-c-format
+msgid ""
+"<funcdef>text <function>debug_standardize_address</function></funcdef> "
+"<paramdef><type>text </type> <parameter>lextab</parameter></paramdef> "
+"<paramdef><type>text </type> <parameter>gaztab</parameter></paramdef> "
+"<paramdef><type>text </type> <parameter>rultab</parameter></paramdef> "
+"<paramdef><type>text </type> <parameter>micro</parameter></paramdef> "
+"<paramdef choice=\"opt\"><type>text </type> <parameter>macro=NULL</"
+"parameter></paramdef>"
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:592
+#, no-c-format
+msgid ""
+"This is a function for debugging address standardizer rules and lex/gaz "
+"mappings. It returns a json formatted text that includes the matching rules, "
+"mapping of tokens, and best standardized address <xref linkend=\"stdaddr\"/> "
+"form of an input address utilizing <xref linkend=\"lextab\"/> table name, "
+"<xref linkend=\"gaztab\"/>, and <xref linkend=\"rulestab\"/> table names and "
+"an address."
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:594
+#, no-c-format
+msgid "For single line addresses use just <varname>micro</varname>"
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:595
+#, no-c-format
+msgid ""
+"For two line address A <varname>micro</varname> consisting of standard first "
+"line of postal address e.g. <code>house_num street</code>, and a macro "
+"consisting of standard postal second line of an address e.g <code>city, "
+"state postal_code country</code>."
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:597
+#, no-c-format
+msgid "Elements returned in the json document are"
+msgstr ""
+
+#. Tag: term
+#: extras_address_standardizer.xml:600
+#, no-c-format
+msgid "input_tokens"
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:602
+#, no-c-format
+msgid ""
+"For each word in the input address, returns the position of the word, token "
+"categorization of the word, and the standard word it is mapped to. Note that "
+"for some input words, you might get back multiple records because some "
+"inputs can be categorized as more than one thing."
+msgstr ""
+
+#. Tag: term
+#: extras_address_standardizer.xml:608
+#, no-c-format
+msgid "rules"
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:610
+#, no-c-format
+msgid ""
+"The set of rules matching the input and the corresponding score for each. "
+"The first rule (highest scoring) is what is used for standardization"
+msgstr ""
+
+#. Tag: term
+#: extras_address_standardizer.xml:614
+#, no-c-format
+msgid "<term>stdaddr</term>"
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:616
+#, no-c-format
+msgid ""
+"The standardized address elements <xref linkend=\"stdaddr\"/> that would be "
+"returned when running <xref linkend=\"standardize_address\"/>"
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:621
+#, no-c-format
+msgid "Availability: 3.4.0"
+msgstr ""
+
+#. Tag: title
+#: extras_address_standardizer.xml:627 extras_address_standardizer.xml:679
+#: extras_address_standardizer.xml:741
+#, no-c-format
+msgid "Examples"
+msgstr "예시"
+
+#. Tag: para
+#: extras_address_standardizer.xml:628 extras_address_standardizer.xml:742
+#, no-c-format
+msgid "Using address_standardizer_data_us extension"
+msgstr "address_standardizer_data_us 확장 프로그램 이용"
+
+#. Tag: para
+#: extras_address_standardizer.xml:631
+#, no-c-format
+msgid "Variant 1: Single line address and returning the input tokens"
+msgstr ""
+
+#. Tag: para
+#: extras_address_standardizer.xml:635
+#, no-c-format
+msgid ""
+"Variant 2: Multi line address and returning first rule input mappings and "
+"score"
+msgstr ""
+
+#. Tag: title
+#: extras_address_standardizer.xml:643 extras_address_standardizer.xml:692
+#: extras_address_standardizer.xml:763
+#, no-c-format
+msgid "See Also"
+msgstr "참고"
+
+#. Tag: para
+#: extras_address_standardizer.xml:645 extras_address_standardizer.xml:765
+#, no-c-format
+msgid ""
+", <xref linkend=\"rulestab\"/>, <xref linkend=\"lextab\"/>, <xref "
+"linkend=\"gaztab\"/>, <xref linkend=\"Pagc_Normalize_Address\"/>"
+msgstr ""
+", <xref linkend=\"rulestab\"/>, <xref linkend=\"lextab\"/>, <xref "
+"linkend=\"gaztab\"/>, <xref linkend=\"Pagc_Normalize_Address\"/>"
 
 #. Tag: refpurpose
-#: extras_address_standardizer.xml:572
+#: extras_address_standardizer.xml:653
 #, no-c-format
 msgid "Takes a 1 line address and breaks into parts"
 msgstr "한 줄로 된 주소를 입력받아 부분들로 분해합니다."
 
 #. Tag: funcprototype
-#: extras_address_standardizer.xml:577
+#: extras_address_standardizer.xml:658
 #, no-c-format
 msgid ""
 "<funcdef>record <function>parse_address</function></funcdef> "
@@ -1476,7 +1595,7 @@ msgstr ""
 "<paramdef><type>text </type> <parameter>address</parameter></paramdef>"
 
 #. Tag: para
-#: extras_address_standardizer.xml:588
+#: extras_address_standardizer.xml:669
 #, no-c-format
 msgid ""
 "Returns takes an address as input, and returns a record output consisting of "
@@ -1487,129 +1606,25 @@ msgid ""
 msgstr ""
 
 #. Tag: para
-#: extras_address_standardizer.xml:592 extras_address_standardizer.xml:654
+#: extras_address_standardizer.xml:673 extras_address_standardizer.xml:735
 #, no-c-format
 msgid "Availability: 2.2.0"
 msgstr "2.2.0 버전부터 사용할 수 있습니다."
 
-#. Tag: title
-#: extras_address_standardizer.xml:598 extras_address_standardizer.xml:660
-#, no-c-format
-msgid "Examples"
-msgstr "예시"
-
 #. Tag: para
-#: extras_address_standardizer.xml:600
+#: extras_address_standardizer.xml:681
 #, no-c-format
 msgid "Single Addresss"
 msgstr "단일 주소"
 
-#. Tag: programlisting
-#: extras_address_standardizer.xml:601
-#, no-c-format
-msgid ""
-"SELECT num, street, city, zip, zipplus\n"
-"        FROM parse_address('1 Devonshire Place, Boston, MA 02109-1234') AS a;"
-msgstr ""
-"SELECT num, street, city, zip, zipplus\n"
-"        FROM parse_address('1 Devonshire Place, Boston, MA 02109-1234') AS a;"
-
-#. Tag: screen
-#: extras_address_standardizer.xml:602
-#, no-c-format
-msgid ""
-"num |      street      |  city  |  zip  | zipplus\n"
-"-----+------------------+--------+-------+---------\n"
-" 1   | Devonshire Place | Boston | 02109 | 1234"
-msgstr ""
-"num |      street      |  city  |  zip  | zipplus\n"
-"-----+------------------+--------+-------+---------\n"
-" 1   | Devonshire Place | Boston | 02109 | 1234"
-
 #. Tag: para
-#: extras_address_standardizer.xml:604
+#: extras_address_standardizer.xml:685
 #, no-c-format
 msgid "Table of addresses"
 msgstr "주소 테이블"
 
-#. Tag: programlisting
-#: extras_address_standardizer.xml:605
-#, no-c-format
-msgid ""
-"-- basic table\n"
-"CREATE TABLE places(addid serial PRIMARY KEY, address text);\n"
-"\n"
-"INSERT INTO places(address)\n"
-"VALUES ('529 Main Street, Boston MA, 02129'),\n"
-" ('77 Massachusetts Avenue, Cambridge, MA 02139'),\n"
-" ('25 Wizard of Oz, Walaford, KS 99912323'),\n"
-" ('26 Capen Street, Medford, MA'),\n"
-" ('124 Mount Auburn St, Cambridge, Massachusetts 02138'),\n"
-" ('950 Main Street, Worcester, MA 01610');\n"
-"\n"
-" -- parse the addresses\n"
-" -- if you want all fields you can use (a).*\n"
-"SELECT addid, (a).num, (a).street, (a).city, (a).state, (a).zip, (a)."
-"zipplus\n"
-"FROM (SELECT addid, parse_address(address) As a\n"
-" FROM places) AS p;"
-msgstr ""
-"-- 기본 테이블\n"
-"CREATE TABLE places(addid serial PRIMARY KEY, address text);\n"
-"\n"
-"INSERT INTO places(address)\n"
-"VALUES ('529 Main Street, Boston MA, 02129'),\n"
-" ('77 Massachusetts Avenue, Cambridge, MA 02139'),\n"
-" ('25 Wizard of Oz, Walaford, KS 99912323'),\n"
-" ('26 Capen Street, Medford, MA'),\n"
-" ('124 Mount Auburn St, Cambridge, Massachusetts 02138'),\n"
-" ('950 Main Street, Worcester, MA 01610');\n"
-"\n"
-" -- 주소 파싱하기\n"
-" -- 모든 항목을 원한다면 (a).*를 쓰면 됩니다.\n"
-"SELECT addid, (a).num, (a).street, (a).city, (a).state, (a).zip, (a)."
-"zipplus\n"
-"FROM (SELECT addid, parse_address(address) As a\n"
-" FROM places) AS p;"
-
-#. Tag: screen
-#: extras_address_standardizer.xml:606
-#, no-c-format
-msgid ""
-"addid | num |        street        |   city    | state |  zip  | zipplus\n"
-"-------+-----+----------------------+-----------+-------+-------+---------\n"
-"     1 | 529 | Main Street          | Boston    | MA    | 02129 |\n"
-"     2 | 77  | Massachusetts Avenue | Cambridge | MA    | 02139 |\n"
-"     3 | 25  | Wizard of Oz         | Walaford  | KS    | 99912 | 323\n"
-"     4 | 26  | Capen Street         | Medford   | MA    |       |\n"
-"     5 | 124 | Mount Auburn St      | Cambridge | MA    | 02138 |\n"
-"     6 | 950 | Main Street          | Worcester | MA    | 01610 |\n"
-"(6 rows)"
-msgstr ""
-"addid | num |        street        |   city    | state |  zip  | zipplus\n"
-"-------+-----+----------------------+-----------+-------+-------+---------\n"
-"     1 | 529 | Main Street          | Boston    | MA    | 02129 |\n"
-"     2 | 77  | Massachusetts Avenue | Cambridge | MA    | 02139 |\n"
-"     3 | 25  | Wizard of Oz         | Walaford  | KS    | 99912 | 323\n"
-"     4 | 26  | Capen Street         | Medford   | MA    |       |\n"
-"     5 | 124 | Mount Auburn St      | Cambridge | MA    | 02138 |\n"
-"     6 | 950 | Main Street          | Worcester | MA    | 01610 |\n"
-"(6 rows)"
-
-#. Tag: title
-#: extras_address_standardizer.xml:611 extras_address_standardizer.xml:682
-#, no-c-format
-msgid "See Also"
-msgstr "참고"
-
-#. Tag: refname
-#: extras_address_standardizer.xml:619
-#, no-c-format
-msgid "standardize_address"
-msgstr "standardize_address"
-
 #. Tag: refpurpose
-#: extras_address_standardizer.xml:621
+#: extras_address_standardizer.xml:702
 #, no-c-format
 msgid ""
 "Returns an stdaddr form of an input address utilizing lex, gaz, and rule "
@@ -1618,56 +1633,26 @@ msgstr ""
 "어휘 목록, 지명 색인, 규칙 테이블을 활용해서 입력 주소의 stdaddr 형식을 반환"
 "합니다."
 
-#. Tag: funcsynopsis
-#: extras_address_standardizer.xml:625
-#, no-c-format
-msgid ""
-"<funcprototype> <funcdef>stdaddr <function>standardize_address</function></"
-"funcdef> <paramdef><type>text </type> <parameter>lextab</parameter></"
-"paramdef> <paramdef><type>text </type> <parameter>gaztab</parameter></"
-"paramdef> <paramdef><type>text </type> <parameter>rultab</parameter></"
-"paramdef> <paramdef><type>text </type> <parameter>address</parameter></"
-"paramdef> </funcprototype> <funcprototype> <funcdef>stdaddr "
-"<function>standardize_address</function></funcdef> <paramdef><type>text </"
-"type> <parameter>lextab</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>gaztab</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>rultab</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>micro</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>macro</parameter></paramdef> </funcprototype>"
-msgstr ""
-"<funcprototype> <funcdef>stdaddr <function>standardize_address</function></"
-"funcdef> <paramdef><type>text </type> <parameter>lextab</parameter></"
-"paramdef> <paramdef><type>text </type> <parameter>gaztab</parameter></"
-"paramdef> <paramdef><type>text </type> <parameter>rultab</parameter></"
-"paramdef> <paramdef><type>text </type> <parameter>address</parameter></"
-"paramdef> </funcprototype> <funcprototype> <funcdef>stdaddr "
-"<function>standardize_address</function></funcdef> <paramdef><type>text </"
-"type> <parameter>lextab</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>gaztab</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>rultab</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>micro</parameter></paramdef> <paramdef><type>text </type> "
-"<parameter>macro</parameter></paramdef> </funcprototype>"
-
 #. Tag: para
-#: extras_address_standardizer.xml:648
+#: extras_address_standardizer.xml:729
 #, no-c-format
 msgid ""
 "Returns an <xref linkend=\"stdaddr\"/> form of an input address utilizing "
 "<xref linkend=\"lextab\"/> table name, <xref linkend=\"gaztab\"/>, and <xref "
 "linkend=\"rulestab\"/> table names and an address."
 msgstr ""
-"<xref linkend=\"lextab\"/>, <xref linkend=\"gaztab\"/>, <xref linkend="
-"\"rulestab\"/> 테이블명 및 주소를 활용해서 입력 주소의 <xref linkend="
-"\"stdaddr\"/> 형식을 반환합니다."
+"<xref linkend=\"lextab\"/>, <xref linkend=\"gaztab\"/>, <xref "
+"linkend=\"rulestab\"/> 테이블명 및 주소를 활용해서 입력 주소의 <xref "
+"linkend=\"stdaddr\"/> 형식을 반환합니다."
 
 #. Tag: para
-#: extras_address_standardizer.xml:650
+#: extras_address_standardizer.xml:731
 #, no-c-format
 msgid "Variant 1: Takes an address as a single line."
 msgstr "변종 1: 주소를 단일 행으로 입력받습니다."
 
 #. Tag: para
-#: extras_address_standardizer.xml:651
+#: extras_address_standardizer.xml:732
 #, no-c-format
 msgid ""
 "Variant 2: Takes an address as 2 parts. A <varname>micro</varname> "
@@ -1677,25 +1662,11 @@ msgid ""
 msgstr ""
 "변종 2: 주소를 두 부분으로 입력받습니다. <code>house_num street</code> 같은 "
 "우편 주소의 표준 첫 번째 행으로 이루어진 <varname>micro</varname> 절과,  "
-"<code>city, state postal_code country</code> 같은 우편 주소의 표준 두 번째 "
-"행으로 이루어진 <varname>macro</varname> 절입니다."
+"<code>city, state postal_code country</code> 같은 우편 주소의 표준 두 번째 행"
+"으로 이루어진 <varname>macro</varname> 절입니다."
 
 #. Tag: para
-#: extras_address_standardizer.xml:661
-#, no-c-format
-msgid "Using address_standardizer_data_us extension"
-msgstr "address_standardizer_data_us 확장 프로그램 이용"
-
-#. Tag: programlisting
-#: extras_address_standardizer.xml:662
-#, no-c-format
-msgid ""
-"CREATE EXTENSION address_standardizer_data_us; -- only needs to be done once"
-msgstr ""
-"CREATE EXTENSION address_standardizer_data_us; -- 한 번만 실행하면 됩니다."
-
-#. Tag: para
-#: extras_address_standardizer.xml:664
+#: extras_address_standardizer.xml:745
 #, no-c-format
 msgid ""
 "Variant 1: Single line address. This doesn't work well with non-US addresses"
@@ -1703,40 +1674,8 @@ msgstr ""
 "변종 1: 단일 행 주소를 입력 받습니다. 미국 주소가 아닌 경우 제대로 동작하지 "
 "않습니다."
 
-#. Tag: programlisting
-#: extras_address_standardizer.xml:665
-#, no-c-format
-msgid ""
-"SELECT house_num, name, suftype, city, country, state, unit  FROM "
-"standardize_address('us_lex',\n"
-"                           'us_gaz', 'us_rules', 'One Devonshire Place, PH "
-"301, Boston, MA 02109');"
-msgstr ""
-"SELECT house_num, name, suftype, city, country, state, unit  FROM "
-"standardize_address('us_lex',\n"
-"                           'us_gaz', 'us_rules', 'One Devonshire Place, PH "
-"301, Boston, MA 02109');"
-
-#. Tag: screen
-#: extras_address_standardizer.xml:666
-#, no-c-format
-msgid ""
-"house_num |    name    | suftype |  city  | country |     state     |      "
-"unit\n"
-"----------+------------+---------+--------+---------+---------------"
-"+-----------------\n"
-"1         | DEVONSHIRE | PLACE   | BOSTON | USA     | MASSACHUSETTS | # "
-"PENTHOUSE 301"
-msgstr ""
-"house_num |    name    | suftype |  city  | country |     state     |      "
-"unit\n"
-"----------+------------+---------+--------+---------+---------------"
-"+-----------------\n"
-"1         | DEVONSHIRE | PLACE   | BOSTON | USA     | MASSACHUSETTS | # "
-"PENTHOUSE 301"
-
 #. Tag: para
-#: extras_address_standardizer.xml:667
+#: extras_address_standardizer.xml:748
 #, no-c-format
 msgid ""
 "Using tables packaged with tiger geocoder. This example only works if you "
@@ -1745,20 +1684,8 @@ msgstr ""
 "TIGER 지오코딩 도구로 패키징된 테이블을 이용 (이 예시는 사용자가 "
 "<varname>postgis_tiger_geocoder</varname> 를 설치했을 경우에만 동작합니다.)"
 
-#. Tag: programlisting
-#: extras_address_standardizer.xml:668
-#, no-c-format
-msgid ""
-"SELECT *  FROM standardize_address('tiger.pagc_lex',\n"
-"         'tiger.pagc_gaz', 'tiger.pagc_rules', 'One Devonshire Place, PH "
-"301, Boston, MA 02109-1234');"
-msgstr ""
-"SELECT *  FROM standardize_address('tiger.pagc_lex',\n"
-"         'tiger.pagc_gaz', 'tiger.pagc_rules', 'One Devonshire Place, PH "
-"301, Boston, MA 02109-1234');"
-
 #. Tag: para
-#: extras_address_standardizer.xml:670
+#: extras_address_standardizer.xml:751
 #, no-c-format
 msgid ""
 "Make easier to read we'll dump output using hstore extension CREATE "
@@ -1768,90 +1695,8 @@ msgstr ""
 "입니다. 사용자가 <code>CREATE EXTENSION hstore;</code> 명령으로 설치해야 합니"
 "다."
 
-#. Tag: programlisting
-#: extras_address_standardizer.xml:671
-#, no-c-format
-msgid ""
-"SELECT (each(hstore(p))).*\n"
-" FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz',\n"
-"   'tiger.pagc_rules', 'One Devonshire Place, PH 301, Boston, MA 02109') As "
-"p;"
-msgstr ""
-"SELECT (each(hstore(p))).*\n"
-" FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz',\n"
-"   'tiger.pagc_rules', 'One Devonshire Place, PH 301, Boston, MA 02109') As "
-"p;"
-
-#. Tag: screen
-#: extras_address_standardizer.xml:672 extras_address_standardizer.xml:676
-#, no-c-format
-msgid ""
-"key     |      value\n"
-"------------+-----------------\n"
-" box        |\n"
-" city       | BOSTON\n"
-" name       | DEVONSHIRE\n"
-" qual       |\n"
-" unit       | # PENTHOUSE 301\n"
-" extra      |\n"
-" state      | MA\n"
-" predir     |\n"
-" sufdir     |\n"
-" country    | USA\n"
-" pretype    |\n"
-" suftype    | PL\n"
-" building   |\n"
-" postcode   | 02109\n"
-" house_num  | 1\n"
-" ruralroute |\n"
-"(16 rows)"
-msgstr ""
-"key     |      value\n"
-"------------+-----------------\n"
-" box        |\n"
-" city       | BOSTON\n"
-" name       | DEVONSHIRE\n"
-" qual       |\n"
-" unit       | # PENTHOUSE 301\n"
-" extra      |\n"
-" state      | MA\n"
-" predir     |\n"
-" sufdir     |\n"
-" country    | USA\n"
-" pretype    |\n"
-" suftype    | PL\n"
-" building   |\n"
-" postcode   | 02109\n"
-" house_num  | 1\n"
-" ruralroute |\n"
-"(16 rows)"
-
 #. Tag: para
-#: extras_address_standardizer.xml:674
+#: extras_address_standardizer.xml:755
 #, no-c-format
 msgid "Variant 2: As a two part Address"
 msgstr "변종 2: 주소를 두 부분으로 입력받습니다."
-
-#. Tag: programlisting
-#: extras_address_standardizer.xml:675
-#, no-c-format
-msgid ""
-"SELECT (each(hstore(p))).*\n"
-" FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz',\n"
-"   'tiger.pagc_rules', 'One Devonshire Place, PH 301', 'Boston, MA 02109, "
-"US') As p;"
-msgstr ""
-"SELECT (each(hstore(p))).*\n"
-" FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz',\n"
-"   'tiger.pagc_rules', 'One Devonshire Place, PH 301', 'Boston, MA 02109, "
-"US') As p;"
-
-#. Tag: para
-#: extras_address_standardizer.xml:684
-#, no-c-format
-msgid ""
-", <xref linkend=\"rulestab\"/>, <xref linkend=\"lextab\"/>, <xref linkend="
-"\"gaztab\"/>, <xref linkend=\"Pagc_Normalize_Address\"/>"
-msgstr ""
-", <xref linkend=\"rulestab\"/>, <xref linkend=\"lextab\"/>, <xref linkend="
-"\"gaztab\"/>, <xref linkend=\"Pagc_Normalize_Address\"/>"
