@@ -74,7 +74,7 @@ if [[ "$POSTGIS_MICRO_VERSION" == *"dev"* ]]; then
 fi
 
 make cheatsheets
-make -e chunked-html-web # TODO: do we really want this too in the doc-html-*.tar.gz package ?
+make -e chunked-html # TODO: do we really want this too in the doc-html-*.tar.gz package ?
 make html-localized # TODO: do we really want this too in the doc-html-*.tar.gz package ?
 
 package="doc-html-${POSTGIS_MAJOR_VERSION}.${POSTGIS_MINOR_VERSION}.${POSTGIS_MICRO_VERSION}.tar.gz"
@@ -85,23 +85,25 @@ cp $package ${STUFF_DIR}
 make html-assets-install
 make html-install
 make html-install-localized
-make chunked-html-web-install
-make chunked-html-web-install-localized
+make chunked-html-install
+make chunked-html-install-localized
 make cheatsheet-install
 make cheatsheet-install-localized
 
-# Strip out the "postgis-web-" suffix
+# Strip out the "postgis-" suffix
 # from chunked html directories, backing
 # up any previous target directory
-for f in ${HTML_DIR}/postgis-web-*; do
-  if test -e $f; then
-    nf=$(echo $f| sed 's/postgis-web-//');
-    if test -e $nf; then
-      rm -rf $nf.old
-      mv -v $nf $nf.old
-    fi
-    mv -v $f $nf;
+for f in $(
+  find ${HTML_DIR} -type d \
+    -maxdepth 1 -mindepth 1 \
+    -name 'postgis-*'
+); do
+  nf=$(echo $f| sed 's/postgis-//');
+  if test -e $nf; then
+    rm -rf $nf.old
+    mv -v $nf $nf.old
   fi
+  mv -v $f $nf;
 done
 
 
@@ -109,15 +111,19 @@ done
 make pdf-install # || : survive failure
 make epub-install # || : survive failure
 
-# build japanese, french, and german pdf
+# build japanese, french, german, chinese, korean pdf
 make -C ../doc/po/ja local-pdf-install
 make -C ../doc/po/fr local-pdf-install
 make -C ../doc/po/de local-pdf-install
+make -C ../doc/po/zh_Hans local-pdf-install
+make -C ../doc/po/ko_KR local-pdf-install
 
 # build comments files
 make -C ../doc/po/ja comments
 make -C ../doc/po/fr comments
 make -C ../doc/po/de comments
+make -C ../doc/po/zh_Hans comments
+make -C ../doc/po/ko_KR comments
 # Build and install localized pdf and epub
 # make pdf-install-localized # || : survive failures
 #make epub-install-localized # || : survive failures

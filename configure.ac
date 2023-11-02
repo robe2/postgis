@@ -205,14 +205,38 @@ if test "x$XSLTPROC" = "x"; then
   CAN_BUILD_COMMENTS=no
 fi
 
+AC_PATH_PROG([XMLCATALOG], [xmlcatalog], [])
+if test "x$XMLCATALOG" = "x"; then
+	AC_MSG_WARN([xmlcatalog is not installed so documentation cannot be checked])
+fi
+
+AC_PATH_PROG([XMLLINT], [xmllint], [])
+if test "x$XMLLINT" = "x"; then
+	dnl AC_MSG_WARN([xmllint is not installed so documentation cannot be checked])
+	AC_MSG_WARN([xmlcatalog is not installed so documentation cannot be built])
+	CAN_BUILD_COMMENTS=no
+fi
+
+
+
 AC_PATH_PROG([XML2POT], [xml2pot], [])
 if test "x$XML2POT" = "x"; then
-	AC_MSG_WARN([xml2pot is not installed so translations cannot be updated])
+	AC_MSG_WARN([xml2pot is not installed so translation template cannot be updated])
 fi
 
 AC_PATH_PROG([MSGMERGE], [msgmerge], [])
 if test "x$MSGMERGE" = "x"; then
 	AC_MSG_WARN([msgmerge is not installed so translations cannot be updated])
+fi
+
+AC_PATH_PROG([MSGCAT], [msgcat], [])
+if test "x$MSGCAT" = "x"; then
+	AC_MSG_WARN([msgcat is not installed so translation templates cannot be updated])
+fi
+
+AC_PATH_PROG([MSGCOMM], [msgcomm], [])
+if test "x$MSGCOMM" = "x"; then
+	AC_MSG_WARN([msgcomm is not installed so translations cannot be updated])
 fi
 
 AC_PATH_PROG([MSGATTRIB], [msgattrib], [])
@@ -250,14 +274,8 @@ if test "x$DBTOEPUB" = "x"; then
 fi
 AC_SUBST(CAN_BUILD_EPUB)
 
-AC_PATH_PROG([XMLLINT], [xmllint], [])
-if test "x$XMLLINT" = "x"; then
-	AC_MSG_WARN([xmllint is not installed so documentation cannot be checked])
-fi
-
-
 dnl
-dnl Allow the user to specify the location of the html/docbook.xsl stylesheet
+dnl Allow the user to specify the location of the xhtml5/docbook.xsl stylesheet
 dnl
 
 AC_ARG_WITH([xsldir],
@@ -267,10 +285,15 @@ AC_ARG_WITH([xsldir],
 XSLBASE_AUTO=""
 if test "x$XSLBASE" = "x"; then
 	dnl If the user did not specify a directory for the docbook
-	dnl stylesheet, choose the first directory
+	dnl stylesheet, choose the first uri that can resolve
+  dnl xhtml5/docbook.xsl or the first directory
 	dnl that matches from the following list
 	SEARCHPATH="
+		http://cdn.docbook.org/release/xsl/current
+		https://cdn.docbook.org/release/xsl/current
+		http://docbook.sourceforge.net/release/xsl-ns/current
 		/usr/share/sgml/docbook/xsl-stylesheets
+		/usr/share/xml/docbook/stylesheet/docbook-xsl-ns
 		/usr/share/xml/docbook/stylesheet/docbook-xsl
 		/usr/share/xml/docbook/stylesheet/nwalsh
 		/usr/share/sgml/docbook/stylesheet/xsl/nwalsh
@@ -280,16 +303,34 @@ if test "x$XSLBASE" = "x"; then
 		/usr/share/xsl/docbook-xsl
 		"
 	for p in ${SEARCHPATH}; do
-		if test -r "${p}"/html/docbook.xsl; then
-			XSLBASE_AUTO="${p}"
-			break
-		fi
+    case "${p}" in
+      /*)
+        AC_MSG_CHECKING([for xhtml5/docbook.xsl in directory $p...])
+        if test -r "${p}"/xhtml5/docbook.xsl; then
+          XSLBASE_AUTO="${p}"
+          AC_MSG_RESULT([found])
+          break
+        fi
+        AC_MSG_RESULT([not found])
+        ;;
+      *)
+        if test "x$XMLCATALOG" != "x"; then
+          AC_MSG_CHECKING([for xhtml5/docbook.xsl in URI $p...])
+          if $XMLCATALOG '' "${p}/xhtml5/docbook.xsl" >/dev/null; then
+            XSLBASE_AUTO="${p}"
+            AC_MSG_RESULT([found])
+            break
+          fi
+          AC_MSG_RESULT([not found])
+        fi
+        ;;
+    esac
 	done
 
 	dnl Check to see if the automatically searched paths above located a
 	dnl valid Docbook stylesheet
 	if test "x$XSLBASE_AUTO" = "x"; then
-		AC_MSG_WARN([could not locate Docbook stylesheets required to build the documentation])
+		AC_MSG_WARN([could not locate Docbook stylesheets required to build the html documentation])
 	fi
 else
 	dnl The user specified an alternate directory so make sure everything
@@ -298,8 +339,8 @@ else
 		AC_MSG_ERROR([the docbook stylesheet directory specified using --with-xsldir does not exist])
 	fi
 
-	if test ! -f "$XSLBASE/html/docbook.xsl"; then
-		AC_MSG_ERROR([the docbook stylesheet directory specified using --with-xsldir does not contain the html/docbook.xsl file])
+	if test ! -f "$XSLBASE/xhtml5/docbook.xsl"; then
+		AC_MSG_ERROR([the docbook stylesheet directory specified using --with-xsldir does not contain the xhtml5/docbook.xsl file])
 	fi
 fi
 
@@ -320,25 +361,30 @@ fi
 AC_SUBST([XSLBASE])
 
 dnl
-dnl Let's see if we can find mathml2.dtd
+dnl Ensure DocBook RelaxNG can be found
 dnl
-AC_ARG_WITH([mathmldtd],
-	[AS_HELP_STRING([--with-mathmldtd=PATH], [specify the dtd path for mathml2.dtd])],
-	[MATHML2_DTD="$withval"], [MATHML2_DTD=""])
-dnl TODO: get more paths to add here...
-if test "x$MATHML2_DTD" = "x"; then
-	MATHML2_DTD="http://www.w3.org/Math/DTD/mathml2/mathml2.dtd"
-	SEARCHPATH="
-			/usr/share/xml/schema/w3c/mathml/dtd
-			"
-	for p in ${SEARCHPATH}; do
-		if test -r "${p}"/mathml2.dtd; then
-			MATHML2_DTD="${p}/mathml2.dtd"
-			break
-		fi
-	done
+DOCBOOK5_RNG=http://docbook.org/xml/5.0/rng/docbook.rng
+if test "x$XMLCATALOG" = "x"; then
+  DOCBOOK5_RNG=
+else
+  if $XMLCATALOG '' "${DOCBOOK5_RNG}" > /dev/null; then :
+  else DOCBOOK5_RNG=
+  fi
 fi
-AC_SUBST([MATHML2_DTD])
+AC_SUBST([DOCBOOK5_RNG])
+
+dnl
+dnl Ensure DocBook DTD can be found
+dnl
+DOCBOOK5_DTD=http://docbook.org/xml/5.0/rng/docbook.dtd
+if test "x$XMLCATALOG" = "x"; then
+  DOCBOOK5_DTD=
+else
+  if $XMLCATALOG '' "${DOCBOOK5_DTD}" > /dev/null; then :
+  else DOCBOOK5_DTD=
+  fi
+fi
+AC_SUBST([DOCBOOK5_DTD])
 
 dnl ===========================================================================
 dnl Detect if pkg-config installed
@@ -754,10 +800,10 @@ GEOS_NUMERIC_PATCH_VERSION=`printf "%02d" $GEOS_PATCH_VERSION`
 GEOS_NUMERIC_MINOR_VERSION=`printf "%02d" $GEOS_MINOR_VERSION`
 POSTGIS_GEOS_VERSION="$GEOS_MAJOR_VERSION$GEOS_NUMERIC_MINOR_VERSION$GEOS_NUMERIC_PATCH_VERSION"
 
-dnl Ensure that we are using GEOS >= 3.6.0
+dnl Ensure that we are using GEOS >= 3.8.0
 AC_MSG_RESULT([checking GEOS version... $GEOS_FULL_VERSION])
-if test ! "$POSTGIS_GEOS_VERSION" -ge 30600; then
-	AC_MSG_ERROR([PostGIS requires GEOS >= 3.6.0])
+if test ! "$POSTGIS_GEOS_VERSION" -ge 30800; then
+	AC_MSG_ERROR([PostGIS requires GEOS >= 3.8.0])
 fi
 
 dnl Extract the linker and include flags
@@ -1143,7 +1189,7 @@ dnl ===========================================================================
 
 AC_ARG_WITH([gui],
 	[AS_HELP_STRING([--with-gui], [compile the data import GUI (requires GTK+2.0)])],
-	[GUI="yes"], [GUI="no"])
+	[GUI="$withval"], [GUI="no"])
 
 if test "x$GUI" = "xyes"; then
 	AC_MSG_RESULT([GUI: Build requested, checking for dependencies (GTK+2.0)])
@@ -1725,20 +1771,14 @@ DEPS_MAKEFILE_LIST="$DEPS_MAKEFILE_LIST
 
 dnl ===========================================================================
 dnl See if we have the requirements for building the extensions, namely
-dnl the xlstproc tool for generating the comments SQL file.
+dnl the pg_config support
 dnl ===========================================================================
 
 EXTENSIONS=""
 if test "x$PG_CONFIG" != "xno"; then
-  if test \
-          "x$XSLTPROC" != "x" -o \
-          -e doc/postgis_comments.sql -a \
-          -e doc/raster_comments.sql;
-  then
-      AC_MSG_RESULT([enabling PostgreSQL extension support...])
-      EXTENSIONS=extensions
-      AC_SUBST([EXTENSIONS])
-  fi
+    AC_MSG_RESULT([enabling PostgreSQL extension support...])
+    EXTENSIONS=extensions
+    AC_SUBST([EXTENSIONS])
 fi
 
 INSTALL_EXTENSION_UPGRADES=yes
@@ -1891,10 +1931,9 @@ fi
 AC_MSG_RESULT()
 AC_MSG_RESULT([ -------- Documentation Generation -------- ])
 AC_MSG_RESULT([  xsltproc:             ${XSLTPROC}])
-AC_MSG_RESULT([  xsl style sheets:     ${XSLBASE}])
+AC_MSG_RESULT([  docbook xsl base:     ${XSLBASE}])
 AC_MSG_RESULT([  dblatex:              ${DBLATEX}])
 AC_MSG_RESULT([  convert:              ${CONVERT}])
-AC_MSG_RESULT([  mathml2.dtd:          ${MATHML2_DTD}])
 AC_MSG_RESULT()
 
 if test "$POSTGIS_GEOS_VERSION" -lt 31200; then

@@ -1660,6 +1660,20 @@ CREATE OR REPLACE FUNCTION ST_NDims(geometry)
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_DEFAULT;
 
+-- Availability: 3.5.0
+CREATE OR REPLACE FUNCTION ST_HasZ(geometry)
+	RETURNS boolean
+	AS 'MODULE_PATHNAME', 'LWGEOM_hasz'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_DEFAULT;
+
+-- Availability: 3.5.0
+CREATE OR REPLACE FUNCTION ST_HasM(geometry)
+	RETURNS boolean
+	AS 'MODULE_PATHNAME', 'LWGEOM_hasm'
+	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
+	_COST_DEFAULT;
+
 -- Availability: 1.2.2
 CREATE OR REPLACE FUNCTION ST_AsEWKT(geometry)
 	RETURNS TEXT
@@ -1862,6 +1876,7 @@ CREATE OR REPLACE FUNCTION ST_MakeEnvelope(float8, float8, float8, float8, integ
 
 -- Availability: 3.0.0
 -- Changed: 3.1.0 - add margin=0.0 parameter
+-- Replaces ST_TileEnvelope(zoom integer, x integer, y integer, bounds geometry) deprecated in 3.1.0
 CREATE OR REPLACE FUNCTION ST_TileEnvelope(zoom integer, x integer, y integer, bounds geometry DEFAULT 'SRID=3857;LINESTRING(-20037508.342789244 -20037508.342789244, 20037508.342789244 20037508.342789244)'::geometry, margin float8 DEFAULT 0.0)
 	RETURNS geometry
 	AS 'MODULE_PATHNAME', 'ST_TileEnvelope'
@@ -3692,6 +3707,7 @@ CREATE OR REPLACE FUNCTION ST_Intersection(geom1 geometry, geom2 geometry, gridS
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_HIGH;
 
+-- Replaces ST_Buffer(geometry, float8) deprecated in 3.0.0
 CREATE OR REPLACE FUNCTION ST_Buffer(geom geometry, radius float8, options text DEFAULT '')
 	RETURNS geometry
 	AS 'MODULE_PATHNAME','buffer'
@@ -4635,9 +4651,10 @@ CREATE OR REPLACE FUNCTION ST_LineCrossingDirection(line1 geometry, line2 geomet
 	LANGUAGE 'c' IMMUTABLE STRICT PARALLEL SAFE
 	_COST_HIGH;
 
--- Availability: 1.3.4
--- Replaces ST_DWithin(text, text, float8) deprecated in 3.0.0
-CREATE OR REPLACE FUNCTION ST_DWithin(geom1 geometry, geom2 geometry,float8)
+-- Availability: 1.3.0
+-- Changed: 2.0.0 added parameter names
+-- TODO: encode deprecation of the version with no parameter names ?
+CREATE OR REPLACE FUNCTION ST_DWithin(geom1 geometry, geom2 geometry, float8)
 	RETURNS boolean
 	AS 'MODULE_PATHNAME', 'LWGEOM_dwithin'
 	SUPPORT postgis_index_supportfn
@@ -6492,6 +6509,9 @@ CREATE OR REPLACE FUNCTION ST_CoordDim(Geometry geometry)
 --    1: Symmetric output (result in same vertices when inverting the curve)
 --
 -- Availability: 2.4.0
+-- Changed: 2.5.0 to add defaults
+-- Replaces ST_CurveToLine(geometry, integer) deprecated in 2.5.0
+-- Replaces ST_CurveToLine(geometry) deprecated in 2.5.0
 --
 CREATE OR REPLACE FUNCTION ST_CurveToLine(geom geometry, tol float8 DEFAULT 32, toltype integer DEFAULT 0, flags integer DEFAULT 0)
 	RETURNS geometry
@@ -6654,15 +6674,13 @@ CREATE OR REPLACE FUNCTION ST_SimplifyPolygonHull(geom geometry, vertex_fraction
 -- Availability: 2.0.0
 -- Changed: 2.5.0
 -- Enhanced: 3.3.0 implements it in C, if GEOS >= 3.10
+-- Replaces _st_concavehull(geometry) deprecated in 3.3.0-with-geos-3.11
 CREATE OR REPLACE FUNCTION ST_ConcaveHull(param_geom geometry, param_pctconvex float, param_allow_holes boolean DEFAULT false)
 	RETURNS geometry
 	AS 'MODULE_PATHNAME', 'ST_ConcaveHull'
 	LANGUAGE 'c' IMMUTABLE STRICT
 	PARALLEL SAFE
 	_COST_HIGH;
-
--- No longer needed with C language implementation
-DROP FUNCTION IF EXISTS _st_concavehull(geometry);
 
 #else
 

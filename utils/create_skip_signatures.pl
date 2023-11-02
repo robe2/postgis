@@ -75,15 +75,12 @@ sub strip_argument_names {
 		my $a = $_;
 
 		#print "  XXX arg: $a\n";
-		# If the arg is composed by multiple words
-		# drop the first, unless it's a reserved word
-		if ( $a =~ m/([^ ]*) (.*)/ )
+		# Drop all but reserved words from multi-word arg
+		while ( $a =~ m/^([^ ]*) (.*)/ )
 		{
-			unless ( $reserved_sql_word{$1} )
-			{
-				$a = $2;
-				#print "  XXX arg became: $a\n";
-			}
+			last if $reserved_sql_word{$1};
+			$a = $2;
+			#print "  XXX arg became: $a\n";
 		}
 		push @out, $a;
 	}
@@ -109,6 +106,31 @@ sub canonicalize_args {
 	return @out;
 }
 
+sub handle_function_signature {
+	my $line = shift;
+
+	$line = lc($line);
+	$line =~ s/topology\.//g;
+
+	$line =~ m/ *([^\( ]*) *\((.*)\)/ or die "Unexpected FUNCTION signature: $line";
+
+	my $name = $1;
+	my $args = $2;
+	$args =~ s/\s*$//; # trim trailing blanks
+	$args =~ s/^\s*//; # trim leading blanks
+
+	my @args = split('\s*,\s*', $args);
+	@args = canonicalize_args(@args);
+
+	# No inout indicator or out parameters for function signatures
+	my @inonly_args = clean_inout_arguments(@args);
+
+	# For *function* signature we are supposed to strip argument names
+	my @unnamed_args = strip_argument_names(@inonly_args);
+
+	print "FUNCTION $name(" . join(', ', @unnamed_args) . ")\n";
+}
+
 while (<>)
 {
 	#print "XXX 0 $_";
@@ -118,7 +140,6 @@ while (<>)
 	{
 		my $t = lc($1);
 		$t =~ s/topology\.//g;
-		print "COMMENT TYPE $t\n";
 		print "TYPE $t\n";
 	}
 
@@ -134,8 +155,6 @@ while (<>)
 		$args =~ s/topology\.//g;
 		my @args = split('\s*,\s*', $args);
 		@args = canonicalize_args(@args);
-
-		print "COMMENT AGGREGATE $name(" . join(', ', @args) . ")\n";
 
 		# For *aggregate* signature we are supposed to strip
 		# also argument names, which aint easy
@@ -157,33 +176,31 @@ while (<>)
 		# at some point
 		$line =~ s/ *--.*//;
 
-		$line = lc($line);
-		$line =~ s/topology\.//g;
+		handle_function_signature($line);
+	}
 
-		$line =~ m/ *([^\( ]*) *\((.*)\)/ or die "Unexpected DROP FUNCTION syntax: $origline";
+	# Deprecated function signature
+	# EXAMPLE: ALTER FUNCTION _st_concavehull( geometry ) RENAME TO _st_concavehull_deprecated_by_postgis_303;
+	elsif ( /ALTER FUNCTION .* RENAME TO .*_deprecated_by_postgis_/ )
+	{
+		my $origline = $_;
+		my $line = $origline;
 
-		my $name = $1;
-		my $args = $2;
-		$args =~ s/\s*$//; # trim trailing blanks
-		$args =~ s/^\s*//; # trim leading blanks
+		$line =~ s/ *ALTER FUNCTION (.*) RENAME TO .*_deprecated_by_postgis_.*/$1/;
 
-		my @args = split('\s*,\s*', $args);
-		@args = canonicalize_args(@args);
+		handle_function_signature($line);
+	}
 
-		print "COMMENT FUNCTION $name(" . join(', ', @args) .")\n";
+	# Deprecated function signature using
+	# _postgis_drop_function_by_signature
+	# EXAMPLE: SELECT _postgis_drop_function_by_signature('pgis_geometry_union_finalfn(internal)');
+	elsif ( /SELECT _postgis_drop_function_by_signature\('[^']*'/ )
+	{
+		my $origline = $_;
+		my $line = $origline;
 
-		# Example manifest line for comments on function with inout params:
-		# 4247; 0 0 COMMENT public FUNCTION testinoutmix(INOUT "inout" double precision, second integer, OUT thirdout integer, fourth integer) strk
+		$line =~ s/.*SELECT _postgis_drop_function_by_signature\('([^']*)'.*/$1/;
 
-		# Example manifest line for function with inout params:
-		# 955; 1255 27730785 FUNCTION public testinoutmix(double precision, integer, integer) strk
-
-		# No inout indicator or out parameters for function signatures
-		my @inonly_args = clean_inout_arguments(@args);
-
-		# For *function* signature we are supposed to strip argument names
-		my @unnamed_args = strip_argument_names(@inonly_args);
-
-		print "FUNCTION $name(" . join(', ', @unnamed_args) . ")\n";
+		handle_function_signature($line);
 	}
 }

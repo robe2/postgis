@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"  xmlns:pgis="http://www.postgis.org/pgis">
-<!-- ********************************************************************
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:db="http://docbook.org/ns/docbook" xmlns:pgis="http://postgis.net/pgis"
+><!-- ********************************************************************
  ********************************************************************
 	 Copyright 2010, Regina Obe
 	 License: BSD-3-Clause
@@ -8,7 +10,7 @@
 			using a garden variety of rasters.  Its intent is to flag major crashes.
 	 ******************************************************************** -->
 	<xsl:output method="text" />
-	<xsl:variable name='testversion'>3.4.0</xsl:variable>
+	<xsl:variable name='testversion'>3.5.0</xsl:variable>
 	<xsl:variable name='fnexclude'>AddRasterColumn AddRasterConstraints DropRasterConstraints DropRasterColumn DropRasterTable</xsl:variable>
 	<!--This is just a place holder to state functions not supported in 1.3 or tested separately -->
 
@@ -31,7 +33,7 @@
 	<xsl:variable name='var_rastercolumn'>'rast'</xsl:variable>
 	<xsl:variable name='var_rastertable'>'pgis_rgarden_1bb'</xsl:variable>
 	<xsl:variable name='var_boolean'>false</xsl:variable>
-	<xsl:variable name='var_logtable'>raster_garden_log34</xsl:variable>
+	<xsl:variable name='var_logtable'>raster_garden_log35</xsl:variable>
 	<xsl:variable name='var_pixeltypes'>{8BUI,1BB}</xsl:variable>
 	<xsl:variable name='var_pixelvalues'>{255,0}</xsl:variable>
 	<xsl:variable name='var_algorithm'>'Lanczos'</xsl:variable>
@@ -131,9 +133,10 @@ DROP TABLE IF EXISTS <xsl:value-of select="$var_logtable" />;
 CREATE TABLE <xsl:value-of select="$var_logtable" />(logid serial PRIMARY KEY, log_label text, spatial_class text DEFAULT 'raster', func text, g1 text, g2 text, log_start timestamp, log_end timestamp, log_sql text);
 DROP TABLE IF EXISTS <xsl:value-of select="$var_logtable" />_output;
 CREATE TABLE <xsl:value-of select="$var_logtable" />_output(logid integer PRIMARY KEY, log_output xml);
-            <xsl:apply-templates select="/book/chapter[@id='RT_reference']" />
+						<xsl:apply-templates select="/db:book/db:chapter[@xml:id='RT_reference']" />
+            <xsl:apply-templates select="/db:book/db:chapter[@xml:id='RT_reference']/db:section[contains(@xml:id, 'Type')]" />
         </xsl:template>
-	<xsl:template match='chapter'>
+	<xsl:template match='db:chapter'>
 <!-- define a table we call pgis_rgarden_mega that will contain a raster column with a band for all types of pixels we support -->
 DROP TABLE IF EXISTS pgis_rgarden_mega;
 CREATE TABLE pgis_rgarden_mega(rid serial PRIMARY KEY, rast raster);
@@ -189,11 +192,11 @@ COMMIT;
 
 
 <!--Start test on operators  -->
-	<xsl:for-each select="sect1[contains(@id,'RT_Operator')]//refentry">
+	<xsl:for-each select="db:section[contains(@xml:id,'RT_Operator')]/db:refentry">
 		<xsl:sort select="@id"/>
-		<xsl:for-each select="refsynopsisdiv/funcsynopsis/funcprototype">
-			<xsl:variable name='fnname'><xsl:value-of select="funcdef/function"/></xsl:variable>
-			<xsl:variable name='fndef'><xsl:value-of select="funcdef"/></xsl:variable>
+		<xsl:for-each select="db:refsynopsisdiv/db:funcsynopsis/db:funcprototype">
+			<xsl:variable name='fnname'><xsl:value-of select="db:funcdef/db:function"/></xsl:variable>
+			<xsl:variable name='fndef'><xsl:value-of select="db:funcdef"/></xsl:variable>
 			<xsl:for-each select="document('')//pgis:pixeltypes/pgis:pixeltype">
 			<!--Store first garden sql raster from -->
 					<xsl:variable name="from1"><xsl:value-of select="." /></xsl:variable>
@@ -239,30 +242,30 @@ COMMIT;
 <!--End test on operators -->
 
 <!-- Start regular function checks excluding operators -->
-		<xsl:for-each select="sect1[not(contains(@id,'Operator'))]/refentry">
+		<xsl:for-each select="db:section[not(contains(@xml:id,'Operator'))]/db:refentry">
 		<xsl:sort select="@id"/>
 
-			<xsl:for-each select="refsynopsisdiv/funcsynopsis/funcprototype">
+			<xsl:for-each select="db:refsynopsisdiv/db:funcsynopsis/db:funcprototype">
 <!--Create dummy parameters to be used later -->
 				<xsl:variable name='fnfakeparams'><xsl:call-template name="replaceparams"><xsl:with-param name="func" select="." /></xsl:call-template></xsl:variable>
 				<xsl:variable name='fnargs'><xsl:call-template name="listparams"><xsl:with-param name="func" select="." /></xsl:call-template></xsl:variable>
-				<xsl:variable name='fnname'><xsl:value-of select="funcdef/function"/></xsl:variable>
-				<xsl:variable name='fndef'><xsl:value-of select="funcdef"/></xsl:variable>
-				<xsl:variable name='numparams'><xsl:value-of select="count(paramdef/parameter)" /></xsl:variable>
-				<xsl:variable name='numparamgeoms'><xsl:value-of select="count(paramdef/type[contains(text(),'geometry') or contains(text(),'geography') or contains(text(),'box') ]) + count(paramdef/parameter[contains(text(),'WKT')]) + count(paramdef/parameter[contains(text(),'geomgml')])" /></xsl:variable>
-				<xsl:variable name='numparamrasts'><xsl:value-of select="count(paramdef/type[contains(text(),'raster') ] )" /></xsl:variable>
-				<xsl:variable name='log_label'><xsl:value-of select="funcdef/function" />(<xsl:value-of select="$fnargs" />)</xsl:variable>
+				<xsl:variable name='fnname'><xsl:value-of select="db:funcdef/db:function"/></xsl:variable>
+				<xsl:variable name='fndef'><xsl:value-of select="db:funcdef"/></xsl:variable>
+				<xsl:variable name='numparams'><xsl:value-of select="count(db:paramdef/parameter)" /></xsl:variable>
+				<xsl:variable name='numparamgeoms'><xsl:value-of select="count(db:paramdef/db:type[contains(text(),'geometry') or contains(text(),'geography') or contains(text(),'box') ]) + count(db:paramdef/parameter[contains(text(),'WKT')]) + count(db:paramdef/parameter[contains(text(),'geomgml')])" /></xsl:variable>
+				<xsl:variable name='numparamrasts'><xsl:value-of select="count(db:paramdef/db:type[contains(text(),'raster') ] )" /></xsl:variable>
+				<xsl:variable name='log_label'><xsl:value-of select="db:funcdef/db:function" />(<xsl:value-of select="$fnargs" />)</xsl:variable>
 
 				<xsl:variable name="geoftype">
 				  <!--Conditionally instantiate a value to be assigned to the variable -->
 				  <xsl:choose>
-				  	<xsl:when test="contains(paramdef, 'raster ')">
+				  	<xsl:when test="contains(db:paramdef, 'raster ')">
 					  <xsl:value-of select="Raster"/>
 					</xsl:when>
-					<xsl:when test="contains(paramdef, 'geometry ')">
+					<xsl:when test="contains(db:paramdef, 'geometry ')">
 					  <xsl:value-of select="Geometry"/>
 					</xsl:when>
-					<xsl:when test="contains(paramdef, 'geography ')">
+					<xsl:when test="contains(db:paramdef, 'geography ')">
 					  <xsl:value-of select="Geography"/>
 					</xsl:when>
 					<xsl:otherwise>
@@ -274,7 +277,7 @@ COMMIT;
 				<!-- is a window or aggregate function -->
 				<xsl:variable name='over_clause'>
 					 <xsl:choose>
-					 	<xsl:when test="paramdef/type[contains(text(),'set')]">
+					 	<xsl:when test="db:paramdef/db:type[contains(text(),'set')]">
 					 		<xsl:value-of select="'OVER(ORDER BY random())'"/>
 					 	</xsl:when>
 					<xsl:otherwise>
@@ -283,13 +286,13 @@ COMMIT;
 				  </xsl:choose>
 				</xsl:variable>
 
-				SELECT 'Start Considering <xsl:value-of select="funcdef/function" /> <xsl:value-of select="$geoftype" />';
+				SELECT 'Start Considering <xsl:value-of select="db:funcdef/db:function" /> <xsl:value-of select="$geoftype" />';
 
 				<!-- For each function prototype generate a test sql statement -->
 				<xsl:choose>
 <!--Test functions that take no arguments or take no geometries -->
-	<xsl:when test="$numparamrasts = '0' and not(contains($fnexclude,funcdef/function))">SELECT  'Starting <xsl:value-of select="funcdef/function" />(<xsl:value-of select="$fnargs" />)';
-	<xsl:variable name='var_sql'>SELECT  <xsl:value-of select="funcdef/function" />(<xsl:value-of select="$fnfakeparams" />);</xsl:variable>
+	<xsl:when test="$numparamrasts = '0' and not(contains($fnexclude,db:funcdef/db:function))">SELECT  'Starting <xsl:value-of select="db:funcdef/db:function" />(<xsl:value-of select="$fnargs" />)';
+	<xsl:variable name='var_sql'>SELECT  <xsl:value-of select="db:funcdef/db:function" />(<xsl:value-of select="$fnfakeparams" />);</xsl:variable>
 INSERT INTO <xsl:value-of select="$var_logtable" />(log_label, func, log_start, log_sql)
 			  	VALUES('<xsl:value-of select="$log_label" />','<xsl:value-of select="$fnname" />', clock_timestamp(),
 			  	'<xsl:call-template name="escapesinglequotes"><xsl:with-param name="arg1"><xsl:value-of select="$var_sql" /></xsl:with-param></xsl:call-template>');
@@ -300,11 +303,11 @@ INSERT INTO <xsl:value-of select="$var_logtable" />(log_label, func, log_start, 
 		<!-- log completion -->
 		<xsl:value-of select="$var_logupdatesql" />
 	COMMIT;
-SELECT  'Ending <xsl:value-of select="funcdef/function" />(<xsl:value-of select="$fnargs" />)';
+SELECT  'Ending <xsl:value-of select="db:funcdef/db:function" />(<xsl:value-of select="$fnargs" />)';
 	</xsl:when>
 <!--Start Test aggregate and unary functions -->
 <!-- put functions that take only one raster no need to cross with another raster collection, these are unary raster, aggregates, and so forth -->
-	<xsl:when test="$numparamrasts = '1' and $numparamgeoms = '0' and not(contains($fnexclude,funcdef/function))" >
+	<xsl:when test="$numparamrasts = '1' and $numparamgeoms = '0' and not(contains($fnexclude,db:funcdef/db:function))" >
 		SELECT '<xsl:value-of select="$fnname" />';
 		<xsl:for-each select="document('')//pgis:pixeltypes/pgis:pixeltype">
 		SELECT '<xsl:value-of select="$geoftype" /> <xsl:value-of select="$fnname" /><xsl:text> </xsl:text><xsl:value-of select="@ID" />: Start Testing <xsl:value-of select="@PixType" /> with 1 rast param';
@@ -340,7 +343,7 @@ SELECT  'Ending <xsl:value-of select="funcdef/function" />(<xsl:value-of select=
 	</xsl:when>
 
 <!--Functions more than 1 args not already covered this will cross every raster pixel type with every other -->
-	<xsl:when test="not(contains($fnexclude,funcdef/function))">
+	<xsl:when test="not(contains($fnexclude,db:funcdef/db:function))">
 		<xsl:for-each select="document('')//pgis:pixeltypes/pgis:pixeltype">
 <!-- log to results table -->
 		SELECT '<xsl:value-of select="$geoftype" /> <xsl:value-of select="$fnname" /><xsl:text> </xsl:text><xsl:value-of select="@ID" />: Start Testing <xsl:value-of select="@PixType" />';
@@ -410,7 +413,7 @@ SELECT '<xsl:value-of select="$fnname" /><xsl:text> </xsl:text><xsl:value-of sel
 	<xsl:template name="replaceparams">
 		<xsl:param name="func" />
 		<xsl:for-each select="$func">
-			<xsl:for-each select="paramdef">
+			<xsl:for-each select="db:paramdef">
 				<xsl:choose>
 				     <!-- ignore output parameters -->
 				    <xsl:when test="contains(parameter,'OUT')"></xsl:when>
@@ -466,10 +469,10 @@ SELECT '<xsl:value-of select="$fnname" /><xsl:text> </xsl:text><xsl:value-of sel
 					<xsl:when test="contains(parameter, 'addbandargset')">
 						<xsl:value-of select="$var_addbandargset" />
 					</xsl:when>
-					<xsl:when test="(contains(type,'box') or type = 'geometry' or type = 'geometry ' or contains(type,'geometry set')) and (position() = 1 or count($func/paramdef/type[contains(text(),'geometry') or contains(text(),'box') or contains(text(), 'WKT') or contains(text(), 'bytea')]) = '1')">
+					<xsl:when test="(contains(type,'box') or type = 'geometry' or type = 'geometry ' or contains(type,'geometry set')) and (position() = 1 or count($func/paramdef/db:type[contains(text(),'geometry') or contains(text(),'box') or contains(text(), 'WKT') or contains(text(), 'bytea')]) = '1')">
 						<xsl:text>rast1.rast::geometry</xsl:text>
 					</xsl:when>
-					<xsl:when test="(type = 'geography' or type = 'geography ' or contains(type,'geography set')) and (position() = 1 or count($func/paramdef/type[contains(text(),'geography')]) = '1' )">
+					<xsl:when test="(type = 'geography' or type = 'geography ' or contains(type,'geography set')) and (position() = 1 or count($func/paramdef/db:type[contains(text(),'geography')]) = '1' )">
 						<xsl:text>rast1.rast::geometry::geography</xsl:text>
 					</xsl:when>
 
@@ -495,7 +498,7 @@ SELECT '<xsl:value-of select="$fnname" /><xsl:text> </xsl:text><xsl:value-of sel
 					<xsl:when test="type = 'raster' or type = 'raster ' or contains(type, 'raster set') or contains(type, 'setof raster')">
 						<xsl:text>rast2.rast</xsl:text>
 					</xsl:when>
-					<xsl:when test="contains(type, 'geometry[]') and count($func/paramdef/type[contains(text(),'geometry') or contains(text(),'box') or contains(text(), 'WKT') or contains(text(), 'bytea')]) = '1'">
+					<xsl:when test="contains(type, 'geometry[]') and count($func/paramdef/db:type[contains(text(),'geometry') or contains(text(),'box') or contains(text(), 'WKT') or contains(text(), 'bytea')]) = '1'">
 						ARRAY[foo1.the_geom]
 					</xsl:when>
 					<xsl:when test="contains(type, 'geometry[]')">
@@ -552,8 +555,8 @@ SELECT '<xsl:value-of select="$fnname" /><xsl:text> </xsl:text><xsl:value-of sel
 	<xsl:template name="listparams">
 		<xsl:param name="func" />
 		<xsl:for-each select="$func">
-			<xsl:if test="count(paramdef/parameter) &gt; 0"> </xsl:if>
-			<xsl:for-each select="paramdef">
+			<xsl:if test="count(db:paramdef/parameter) &gt; 0"> </xsl:if>
+			<xsl:for-each select="db:paramdef">
 				<xsl:choose>
 					<xsl:when test="count(parameter) &gt; 0">
 						<xsl:value-of select="parameter" />

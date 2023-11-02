@@ -1,8 +1,8 @@
 PostGIS - Geographic Information Systems Extensions to PostgreSQL
 =================================================================
 
-:Version: 3.4.0rc2
-:Date: 2023-08-11
+:Version: 3.5.0dev
+:Date: 2023-11-01
 :Website: https://postgis.net
 
 This distribution contains a module which implements GIS simple features, ties
@@ -43,7 +43,19 @@ this to work.
 
 For apt-based systems you can run this command to install the below dependencies (except for GTK):
 
-  sudo apt-get install libproj-dev libgeos-dev libxml2-dev gettext libjson-c-dev libgdal-dev libsfcgal-dev libprotobuf-c-dev protobuf-c-compiler
+  sudo apt-get install \
+    docbook-xsl-ns \
+    gettext \
+    libgdal-dev \
+    libgeos-dev \
+    libjson-c-dev \
+    libproj-dev \
+    libprotobuf-c-dev \
+    libsfcgal-dev \
+    libxml2-dev \
+    libxml2-utils \
+    protobuf-c-compiler \
+    xsltproc
 
 * PROJ4 (Required, Version 6.1 or higher):
 
@@ -52,7 +64,7 @@ For apt-based systems you can run this command to install the below dependencies
 
     https://proj.org
 
-* GEOS (Required, Version 3.6 or higher)
+* GEOS (Required, Version 3.8 or higher)
   - 3.12+ for ST_CoverageSimplify and ST_CoverageInvalidEdges
   - 3.11+ for improved ST_ConcaveHull, ST_lineMerge,
     and new functions ST_SimplifyPolygonHull, ST_TriangulatePolygon
@@ -96,7 +108,7 @@ For apt-based systems you can run this command to install the below dependencies
 * SFCGAL 1.4.1+ is requires for additional functionality ST_AlphaShape, ST_OptimalAlphaShape,
   and ST_3DConvexhull
 
-  https://gitlab.com/Oslandia/SFCGAL
+  https://gitlab.com/sfcgal/SFCGAL
 
 * protobuf-c (Optional, Version 1.1.0 or higher)
 

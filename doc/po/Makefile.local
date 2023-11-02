@@ -7,6 +7,7 @@ local-all: local-html comments
 local-clean: local-html-clean local-pdf-clean local-epub-clean local-cheatsheet-clean
 	rm -f images # work around https://trac.osgeo.org/postgis/ticket/5422
 	rm -f $(XML_INPUTS)
+	rm -f postgis-out.xml.in postgis-nospecial.xml.in
 	rm -rf xsl
 
 # We do not want to recurse in parent dir here
@@ -25,6 +26,7 @@ include ../../Makefile
 # XML gettext tools
 PO2XML=po2xml
 
-$(XML_SOURCES): %.xml: %.xml.po $(abs_srcdir)/%.xml
-	$(PO2XML) $(abs_srcdir)/$@ $< > $@
+$(XML_SOURCES): %.xml: postgis-manual.po $(abs_srcdir)/%.xml
+	$(PO2XML) $(abs_srcdir)/$@ $< > $@.tmp
+	mv $@.tmp $@
 

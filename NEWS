@@ -1,7 +1,40 @@
-PostGIS 3.4.0
-2023/08/xx
+PostGIS 3.5.0dev
+xxxx/xx/xx
 
-This version requires PostgreSQL 12 or higher, GEOS 3.6 or higher, and Proj 6.1+.
+* Breaking Changes *
+
+  - #5546, TopoGeometry <> TopoGeometry is now ambiguous, to get
+           the old behaviour, assuming your TopoGeometry objects
+           are named tg1 and tg2, use: (
+              id(tg1) <> id(tg2) OR
+              topology_id(tg1) <> topology_id(tg2) OR
+              layer_id(tg1) <> layer_id(tg2) OR
+              type(tg1) <> type(tg2)
+           ) (Sandro Santilli)
+  - #5536, comments are not anymore included in PostGIS extensions
+    (Sandro Santilli)
+  - xmllint is now required to build comments and 
+    (Sandro Santilli)
+  - DocBook5 XSL is now required to build html documentation
+    (Sandro Santilli)
+  - #5602, Drop support for GEOS 3.6 and 3.7 (Regina Obe)
+
+* New Features *
+
+  - #5055, add explicit <> geometry operator to prevent non-unique
+           error with <> and != (Paul Ramsey)
+  - Add ST_HasZ/ST_HasM (Loïc Bartoletti)
+
+* Enhancements *
+
+  - #5531, documentation format upgraded to DocBook 5 (Sandro Santilli)
+  - #5543, allow building without documentation (Sandro Santilli)
+
+
+PostGIS 3.4.0
+2023/08/15
+
+This version requires PostgreSQL 12-16, GEOS 3.6 or higher, and Proj 6.1+.
 To take advantage of all features, GEOS 3.12+ is needed.
 To take advantage of all SFCGAL featurs, SFCGAL 1.4.1+ is needed.
 

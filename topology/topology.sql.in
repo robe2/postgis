@@ -659,7 +659,6 @@ LANGUAGE 'plpgsql' VOLATILE;
 -- hierarchical or primitive, but always assumes primitive.
 --
 -- }{
-DROP FUNCTION IF EXISTS topology.populate_topology_layer();
 CREATE OR REPLACE FUNCTION topology.populate_topology_layer()
 	RETURNS TABLE(schema_name text, table_name text, feature_column text)
 AS
@@ -1301,7 +1300,7 @@ AS  $$SELECT ARRAY[topo.id,topo.layer_id]::topology.topoelement;$$;
 --
 -- Availability: 3.4.0
 -- }{
-CREATE CAST (topogeometry AS int[]) WITH FUNCTION TopoElement(topogeometry) AS ASSIGNMENT;
+CREATE CAST (topology.TopoGeometry AS int[]) WITH FUNCTION topology.TopoElement(topology.TopoGeometry) AS ASSIGNMENT;
 --} TopoGeometry(int[])
 
 --{
