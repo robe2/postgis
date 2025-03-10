@@ -623,6 +623,7 @@ F000000000000000000000000000000000000000000000000');
 				<paramdef choice="opt"><type>text </type> <parameter>geom_column=""</parameter></paramdef>
 				<paramdef choice="opt"><type>integer </type> <parameter>maxdecimaldigits=9</parameter></paramdef>
 				<paramdef choice="opt"><type>boolean </type> <parameter>pretty_bool=false</parameter></paramdef>
+                <paramdef choice="opt"><type>text </type> <parameter>id_column=''</parameter></paramdef>
 			</funcprototype>
 			<funcprototype>
 				<funcdef>text <function>ST_AsGeoJSON</function></funcdef>
@@ -703,6 +704,8 @@ Conversely, passing the parameter will save column type lookups.
 			  </itemizedlist>
 			</para>
 
+            <para>The <varname>id_column</varname> parameter is used to set the "id" member of the returned GeoJSON features. As per GeoJSON RFC, this SHOULD be used whenever a feature has a commonly used identifier, such as a primary key. When not specified, the produced features will not get an "id" member and any columns other than the geometry, including any potential keys, will just end up inside the feature’s "properties" member.</para>
+
             <para>The GeoJSON specification states that polygons are oriented using the Right-Hand Rule,
             and some clients require this orientation.
             This can be ensured by using <xref linkend="ST_ForcePolygonCCW"/>.
@@ -727,6 +730,7 @@ Conversely, passing the parameter will save column type lookups.
 			<para role="changed" conformance="2.0.0">Changed: 2.0.0 support default args and named args.</para>
 			<para role="changed" conformance="3.0.0">Changed: 3.0.0 support records as input</para>
 			<para role="changed" conformance="3.0.0">Changed: 3.0.0 output SRID if not EPSG:4326.</para>
+            <para role="changed" conformance="3.5.0">Changed: 3.5.0 allow specifying the column containing the feature id</para>
 			<para>&Z_support;</para>
 	  </refsection>
 
@@ -736,34 +740,20 @@ Conversely, passing the parameter will save column type lookups.
 <para>Generate a FeatureCollection:</para>
 <programlisting>SELECT json_build_object(
     'type', 'FeatureCollection',
-    'features', json_agg(ST_AsGeoJSON(t.*)::json)
+    'features', json_agg(ST_AsGeoJSON(t.*, id_column => 'id')::json)
     )
 FROM ( VALUES (1, 'one', 'POINT(1 1)'::geometry),
               (2, 'two', 'POINT(2 2)'),
               (3, 'three', 'POINT(3 3)')
      ) as t(id, name, geom);</programlisting>
-<screen>{"type" : "FeatureCollection", "features" : [{"type": "Feature", "geometry": {"type":"Point","coordinates":[1,1]}, "properties": {"id": 1, "name": "one"}}, {"type": "Feature", "geometry": {"type":"Point","coordinates":[2,2]}, "properties": {"id": 2, "name": "two"}}, {"type": "Feature", "geometry": {"type":"Point","coordinates":[3,3]}, "properties": {"id": 3, "name": "three"}}]}</screen>
+<screen>{"type" : "FeatureCollection", "features" : [{"type": "Feature", "geometry": {"type":"Point","coordinates":[1,1]}, "id": 1, "properties": {"name": "one"}}, {"type": "Feature", "geometry": {"type":"Point","coordinates":[2,2]}, "id": 2, "properties": {"name": "two"}}, {"type": "Feature", "geometry": {"type":"Point","coordinates":[3,3]}, "id": 3, "properties": {"name": "three"}}]}</screen>
 
 <para>Generate a Feature:</para>
-		<programlisting>SELECT ST_AsGeoJSON(t.*)
+		<programlisting>SELECT ST_AsGeoJSON(t.*, id_column => 'id')
 FROM (VALUES (1, 'one', 'POINT(1 1)'::geometry)) AS t(id, name, geom);</programlisting>
 <screen>                                                  st_asgeojson
 -----------------------------------------------------------------------------------------------------------------
- {"type": "Feature", "geometry": {"type":"Point","coordinates":[1,1]}, "properties": {"id": 1, "name": "one"}}
-</screen>
-
-<para>An alternate way to generate Features with an <varname>id</varname> property
-is to use JSONB functions and operators:</para>
-		<programlisting>SELECT jsonb_build_object(
-    'type',       'Feature',
-    'id',         id,
-    'geometry',   ST_AsGeoJSON(geom)::jsonb,
-    'properties', to_jsonb( t.* ) - 'id' - 'geom'
-    ) AS json
-FROM (VALUES (1, 'one', 'POINT(1 1)'::geometry)) AS t(id, name, geom);</programlisting>
-<screen>                                                  json
------------------------------------------------------------------------------------------------------------------
- {"id": 1, "type": "Feature", "geometry": {"type": "Point", "coordinates": [1, 1]}, "properties": {"name": "one"}}
+ {"type": "Feature", "geometry": {"type":"Point","coordinates":[1,1]}, "id": 1, "properties": {"name": "one"}}
 </screen>
 
 <para>Don't forget to transform your data to WGS84 longitude, latitude to conform with the GeoJSON specification:</para>
@@ -777,6 +767,11 @@ FROM (VALUES (1, 'one', 'POINT(1 1)'::geometry)) AS t(id, name, geom);</programl
 <para>3D geometries are supported:</para>
 <programlisting>SELECT ST_AsGeoJSON('LINESTRING(1 2 3, 4 5 6)');</programlisting>
 <screen>{"type":"LineString","coordinates":[[1,2,3],[4,5,6]]}</screen>
+<para>Options argument can be used to add BBOX and CRS in GeoJSON output:</para>
+<programlisting> SELECT ST_AsGeoJSON(ST_SetSRID('POINT(1 1)'::geometry, 4326), 9, 4|1);</programlisting>
+<screen>
+  {"type":"Point","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:EPSG::4326"}},"bbox":[1.000000000,1.000000000,1.000000000,1.000000000],"coordinates":[1,1]}
+</screen>
 	  </refsection>
   <refsection>
     <title>See Also</title>
@@ -871,7 +866,7 @@ FROM (VALUES (1, 'one', 'POINT(1 1)'::geometry)) AS t(id, name, geom);</programl
 								</listitem>
 
 								<listitem>
-								  <para>16: Declare that datas are lat/lon (e.g srid=4326). Default is to assume that data are planars.
+								  <para>16: Declare that data are lat/lon (e.g srid=4326). Default is to assume that data are planars.
 								  This option is useful for GML 3.1.1 output only, related to axis order. So if you set it, it will swap the coordinates
 								  so order is lat lon instead of database lon lat.</para>
 								</listitem>
@@ -1259,7 +1254,7 @@ SELECT (ST_AsLatLonText('POINT (-302.2342342 -792.32498)'));
         <refsection>
             <title>Examples</title>
 
-            <para>Converting a <varname>POINT</varname> to MARC21/XML formated as hdddmmss (default)</para>
+            <para>Converting a <varname>POINT</varname> to MARC21/XML formatted as hdddmmss (default)</para>
             <programlisting><![CDATA[
 
 
@@ -1281,7 +1276,7 @@ SELECT (ST_AsLatLonText('POINT (-302.2342342 -792.32498)'));
 
 ]]></programlisting>
 
-            <para>Converting a <varname>POLYGON</varname> to MARC21/XML formated in decimal degrees</para>
+            <para>Converting a <varname>POLYGON</varname> to MARC21/XML formatted in decimal degrees</para>
             <programlisting><![CDATA[
 
 
@@ -1301,7 +1296,7 @@ SELECT (ST_AsLatLonText('POINT (-302.2342342 -792.32498)'));
 
 ]]></programlisting>
 
-            <para>Converting a <varname>GEOMETRYCOLLECTION</varname> to MARC21/XML formated in decimal minutes. The geometries order in the MARC21/XML output correspond to their order in the collection.</para>
+            <para>Converting a <varname>GEOMETRYCOLLECTION</varname> to MARC21/XML formatted in decimal minutes. The geometries order in the MARC21/XML output correspond to their order in the collection.</para>
             <programlisting><![CDATA[
 
 
@@ -1400,7 +1395,7 @@ SELECT ST_AsText(ST_AsMVTGeom(
  MULTIPOLYGON(((5 4096,10 4091,10 4096,5 4096)),((5 4096,0 4101,0 4096,5 4096)))
 		</programlisting>
 
-    <para>Canonical example for a Web Mercator tile using a computed tile bounds to query and clip geometry.
+    <para>Canonical example for a Web Mercator tile using a computed tile bounds to query and clip geometry. This assumes the data.geom column has srid of 4326.
     </para>
 		<programlisting><![CDATA[
 
@@ -1408,7 +1403,7 @@ SELECT ST_AsMVTGeom(
             ST_Transform( geom, 3857 ),
             ST_TileEnvelope(12, 513, 412), extent => 4096, buffer => 64) AS geom
   FROM data
-  WHERE geom && ST_TileEnvelope(12, 513, 412, margin => (64.0 / 4096))
+  WHERE geom && ST_Transform(ST_TileEnvelope(12, 513, 412, margin => (64.0 / 4096)),4326)
 
 
 ]]></programlisting>

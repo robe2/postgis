@@ -67,7 +67,6 @@ Datum LWGEOM_closestpoint(PG_FUNCTION_ARGS);
 Datum LWGEOM_shortestline2d(PG_FUNCTION_ARGS);
 Datum LWGEOM_longestline2d(PG_FUNCTION_ARGS);
 Datum LWGEOM_dwithin(PG_FUNCTION_ARGS);
-Datum LWGEOM_dfullywithin(PG_FUNCTION_ARGS);
 
 Datum LWGEOM_maxdistance3d(PG_FUNCTION_ARGS);
 Datum LWGEOM_mindistance3d(PG_FUNCTION_ARGS);
@@ -294,7 +293,7 @@ Datum ST_Area(PG_FUNCTION_ARGS)
  *  	length2d(point) = 0
  *  	length2d(line) = length of line
  *  	length2d(polygon) = 0  -- could make sense to return sum(ring perimeter)
- *  	uses euclidian 2d length (even if input is 3d)
+ *  	uses euclidean 2d length (even if input is 3d)
  */
 PG_FUNCTION_INFO_V1(LWGEOM_length2d_linestring);
 Datum LWGEOM_length2d_linestring(PG_FUNCTION_ARGS)
@@ -312,7 +311,7 @@ Datum LWGEOM_length2d_linestring(PG_FUNCTION_ARGS)
  *  	length(point) = 0
  *  	length(line) = length of line
  *  	length(polygon) = 0  -- could make sense to return sum(ring perimeter)
- *  	uses euclidian 3d/2d length depending on input dimensions.
+ *  	uses euclidean 3d/2d length depending on input dimensions.
  */
 PG_FUNCTION_INFO_V1(LWGEOM_length_linestring);
 Datum LWGEOM_length_linestring(PG_FUNCTION_ARGS)
@@ -330,7 +329,7 @@ Datum LWGEOM_length_linestring(PG_FUNCTION_ARGS)
  *  	perimeter(point) = 0
  *  	perimeter(line) = 0
  *  	perimeter(polygon) = sum of ring perimeters
- *  	uses euclidian 3d/2d computation depending on input dimension.
+ *  	uses euclidean 3d/2d computation depending on input dimension.
  */
 PG_FUNCTION_INFO_V1(LWGEOM_perimeter_poly);
 Datum LWGEOM_perimeter_poly(PG_FUNCTION_ARGS)
@@ -349,7 +348,7 @@ Datum LWGEOM_perimeter_poly(PG_FUNCTION_ARGS)
  *  	perimeter(point) = 0
  *  	perimeter(line) = 0
  *  	perimeter(polygon) = sum of ring perimeters
- *  	uses euclidian 2d computation even if input is 3d
+ *  	uses euclidean 2d computation even if input is 3d
  */
 PG_FUNCTION_INFO_V1(LWGEOM_perimeter2d_poly);
 Datum LWGEOM_perimeter2d_poly(PG_FUNCTION_ARGS)
@@ -481,7 +480,7 @@ Datum LWGEOM_force_collection(PG_FUNCTION_ARGS)
 	/* deserialize into lwgeoms[0] */
 	lwgeom = lwgeom_from_gserialized(geom);
 
-	/* alread a multi*, just make it a collection */
+	/* already a multi*, just make it a collection */
 	if (lwgeom_is_collection(lwgeom))
 	{
 		lwgeom->type = COLLECTIONTYPE;
@@ -758,41 +757,6 @@ Datum LWGEOM_dwithin(PG_FUNCTION_ARGS)
 	/*empty geometries cases should be right handled since return from underlying
 	 functions should be FLT_MAX which causes false as answer*/
 	PG_RETURN_BOOL(tolerance >= mindist);
-}
-
-/**
-Returns boolean describing if
-maximum 2d distance between objects in
-geom1 and geom2 is shorter than tolerance
-*/
-PG_FUNCTION_INFO_V1(LWGEOM_dfullywithin);
-Datum LWGEOM_dfullywithin(PG_FUNCTION_ARGS)
-{
-	double maxdist;
-	GSERIALIZED *geom1 = PG_GETARG_GSERIALIZED_P(0);
-	GSERIALIZED *geom2 = PG_GETARG_GSERIALIZED_P(1);
-	double tolerance = PG_GETARG_FLOAT8(2);
-	LWGEOM *lwgeom1 = lwgeom_from_gserialized(geom1);
-	LWGEOM *lwgeom2 = lwgeom_from_gserialized(geom2);
-
-	if (tolerance < 0)
-	{
-		elog(ERROR, "Tolerance cannot be less than zero\n");
-		PG_RETURN_NULL();
-	}
-
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	maxdist = lwgeom_maxdistance2d_tolerance(lwgeom1, lwgeom2, tolerance);
-
-	PG_FREE_IF_COPY(geom1, 0);
-	PG_FREE_IF_COPY(geom2, 1);
-
-	/*If function is feed with empty geometries we should return false*/
-	if (maxdist > -1)
-		PG_RETURN_BOOL(tolerance >= maxdist);
-
-	PG_RETURN_BOOL(LW_FALSE);
 }
 
 /**
@@ -2179,9 +2143,11 @@ Datum ST_TileEnvelope(PG_FUNCTION_ARGS)
 	y1 = bbox.ymax - tileGeoSizeY * (y + 1 + margin);
 	y2 = bbox.ymax - tileGeoSizeY * (y - margin);
 
-	/* Clip y-axis to the given bounds */
+	/* Clip the final tile bounds to the bounds of the tile plane */
 	if (y1 < bbox.ymin) y1 = bbox.ymin;
 	if (y2 > bbox.ymax) y2 = bbox.ymax;
+	if (x1 < bbox.xmin) x1 = bbox.xmin;
+	if (x2 > bbox.xmax) x2 = bbox.xmax;
 
 	PG_RETURN_POINTER(
 		geometry_serialize(
@@ -2195,8 +2161,8 @@ PG_FUNCTION_INFO_V1(ST_IsCollection);
 Datum ST_IsCollection(PG_FUNCTION_ARGS)
 {
 	GSERIALIZED *geom = PG_GETARG_GSERIALIZED_HEADER(0);
-	int type = gserialized_get_type(geom);
-	PG_RETURN_BOOL(lwtype_is_collection(type));
+	LWGEOM *lwg = lwgeom_from_gserialized(geom);
+	PG_RETURN_BOOL(!lwgeom_is_unitary(lwg));
 }
 
 PG_FUNCTION_INFO_V1(LWGEOM_makepoint);
@@ -2456,12 +2422,6 @@ Datum LWGEOM_setpoint_linestring(PG_FUNCTION_ARGS)
 
 	if ( line->points->npoints < 1 ) 	{
 		elog(ERROR, "Line has no points");
-		PG_RETURN_NULL();
-	}
-
-	if (!lwgeom_isfinite(lwg))
-	{
-		elog(ERROR, "Geometry contains invalid coordinate");
 		PG_RETURN_NULL();
 	}
 

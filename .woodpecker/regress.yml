@@ -1,10 +1,14 @@
+when:
+  event: [push, pull_request, tag]
 variables:
-  test-image: &test-image docker.osgeo.org/postgis/build-test:trisquel3
+  test-image: &test-image repo.osgeo.org/postgis/build-test:trisquel11
   steps-env: &steps-env
     - export PATH=/usr/lib/postgresql/$${PGVER}/bin:$${PATH}
     - export PGPORT=$$(grep ^port /etc/postgresql/$${PGVER}/main/postgresql.conf | awk '{print $$3}')
     - export POSTGIS_REGRESS_DB_OWNER=postgis_reg_unprivileged_user
-    - export RUNTESTFLAGS="-v --after-create-db-script $${CI_WORKSPACE}/regress/hooks/configure-pgextwlist.sql"
+    - export RUNTESTFLAGS="-v
+      --after-create-db-script $${CI_WORKSPACE}/regress/hooks/configure-pgextwlist.sql
+      --after-create-db-script $${CI_WORKSPACE}/regress/hooks/standard-conforming-strings-off.sql"
     - export SRCDIR=$${CI_WORKSPACE}
     - export BUILDDIR=$${SRCDIR}/build/pg$${PGVER}
     - export CURRENTVERSION=$$(grep '^POSTGIS_' $${SRCDIR}/Version.config | cut -d= -f2 | paste -sd '.')
@@ -41,7 +45,7 @@ variables:
     - egrep '(PASS|FAIL|SKIP|INFO|ERROR)' check.log
 
 clone:
-  clone:
+  git:
     image: woodpeckerci/plugin-git
     depth: 50
 
@@ -55,25 +59,25 @@ steps:
 
   build-pg12:
     image: *test-image
-    group: build
+    depends_on: autogen
     environment:
       - PGVER=12
     commands:
       - <<: *steps-env
       - <<: *steps-pg-build
 
-  build-pg15:
+  build-pg17:
     image: *test-image
-    group: build
+    depends_on: autogen
     environment:
-      - PGVER=15
+      - PGVER=17
     commands:
       - <<: *steps-env
       - <<: *steps-pg-build
 
   check-pg12:
     image: *test-image
-    group: check
+    depends_on: build-pg12
     environment:
       - PGVER=12
     commands:
@@ -81,11 +85,11 @@ steps:
       - <<: *steps-start-postgresql
       - <<: *steps-pg-test-preinstall
 
-  check-pg15:
+  check-pg17:
     image: *test-image
-    group: check
+    depends_on: build-pg17
     environment:
-      - PGVER=15
+      - PGVER=17
     commands:
       - <<: *steps-env
       - <<: *steps-start-postgresql
@@ -93,31 +97,29 @@ steps:
 
   installcheck-pg12:
     image: *test-image
-    group: installcheck
+    depends_on: build-pg12
     environment:
       - PGVER=12
     commands:
       - <<: *steps-env
       - <<: *steps-start-postgresql
       - <<: *steps-pg-install
-      - <<: *steps-pg-install
       - <<: *steps-pg-test-install
 
-  installcheck-pg15:
+  installcheck-pg17:
     image: *test-image
-    group: installcheck
+    depends_on: build-pg17
     environment:
-      - PGVER=15
+      - PGVER=17
     commands:
       - <<: *steps-env
       - <<: *steps-start-postgresql
-      - <<: *steps-pg-install
       - <<: *steps-pg-install
       - <<: *steps-pg-test-install
 
   upgradecheck-pg12:
     image: *test-image
-    group: upgradecheck
+    depends_on: installcheck-pg12
     environment:
       - PGVER=12
     commands:
@@ -126,11 +128,11 @@ steps:
       - <<: *steps-pg-install
       - <<: *steps-pg-test-all-upgrades
 
-  upgradecheck-pg15:
+  upgradecheck-pg17:
     image: *test-image
-    group: upgradecheck
+    depends_on: installcheck-pg17
     environment:
-      - PGVER=15
+      - PGVER=17
     commands:
       - <<: *steps-env
       - <<: *steps-start-postgresql

@@ -116,7 +116,7 @@ and <varname>GetNodeEdges</varname> functions.
                 <orderedlist>
                   <listitem>
                     <para><varname>error</varname> is varchar:  Denotes type of error. </para>
-                    <para>Current error descriptors are: coincident nodes, edge crosses node, edge not simple, edge end node geometry mis-match, edge start node geometry mismatch, face overlaps face,face within face,  </para>
+                    <para>Current error descriptors are: coincident nodes, edge crosses node, edge not simple, edge end node geometry mismatch, edge start node geometry mismatch, face overlaps face,face within face,  </para>
                   </listitem>
                   <listitem>
                     <para><varname>id1</varname> is an integer: Denotes identifier of edge / face / nodes in error.</para>
@@ -735,7 +735,7 @@ See <xref linkend="ST_Relate"/>.
                                     </entry>
                             </row>
                             <row>
-                                    <entry>edge start node geometry mis-match</entry>
+                                    <entry>edge start node geometry mismatch</entry>
                                     <entry>Identifier of the edge.</entry>
                                     <entry>
 Identifier of the indicated start node.
@@ -747,7 +747,7 @@ See <xref linkend="ST_StartPoint"/>.
                                     </entry>
                             </row>
                             <row>
-                                    <entry>edge end node geometry mis-match</entry>
+                                    <entry>edge end node geometry mismatch</entry>
                                     <entry>Identifier of the edge.</entry>
                                     <entry>
 Identifier of the indicated end node.
@@ -1388,7 +1388,12 @@ SELECT topology.AddTopoGeometryColumn('ri_topo', 'ri', 'roads', 'topo', 'LINE');
 			<!-- Optionally add a "See Also" section -->
 			<refsection>
 				<title>See Also</title>
-				<para><xref linkend="AddTopoGeometryColumn"/>, <xref linkend="CreateTopology"/>, <xref linkend="DropTopology"/></para>
+				<para>
+<xref linkend="TopoGeo_LoadGeometry"/>,
+<xref linkend="AddTopoGeometryColumn"/>,
+<xref linkend="CreateTopology"/>,
+<xref linkend="DropTopology"/>
+                </para>
 			</refsection>
 		</refentry>
 
@@ -1432,6 +1437,7 @@ An existing edge may be split by the snapped point.
 				<para>
 <xref linkend="TopoGeo_AddLineString"/>,
 <xref linkend="TopoGeo_AddPolygon"/>,
+<xref linkend="TopoGeo_LoadGeometry"/>,
 <xref linkend="AddNode"/>,
 <xref linkend="CreateTopology"/>
 </para>
@@ -1442,7 +1448,9 @@ An existing edge may be split by the snapped point.
 			<refnamediv>
 				<refname>TopoGeo_AddLineString</refname>
 
-				<refpurpose>Adds a linestring to an existing topology using a tolerance and possibly splitting existing edges/faces. Returns edge identifiers.</refpurpose>
+				<refpurpose>
+Adds a linestring to an existing topology using a tolerance and possibly splitting existing edges/faces.
+				</refpurpose>
 			</refnamediv>
 
 			<refsynopsisdiv>
@@ -1460,9 +1468,11 @@ An existing edge may be split by the snapped point.
                 <title>Description</title>
 
                 <para>
-Adds a linestring to an existing topology and returns a set of edge identifiers forming it up.
+Adds a linestring to an existing topology and returns a set of signed edge identifiers forming it up
+(negative identifies mean the edge goes in the opposite direction of
+the input linestring).
 The given line will snap to existing nodes or edges within given tolerance.
-Existing edges and faces may be split by the line.
+Existing edges and faces may be split by the line.  New nodes and faces may be added.
                 </para>
 
                 <note><para>
@@ -1472,6 +1482,7 @@ up to caller, see <xref linkend="Topology_StatsManagement"/>.
 
                 <!-- use this format if new function -->
                 <para role="availability" conformance="2.0.0">Availability: 2.0.0</para>
+                <para role="enhanced" conformance="3.2.0">Enhanced: 3.2.0 added support for returning signed identifier.</para>
 			</refsection>
 
 
@@ -1481,6 +1492,7 @@ up to caller, see <xref linkend="Topology_StatsManagement"/>.
 				<para>
 <xref linkend="TopoGeo_AddPoint"/>,
 <xref linkend="TopoGeo_AddPolygon"/>,
+<xref linkend="TopoGeo_LoadGeometry"/>,
 <xref linkend="AddEdge"/>,
 <xref linkend="CreateTopology"/>
 				</para>
@@ -1530,7 +1542,57 @@ up to caller, see <xref linkend="Topology_StatsManagement"/>.
 				<para>
 <xref linkend="TopoGeo_AddPoint"/>,
 <xref linkend="TopoGeo_AddLineString"/>,
+<xref linkend="TopoGeo_LoadGeometry"/>,
 <xref linkend="AddFace"/>,
+<xref linkend="CreateTopology"/>
+				</para>
+			</refsection>
+		</refentry>
+
+		<refentry xml:id="TopoGeo_LoadGeometry">
+			<refnamediv>
+				<refname>TopoGeo_LoadGeometry</refname>
+
+				<refpurpose>Load a geometry into an existing topology, snapping and splitting as needed.</refpurpose>
+			</refnamediv>
+
+			<refsynopsisdiv>
+				<funcsynopsis>
+					<funcprototype>
+						<funcdef>void <function>TopoGeo_LoadGeometry</function></funcdef>
+						<paramdef><type>varchar </type> <parameter>atopology</parameter></paramdef>
+						<paramdef><type>geometry </type> <parameter>ageom</parameter></paramdef>
+						<paramdef choice="opt"><type>float8 </type> <parameter>tolerance</parameter></paramdef>
+					</funcprototype>
+				</funcsynopsis>
+			</refsynopsisdiv>
+
+			<refsection>
+                <title>Description</title>
+
+                <para>
+Loads a geometry into an existing topology.
+The given geometry will snap to existing nodes or edges within given tolerance.
+Existing edges and faces may be split as a consequence of the load.
+                </para>
+
+                <note><para>
+Updating statistics about topologies being loaded via this function is
+up to caller, see <xref linkend="Topology_StatsManagement"/>.
+                </para></note>
+
+                <!-- use this format if new function -->
+                <para role="availability" conformance="3.5.0">Availability: 3.5.0</para>
+			</refsection>
+
+
+			<!-- Optionally add a "See Also" section -->
+			<refsection>
+				<title>See Also</title>
+				<para>
+<xref linkend="TopoGeo_AddPoint"/>,
+<xref linkend="TopoGeo_AddLineString"/>,
+<xref linkend="TopoGeo_AddPolygon"/>,
 <xref linkend="CreateTopology"/>
 				</para>
 			</refsection>
@@ -1913,7 +1975,7 @@ Changes the shape of an edge without affecting the topology structure.
 			<refsynopsisdiv>
 				<funcsynopsis>
 					<funcprototype>
-					<funcdef>integer <function>ST_ChangeEdgeGeom</function></funcdef>
+					<funcdef>text <function>ST_ChangeEdgeGeom</function></funcdef>
 					<paramdef><type>varchar </type> <parameter>atopology</parameter></paramdef>
 					<paramdef><type>integer </type> <parameter>anedge</parameter></paramdef>
 					<paramdef><type>geometry </type> <parameter>acurve</parameter></paramdef>
@@ -3087,14 +3149,15 @@ nodeid
 			</refsynopsisdiv>
 
 			<refsection>
-                <title>Description</title>
+					<title>Description</title>
 
-                <para>Adds an edge to the edge table and associated nodes to the nodes table of the specified <varname>toponame</varname> schema using the specified linestring geometry and returns the edgeid of the new or existing record.
-                The newly added edge has "universe" face on both sides and links to itself.</para>
-                <note><para>If the <varname>aline</varname> geometry crosses, overlaps, contains or is contained by an existing linestring edge, then an error is thrown and the edge is not added.</para></note>
-                <note><para>The geometry of <varname>aline</varname> must have the same <varname>srid</varname> as defined for the topology otherwise an invalid spatial reference sys error will be thrown.</para></note>
-                <para>Performed by the GEOS module.</para>
-                <para role="availability" conformance="2.0.0">Availability: 2.0.0</para>
+					<para>Adds an edge to the edge table and associated nodes to the nodes table of the specified <varname>toponame</varname> schema using the specified linestring geometry and returns the edgeid of the new or existing record.
+					The newly added edge has "universe" face on both sides and links to itself.</para>
+					<note><para>If the <varname>aline</varname> geometry crosses, overlaps, contains or is contained by an existing linestring edge, then an error is thrown and the edge is not added.</para></note>
+					<note><para>The geometry of <varname>aline</varname> must have the same <varname>srid</varname> as defined for the topology otherwise an invalid spatial reference sys error will be thrown.</para></note>
+					<para>Performed by the GEOS module.</para>
+					<warning><para><xref linkend="AddEdge"/> is deprecated as of 3.5.0. Use <xref linkend="TopoGeo_AddLineString"/> instead.</para></warning>
+					<para role="availability" conformance="2.0.0">Availability: 2.0.0</para>
 			</refsection>
 
 			<refsection>
@@ -3544,7 +3607,7 @@ Layer 1, type Polygonal (3), 15 topogeoms
         <programlisting><![CDATA[
 
 -- Shrink all TopoGeometry polygons by 10 meters
-UPDATE nei_topo SET topo = ST_Buffer(clearTopoGeom(topo), -10);
+UPDATE nei_topo SET topo = toTopoGeom(ST_Buffer(topo, -10), clearTopoGeom(topo), 0);
 
 -- Get the no-one-lands left by the above operation
 -- I think GRASS calls this "polygon0 layer"
@@ -3694,7 +3757,7 @@ objects and any dependent object in higher hierarchical levels.
 				<title>Examples</title>
         <programlisting>
 -- Shrink all TopoGeometry polygons by 10 meters
-UPDATE nei_topo SET topo = ST_Buffer(clearTopoGeom(topo), -10);
+UPDATE nei_topo SET topo = toTopoGeom(ST_Buffer(topo, -10), clearTopoGeom(topo), 0);
 				</programlisting>
 			</refsection>
 
@@ -4513,7 +4576,7 @@ linking all TopoGeometry values to their correct topology.
 
         <para>
 By default <filename>pgtopo_import</filename> reads the dump
-from the standard input so that it can be used in conjuction
+from the standard input so that it can be used in conjunction
 with <filename>pgtopo_export</filename> in a pipeline.
 You can optionally specify an input filename with the
 <code>-f</code> commandline switch.

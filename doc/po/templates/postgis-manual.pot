@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: https://bugs.kde.org\n"
-"POT-Creation-Date: 2023-11-02 18:50+0000\n"
+"POT-Creation-Date: 2024-11-19 11:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <kde-i18n-doc@kde.org>\n"
@@ -1210,14 +1210,14 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"(2). Words and abbreviation used to denote street typess. For example: "
+"(2). Words and abbreviations used to denote street types. For example: "
 "<emphasis>ST</emphasis> or <emphasis>AVE</emphasis>."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"(16). Words and abbreviation used to denote internal subaddresses. For "
+"(16). Words and abbreviations used to denote internal subaddresses. For "
 "example, <emphasis>APT</emphasis> or <emphasis>UNIT</emphasis>."
 msgstr ""
 
@@ -1504,7 +1504,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"integer: definition number? - identifer used for that instance of the word"
+"integer: definition number? - identifier used for that instance of the word"
 msgstr ""
 
 #. Tag: title
@@ -1632,7 +1632,7 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Single Addresss"
+msgid "Single Address"
 msgstr ""
 
 #. Tag: para
@@ -2687,7 +2687,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"<varname>parsed</varname> boolean - denotes if addess was formed from "
+"<varname>parsed</varname> boolean - denotes if address was formed from "
 "normalize process. The normalize_address function sets this to true before "
 "returning the address."
 msgstr ""
@@ -3288,7 +3288,7 @@ msgstr ""
 #, no-c-format
 msgid ""
 "Current error descriptors are: coincident nodes, edge crosses node, edge not "
-"simple, edge end node geometry mis-match, edge start node geometry mismatch, "
+"simple, edge end node geometry mismatch, edge start node geometry mismatch, "
 "face overlaps face,face within face,"
 msgstr ""
 
@@ -3702,7 +3702,7 @@ msgstr ""
 
 #. Tag: entry
 #, no-c-format
-msgid "edge start node geometry mis-match"
+msgid "edge start node geometry mismatch"
 msgstr ""
 
 #. Tag: entry
@@ -3720,7 +3720,7 @@ msgstr ""
 
 #. Tag: entry
 #, no-c-format
-msgid "edge end node geometry mis-match"
+msgid "edge end node geometry mismatch"
 msgstr ""
 
 #. Tag: entry
@@ -4201,7 +4201,9 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ", <xref linkend=\"CreateTopology\"/>, <xref linkend=\"DropTopology\"/>"
+msgid ""
+", <xref linkend=\"AddTopoGeometryColumn\"/>, <xref "
+"linkend=\"CreateTopology\"/>, <xref linkend=\"DropTopology\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -4222,7 +4224,8 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"TopoGeo_AddPolygon\"/>, <xref linkend=\"AddNode\"/>, <xref "
+", <xref linkend=\"TopoGeo_AddPolygon\"/>, <xref "
+"linkend=\"TopoGeo_LoadGeometry\"/>, <xref linkend=\"AddNode\"/>, <xref "
 "linkend=\"CreateTopology\"/>"
 msgstr ""
 
@@ -4230,16 +4233,17 @@ msgstr ""
 #, no-c-format
 msgid ""
 "Adds a linestring to an existing topology using a tolerance and possibly "
-"splitting existing edges/faces. Returns edge identifiers."
+"splitting existing edges/faces."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Adds a linestring to an existing topology and returns a set of edge "
-"identifiers forming it up. The given line will snap to existing nodes or "
-"edges within given tolerance. Existing edges and faces may be split by the "
-"line."
+"Adds a linestring to an existing topology and returns a set of signed edge "
+"identifiers forming it up (negative identifies mean the edge goes in the "
+"opposite direction of the input linestring). The given line will snap to "
+"existing nodes or edges within given tolerance. Existing edges and faces may "
+"be split by the line. New nodes and faces may be added."
 msgstr ""
 
 #. Tag: para
@@ -4251,8 +4255,14 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
+msgid "Enhanced: 3.2.0 added support for returning signed identifier."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
 msgid ""
-", <xref linkend=\"TopoGeo_AddPolygon\"/>, <xref linkend=\"AddEdge\"/>, <xref "
+", <xref linkend=\"TopoGeo_AddPolygon\"/>, <xref "
+"linkend=\"TopoGeo_LoadGeometry\"/>, <xref linkend=\"AddEdge\"/>, <xref "
 "linkend=\"CreateTopology\"/>"
 msgstr ""
 
@@ -4275,8 +4285,35 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"TopoGeo_AddLineString\"/>, <xref linkend=\"AddFace\"/>, "
-"<xref linkend=\"CreateTopology\"/>"
+", <xref linkend=\"TopoGeo_AddLineString\"/>, <xref "
+"linkend=\"TopoGeo_LoadGeometry\"/>, <xref linkend=\"AddFace\"/>, <xref "
+"linkend=\"CreateTopology\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid ""
+"Load a geometry into an existing topology, snapping and splitting as needed."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Loads a geometry into an existing topology. The given geometry will snap to "
+"existing nodes or edges within given tolerance. Existing edges and faces may "
+"be split as a consequence of the load."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Availability: 3.5.0"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"TopoGeo_AddLineString\"/>, <xref "
+"linkend=\"TopoGeo_AddPolygon\"/>, <xref linkend=\"CreateTopology\"/>"
 msgstr ""
 
 #. Tag: title
@@ -5227,6 +5264,13 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"TopoGeo_AddLineString\"/> "
+"instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
 ", <xref linkend=\"CreateTopology\"/>, <xref linkend=\"spatial_ref_sys\"/>"
 msgstr ""
 
@@ -6016,7 +6060,7 @@ msgstr ""
 #, no-c-format
 msgid ""
 "By default <filename>pgtopo_import</filename> reads the dump from the "
-"standard input so that it can be used in conjuction with "
+"standard input so that it can be used in conjunction with "
 "<filename>pgtopo_export</filename> in a pipeline. You can optionally specify "
 "an input filename with the <code>-f</code> commandline switch."
 msgstr ""
@@ -6139,7 +6183,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"For GEOS functionality, when you install PostgresSQL you may need to "
+"For GEOS functionality, when you install PostgreSQL you may need to "
 "explicitly link PostgreSQL against the standard C++ library:"
 msgstr ""
 
@@ -6284,9 +6328,9 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"GDAL, version 2+ is required 3+ is preferred. This is required for raster "
-"support. <link xlink:href=\"https://gdal.org/download.html\">https://gdal."
-"org/download.html</link>."
+"GDAL, version 3+ is preferred. This is required for raster support. <link "
+"xlink:href=\"https://gdal.org/download.html\">https://gdal.org/download."
+"html</link>."
 msgstr ""
 
 #. Tag: para
@@ -6320,17 +6364,17 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"SFCGAL, version 1.3.1 (or higher), 1.4.1 or higher is recommended and "
-"required to be able to use all functionality. SFCGAL can be used to provide "
-"additional 2D and 3D advanced analysis functions to PostGIS cf <xref "
-"linkend=\"reference_sfcgal\"/>. And also allow to use SFCGAL rather than "
-"GEOS for some 2D functions provided by both backends (like ST_Intersection "
-"or ST_Area, for instance). A PostgreSQL configuration variable <code>postgis."
-"backend</code> allow end user to control which backend he want to use if "
-"SFCGAL is installed (GEOS by default). Nota: SFCGAL 1.2 require at least "
-"CGAL 4.3 and Boost 1.54 (cf: <link xlink:href=\"https://sfcgal.org\">https://"
-"sfcgal.org</link>) <link xlink:href=\"https://gitlab.com/sfcgal/SFCGAL/"
-"\">https://gitlab.com/sfcgal/SFCGAL/</link>."
+"SFCGAL, 1.4.1 or higher is required and 1.5.0+ is needed to be able to use "
+"all functionality. SFCGAL can be used to provide additional 2D and 3D "
+"advanced analysis functions to PostGIS cf <xref linkend=\"reference_sfcgal\"/"
+">. And also allow to use SFCGAL rather than GEOS for some 2D functions "
+"provided by both backends (like ST_Intersection or ST_Area, for instance). A "
+"PostgreSQL configuration variable <code>postgis.backend</code> allow end "
+"user to control which backend he want to use if SFCGAL is installed (GEOS by "
+"default). Nota: SFCGAL 1.2 require at least CGAL 4.3 and Boost 1.54 (cf: "
+"<link xlink:href=\"https://sfcgal.org\">https://sfcgal.org</link>) <link "
+"xlink:href=\"https://gitlab.com/sfcgal/SFCGAL/\">https://gitlab.com/sfcgal/"
+"SFCGAL/</link>."
 msgstr ""
 
 #. Tag: para
@@ -7152,6 +7196,11 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
+msgid "This will only have data if you marked zcta5 to be loaded"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
 msgid ""
 "By default the tables corresponding to <varname>bg</varname>, "
 "<varname>tract</varname>, <varname>tabblock20</varname> are not loaded. "
@@ -7509,7 +7558,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"Buildbot Maintenance, Windows production and experimental builds, "
+"CI and website maintenance, Windows production and experimental builds, "
 "documentation, alignment of PostGIS with PostgreSQL releases, X3D support, "
 "TIGER geocoder support, management functions."
 msgstr ""
@@ -7523,7 +7572,7 @@ msgstr ""
 #, no-c-format
 msgid ""
 "Index improvements, bug fixing and geometry/geography function improvements, "
-"SFCGAL, raster, GitHub curation, and bot maintenance."
+"SFCGAL, raster, GitHub curation, and ci maintenance."
 msgstr ""
 
 #. Tag: term
@@ -7549,10 +7598,9 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"Bug fixes and maintenance, buildbot maintenance, git mirror management, "
-"management functions, integration of new GEOS functionality and alignment "
-"with GEOS releases, topology support, and raster framework and low level API "
-"functions."
+"Bug fixes and maintenance, ci maintenance, git mirror management, management "
+"functions, integration of new GEOS functionality and alignment with GEOS "
+"releases, topology support, and raster framework and low level API functions."
 msgstr ""
 
 #. Tag: title
@@ -7571,6 +7619,16 @@ msgid ""
 "Distance function enhancements (including 3D distance and relationship "
 "functions) and additions, Tiny WKB (TWKB) output format and general user "
 "support"
+msgstr ""
+
+#. Tag: term
+#, no-c-format
+msgid "Loïc Bartoletti"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "SFCGAL enhancements and maintenance and ci support"
 msgstr ""
 
 #. Tag: term
@@ -7603,8 +7661,8 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"MapBox Vector Tile and GeoBuf functions. Gogs testing and GitLab "
-"experimentation."
+"MapBox Vector Tile, GeoBuf, and Flatgeobuf functions. Gitea testing and "
+"GitLab experimentation."
 msgstr ""
 
 #. Tag: term
@@ -7875,6 +7933,11 @@ msgstr ""
 
 #. Tag: member
 #, no-c-format
+msgid "Chris Mayo"
+msgstr ""
+
+#. Tag: member
+#, no-c-format
 msgid "Christian Schroeder"
 msgstr ""
 
@@ -7891,6 +7954,11 @@ msgstr ""
 #. Tag: member
 #, no-c-format
 msgid "Dane Springmeyer"
+msgstr ""
+
+#. Tag: member
+#, no-c-format
+msgid "Dapeng Wang"
 msgstr ""
 
 #. Tag: member
@@ -7916,6 +7984,11 @@ msgstr ""
 #. Tag: member
 #, no-c-format
 msgid "David Techer"
+msgstr ""
+
+#. Tag: member
+#, no-c-format
+msgid "Dian M Fay"
 msgstr ""
 
 #. Tag: member
@@ -8020,12 +8093,22 @@ msgstr ""
 
 #. Tag: member
 #, no-c-format
+msgid "James Addison"
+msgstr ""
+
+#. Tag: member
+#, no-c-format
 msgid "James Marca"
 msgstr ""
 
 #. Tag: member
 #, no-c-format
 msgid "Jan Katins"
+msgstr ""
+
+#. Tag: member
+#, no-c-format
+msgid "Jan Tojnar"
 msgstr ""
 
 #. Tag: member
@@ -8101,11 +8184,6 @@ msgstr ""
 #. Tag: member
 #, no-c-format
 msgid "Leo Hsu"
-msgstr ""
-
-#. Tag: member
-#, no-c-format
-msgid "Loïc Bartoletti"
 msgstr ""
 
 #. Tag: member
@@ -8250,6 +8328,11 @@ msgstr ""
 
 #. Tag: member
 #, no-c-format
+msgid "Sam Peters"
+msgstr ""
+
+#. Tag: member
+#, no-c-format
 msgid "Sebastiaan Couwenberg"
 msgstr ""
 
@@ -8346,6 +8429,11 @@ msgstr ""
 #. Tag: member
 #, no-c-format
 msgid "Volf Tomáš"
+msgstr ""
+
+#. Tag: member
+#, no-c-format
+msgid "Zuo Chenwei"
 msgstr ""
 
 #. Tag: term
@@ -8450,9 +8538,19 @@ msgstr ""
 msgid "Geographic Data BC"
 msgstr ""
 
+#. Tag: link
+#, no-c-format
+msgid "HighGo"
+msgstr ""
+
 #. Tag: simpara
 #, no-c-format
 msgid "Hunter Systems Group"
+msgstr ""
+
+#. Tag: link
+#, no-c-format
+msgid "INIA-CSIC"
 msgstr ""
 
 #. Tag: link
@@ -8497,7 +8595,7 @@ msgstr ""
 
 #. Tag: simpara
 #, no-c-format
-msgid "Norwegian Forest and Landscape Institue"
+msgid "Norwegian Forest and Landscape Institute"
 msgstr ""
 
 #. Tag: link
@@ -9144,15 +9242,6 @@ msgstr ""
 
 #. Tag: simpara
 #, no-c-format
-msgid ""
-"A <inlinemediaobject><imageobject><imagedata fileref=\"images/"
-"matrix_sfcgal_enhanced.png\"/></imageobject></inlinemediaobject> means the "
-"function support is provided by SFCGAL if PostGIS compiled with SFCGAL "
-"support, otherwise GEOS/built-in support."
-msgstr ""
-
-#. Tag: simpara
-#, no-c-format
 msgid "geom - Basic 2D geometry support (x,y)."
 msgstr ""
 
@@ -9265,8 +9354,7 @@ msgid ""
 "&reference_relationship; &reference_measure; &reference_overlay; "
 "&reference_processing; &reference_coverage; &reference_transformation; "
 "&reference_cluster; &reference_bbox; &reference_lrs; &reference_trajectory; "
-"&reference_sfcgal; &reference_transaction; &reference_version; "
-"&reference_guc; &reference_troubleshooting;"
+"&reference_version; &reference_guc; &reference_troubleshooting;"
 msgstr ""
 
 #. Tag: title
@@ -9652,7 +9740,8 @@ msgstr ""
 #, no-c-format
 msgid ""
 "the <parameter>geom</parameter> field <varname>LINESTRING</varname>s "
-"represent the segments of the supplied geometry."
+"represent the linear segments of the supplied geometry, while the "
+"<varname>CIRCULARSTRING</varname>s represent the arc segments."
 msgstr ""
 
 #. Tag: para
@@ -9997,6 +10086,38 @@ msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
+msgid "Return the number of component curves in a CompoundCurve."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Return the number of component curves in a CompoundCurve, zero for an empty "
+"CompoundCurve, or NULL for a non-CompoundCurve input."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"ST_Dump\"/>, <xref linkend=\"ST_ExteriorRing\"/>, <xref "
+"linkend=\"ST_NumInteriorRings\"/>, <xref linkend=\"ST_NumGeometries\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Returns the Nth component curve geometry of a CompoundCurve."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Returns the Nth component curve geometry of a CompoundCurve. The index "
+"starts at 1. Returns NULL if the geometry is not a CompoundCurve or the "
+"index is out of range."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
 msgid ""
 "Tests if a LineStrings's start and end points are coincident. For a "
 "PolyhedralSurface tests if it is closed (volumetric)."
@@ -10207,7 +10328,7 @@ msgid ""
 "Returns true if this Geometry has no anomalous geometric points, such as "
 "self-intersection or self-tangency. For more information on the OGC's "
 "definition of geometry simplicity and validity, refer to <link "
-"linkend=\"OGC_Validity\">\"Ensuring OpenGIS compliancy of geometries\"</link>"
+"linkend=\"OGC_Validity\">\"Ensuring OpenGIS compliance of geometries\"</link>"
 msgstr ""
 
 #. Tag: para
@@ -10436,7 +10557,7 @@ msgstr ""
 msgid ""
 "Return the number of points in an ST_LineString or ST_CircularString value. "
 "Prior to 1.4 only works with linestrings as the specs state. From 1.4 "
-"forward this is an alias for ST_NPoints which returns number of vertexes for "
+"forward this is an alias for ST_NPoints which returns number of vertices for "
 "not just linestrings. Consider using ST_NPoints instead which is multi-"
 "purpose and works with many geometry types."
 msgstr ""
@@ -10841,11 +10962,6 @@ msgid ""
 "height information."
 msgstr ""
 
-#. Tag: para
-#, no-c-format
-msgid "Availability: 3.5.0"
-msgstr ""
-
 #. Tag: refpurpose
 #, no-c-format
 msgid "Checks if a geometry has an M (measure) dimension."
@@ -10963,6 +11079,16 @@ msgid ""
 "In the absence of statistics (empty table or no ANALYZE called) this "
 "function returns NULL. Prior to version 1.5.4 an exception was thrown "
 "instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Escaping names for tables and/or namespaces that include special characters "
+"and quotes may require special handling. A user notes: \"For schemas and "
+"tables, use identifier escaping rules to produce a double-quoted string, and "
+"afterwards remove the first and last double-quote character. For geometry "
+"column pass as is.\""
 msgstr ""
 
 #. Tag: para
@@ -11346,7 +11472,7 @@ msgstr ""
 msgid ""
 "Note that border geometries may be within <varname>eps</varname> distance of "
 "core geometries in more than one cluster. Either assignment would be "
-"correct, so the border geometry will be arbitrarily asssigned to one of the "
+"correct, so the border geometry will be arbitrarily assigned to one of the "
 "available clusters. In this situation it is possible for a correct cluster "
 "to be generated with fewer than <varname>minpoints</varname> geometries. To "
 "ensure deterministic assignment of border geometries (so that repeated calls "
@@ -11529,7 +11655,7 @@ msgstr ""
 #, no-c-format
 msgid ""
 "ST_ClusterWithin is equivalent to running <xref linkend=\"ST_ClusterDBSCAN\"/"
-"> with <code>minpoints := 0</code>."
+"> with <code>minpoints =&gt; 0</code>."
 msgstr ""
 
 #. Tag: para
@@ -11561,7 +11687,7 @@ msgstr ""
 #, no-c-format
 msgid ""
 "ST_ClusterWithinWin is equivalent to running <xref "
-"linkend=\"ST_ClusterDBSCAN\"/> with <code>minpoints := 0</code>."
+"linkend=\"ST_ClusterDBSCAN\"/> with <code>minpoints =&gt; 0</code>."
 msgstr ""
 
 #. Tag: para
@@ -11894,10 +12020,9 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"While not OGC-compliant, <varname>ST_MakePoint</varname> is faster and more "
-"precise than <xref linkend=\"ST_GeomFromText\"/> and <xref "
-"linkend=\"ST_PointFromText\"/>. It is also easier to use for numeric "
-"coordinate values."
+"While not OGC-compliant, <varname>ST_MakePoint</varname> is faster than "
+"<xref linkend=\"ST_GeomFromText\"/> and <xref linkend=\"ST_PointFromText\"/"
+">. It is also easier to use for numeric coordinate values."
 msgstr ""
 
 #. Tag: para
@@ -12265,10 +12390,10 @@ msgstr ""
 msgid ""
 "Creates a rectangular Polygon giving the extent of a tile in the <link xlink:"
 "href=\"https://en.wikipedia.org/wiki/Tiled_web_map\">XYZ tile system</link>. "
-"The tile is specifed by the zoom level Z and the XY index of the tile in the "
-"grid at that level. Can be used to define the tile bounds required by <xref "
-"linkend=\"ST_AsMVTGeom\"/> to convert geometry into the MVT tile coordinate "
-"space."
+"The tile is specified by the zoom level Z and the XY index of the tile in "
+"the grid at that level. Can be used to define the tile bounds required by "
+"<xref linkend=\"ST_AsMVTGeom\"/> to convert geometry into the MVT tile "
+"coordinate space."
 msgstr ""
 
 #. Tag: para
@@ -12529,8 +12654,9 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"Squares are generated with no SRID set, so use <xref linkend=\"ST_SetSRID\"/"
-"> to set the SRID to the one you expect."
+"Squares are generated with the SRID of the given origin. Use <xref "
+"linkend=\"ST_SetSRID\"/> to set the SRID if the given origin has an unknown "
+"SRID (as is the case by default)."
 msgstr ""
 
 #. Tag: title
@@ -12694,7 +12820,7 @@ msgstr ""
 msgid ""
 "A window function which simplifies the edges of polygons in a polygonal "
 "coverage. The simplification preserves the coverage topology. This means the "
-"simplified output polygons are consisent along shared edges, and still form "
+"simplified output polygons are consistent along shared edges, and still form "
 "a valid coverage."
 msgstr ""
 
@@ -12860,7 +12986,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"For atomic geometry inputs, the geometry is retured unchanged if the input "
+"For atomic geometry inputs, the geometry is returned unchanged if the input "
 "type matches the requested type. Otherwise, the result is an EMPTY geometry "
 "of the specified type. If required, these can be converted to multi-"
 "geometries using <xref linkend=\"ST_Multi\"/>."
@@ -13030,7 +13156,7 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "1: Symmetric (orientation idependent) output."
+msgid "1: Symmetric (orientation independent) output."
 msgstr ""
 
 #. Tag: para
@@ -13226,27 +13352,6 @@ msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
-msgid ""
-"Orients all exterior rings counter-clockwise and all interior rings "
-"clockwise."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Forces (Multi)Polygons to use a counter-clockwise orientation for their "
-"exterior ring, and a clockwise orientation for their interior rings. Non-"
-"polygonal geometries are returned unchanged."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-", <xref linkend=\"ST_IsPolygonCCW\"/>, <xref linkend=\"ST_IsPolygonCW\"/>"
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
 msgid "Convert the geometry into a GEOMETRYCOLLECTION."
 msgstr ""
 
@@ -13267,6 +13372,41 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid "Changed: 2.1.0. Up to 2.0.x this was called ST_Force_Collection."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Upcast a geometry into its curved type, if applicable."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Turns a geometry into its curved representation, if applicable: lines become "
+"compoundcurves, multilines become multicurves polygons become curvepolygons "
+"multipolygons become multisurfaces. If the geometry input is already a "
+"curved representation returns back same as input."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid ""
+"Orients all exterior rings counter-clockwise and all interior rings "
+"clockwise."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Forces (Multi)Polygons to use a counter-clockwise orientation for their "
+"exterior ring, and a clockwise orientation for their interior rings. Non-"
+"polygonal geometries are returned unchanged."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"ST_IsPolygonCCW\"/>, <xref linkend=\"ST_IsPolygonCW\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -13324,16 +13464,27 @@ msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
-msgid "Upcast a geometry into its curved type, if applicable."
+msgid "Returns a line extended forwards and backwards by specified distances."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Turns a geometry into its curved representation, if applicable: lines become "
-"compoundcurves, multilines become multicurves polygons become curvepolygons "
-"multipolygons become multisurfaces. If the geometry input is already a "
-"curved representation returns back same as input."
+"Returns a line extended forwards and backwards by adding new start (and end) "
+"points at the given distance(s). A distance of zero does not add a point. "
+"Only non-negative distances are allowed. The direction(s) of the added "
+"point(s) is determined by the first (and last) two distinct points of the "
+"line. Duplicate points are ignored."
+msgstr ""
+
+#. Tag: title
+#, no-c-format
+msgid "Example: Extends a line 5 units forward and 6 units backward"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_LocateAlong\"/>, <xref linkend=\"ST_Project\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -13365,33 +13516,6 @@ msgstr ""
 msgid ""
 "Returns the geometry as a MULTI* geometry collection. If the geometry is "
 "already a collection, it is returned unchanged."
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
-msgid ""
-"Returns a line with the last and first segments extended the specified "
-"distance(s)."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Returns a line with the last and first segments extended the specified "
-"distance(s). Distance of zero carries out no extension. Only non-negative "
-"distances are allowed. The first (and last) two distinct points in a line "
-"are used to determine the direction of projection, duplicate points are "
-"ignored."
-msgstr ""
-
-#. Tag: title
-#, no-c-format
-msgid "Example: Projected point at 100,000 meters and bearing 45 degrees"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ", <xref linkend=\"ST_Project\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -13489,6 +13613,11 @@ msgid ""
 "Enhanced: 3.4.0 Allow geometry arguments and two-point form omitting azimuth."
 msgstr ""
 
+#. Tag: title
+#, no-c-format
+msgid "Example: Projected point at 100,000 meters and bearing 45 degrees"
+msgstr ""
+
 #. Tag: para
 #, no-c-format
 msgid ""
@@ -13570,7 +13699,7 @@ msgid ""
 "these inputs. As we can set these bits to any value, "
 "<code>ST_QuantizeCoordinates</code> sets the 22 insignificant bits to zero. "
 "For a long coordinate sequence this creates a pattern of blocks of "
-"consecutive zeros that is compressed by PostgreSQL more effeciently."
+"consecutive zeros that is compressed by PostgreSQL more efficiently."
 msgstr ""
 
 #. Tag: para
@@ -13649,12 +13778,231 @@ msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
+msgid ""
+"Removes points that are irrelevant for rendering a specific rectangular view "
+"of a geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Returns a <xref linkend=\"geometry\"/> without points being irrelevant for "
+"rendering the geometry within a given rectangular view."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"This function can be used to quickly preprocess geometries that should be "
+"rendered only within certain bounds."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Only geometries of type (MULTI)POLYGON and (MULTI)LINESTRING are evaluated. "
+"Other geometries keep unchanged."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "In contrast to <code>ST_ClipByBox2D()</code> this function"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"sorts out points without computing new intersection points which avoids "
+"rounding errors and usually increases performance,"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "returns a geometry with equal or similar point number,"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "leads to the same rendering result within the specified view, and"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"may introduce self-intersections which would make the resulting geometry "
+"invalid (see example below)."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"If <code>cartesian_hint</code> is set to <code>true</code>, the algorithm "
+"applies additional optimizations involving cartesian math to further reduce "
+"the resulting point number. Please note that using this option might "
+"introduce rendering artifacts if the resulting coordinates are projected "
+"into another (non-cartesian) coordinate system before rendering."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"For polygons, this function does currently not ensure that the result is "
+"valid. This situation can be checked with <xref linkend=\"ST_IsValid\"/> and "
+"repaired with <xref linkend=\"ST_MakeValid\"/>."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Example: ST_RemoveIrrelevantPointsForView() applied to a polygon. Blue "
+"points remain, the rendering result (light-blue area) within the grey view "
+"box remains as well."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Example: Due to the fact that points are just sorted out and no new points "
+"are computed, the result of ST_RemoveIrrelevantPointsForView() may contain "
+"self-intersections."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_Intersection\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Removes small parts (polygon rings or linestrings) of a geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Returns a <xref linkend=\"geometry\"/> without small parts (exterior or "
+"interior polygon rings, or linestrings)."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"This function can be used as preprocessing step for creating simplified "
+"maps, e. g. to remove small islands or holes."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"It evaluates only geometries of type (MULTI)POLYGON and (MULTI)LINESTRING. "
+"Other geometries remain unchanged."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"If <parameter>minSizeX</parameter> is greater than 0, parts are sorted out "
+"if their width is smaller than <parameter>minSizeX</parameter>."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"If <parameter>minSizeY</parameter> is greater than 0, parts are sorted out "
+"if their height is smaller than <parameter>minSizeY</parameter>."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Both <parameter>minSizeX</parameter> and <parameter>minSizeY</parameter> are "
+"measured in coordinate system units of the geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"For polygon types, evaluation is done separately for each ring which can "
+"lead to one of the following results:"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "the original geometry,"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "a POLYGON with all rings with less vertices,"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"a POLYGON with a reduced number of interior rings (having possibly less "
+"vertices),"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "a POLYGON EMPTY, or"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"a MULTIPOLYGON with a reduced number of polygons (having possibly less "
+"interior rings or vertices), or"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "a MULTIPOLYGON EMPTY."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"For linestring types, evaluation is done for each linestring which can lead "
+"to one of the following results:"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "a LINESTRING with a reduced number of vertices,"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "a LINESTRING EMPTY,"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"a MULTILINESTRING with a reduced number of linestrings (having possibly less "
+"vertices), or"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "a MULTILINESTRING EMPTY."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Example: ST_RemoveSmallParts() applied to a multi-polygon. Blue parts remain."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
 msgid "Return the geometry with vertex order reversed."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Can be used on any geometry and reverses the order of the vertexes."
+msgid "Can be used on any geometry and reverses the order of the vertices."
 msgstr ""
 
 #. Tag: para
@@ -14031,7 +14379,7 @@ msgid ""
 "Bounding boxes are automatically added to geometries so in general this is "
 "not needed unless the generated bounding box somehow becomes corrupted or "
 "you have an old install that is lacking bounding boxes. Then you need to "
-"drop the old and readd."
+"drop the old and re-add."
 msgstr ""
 
 #. Tag: para
@@ -14060,11 +14408,11 @@ msgid ""
 "Bounding boxes are automatically added to geometries and improve speed of "
 "queries so in general this is not needed unless the generated bounding box "
 "somehow becomes corrupted or you have an old install that is lacking "
-"bounding boxes. Then you need to drop the old and readd. This kind of "
+"bounding boxes. Then you need to drop the old and re-add. This kind of "
 "corruption has been observed in 8.3-8.3.6 series whereby cached bboxes were "
 "not always recalculated when a geometry changed and upgrading to a newer "
 "version without a dump reload will not correct already corrupted boxes. So "
-"one can manually correct using below and readd the bbox or do a dump reload."
+"one can manually correct using below and re-add the bbox or do a dump reload."
 msgstr ""
 
 #. Tag: para
@@ -14101,6 +14449,15 @@ msgid ""
 "This section lists custom PostGIS Grand Unified Custom Variables (GUC). "
 "These can be set globally, by database, by session or by transaction. Best "
 "set at global or database level."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"For more examples of usage refer to <link xlink:href=\"https://www."
+"postgresql.org/docs/current/sql-set.html\">SQL SET</link> and <link xlink:"
+"href=\"https://www.postgresql.org/docs/current/sql-altersystem.html\">SQL "
+"ALTER SYSTEM</link>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -14268,30 +14625,22 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Set and reset <varname>postgis.gdal_enabled_drivers</varname>"
+msgid ""
+"To set and reset <varname>postgis.gdal_enabled_drivers</varname> for current "
+"session"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Sets backend for all new connections to database"
+msgid "Set for all new connections to a specific database to specific drivers"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Sets default enabled drivers for all new connections to server. Requires "
-"super user access and PostgreSQL 9.4+. Also note that database, session, and "
-"user settings override this."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "Enable all GDAL Drivers"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "Disable all GDAL Drivers"
+"Setting for whole database cluster to enable all drivers. Requires super "
+"user access. Also note that database, session, and user settings override "
+"this."
 msgstr ""
 
 #. Tag: para
@@ -14348,14 +14697,14 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Set for specific database"
+msgid "Set for all new connections to a specific database"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Setting for whole database cluster. You need to reconnect to the database "
-"for changes to take effect."
+"Setting for whole database cluster. Requires super user access. Also note "
+"that database, session, and user settings override this."
 msgstr ""
 
 #. Tag: refpurpose
@@ -15794,8 +16143,8 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"ST_LineInterpolatePoint\"/>, <xref "
-"linkend=\"ST_LineMerge\"/>"
+", <xref linkend=\"ST_LineExtend\"/>, <xref "
+"linkend=\"ST_LineInterpolatePoint\"/>, <xref linkend=\"ST_LineMerge\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -16628,9 +16977,9 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"Enhanced: 2.1.0 improved speed for geography. See <link xlink:href=\"http://"
-"boundlessgeo.com/2012/07/making-geography-faster/\">Making Geography faster</"
-"link> for details."
+"Enhanced: 2.1.0 improved speed for geography. See <link xlink:href=\"https://"
+"web.archive.org/web/20160827203903/http://boundlessgeo.com/2012/07/making-"
+"geography-faster/\">Making Geography faster</link> for details."
 msgstr ""
 
 #. Tag: para
@@ -16848,7 +17197,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"The smaller densifyFrac we specify, the more acurate Fréchet distance we "
+"The smaller densifyFrac we specify, the more accurate Fréchet distance we "
 "get. But, the computation time and the memory usage increase with the square "
 "of the number of subsegments."
 msgstr ""
@@ -17275,7 +17624,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"No vertex is closer than <varname>e</varname> to a line segement of which it "
+"No vertex is closer than <varname>e</varname> to a line segment of which it "
 "is not an endpoint."
 msgstr ""
 
@@ -18388,7 +18737,7 @@ msgstr ""
 #. Tag: refpurpose
 #, no-c-format
 msgid ""
-"Returns the n-D distance between the centroids of A and B bounding boxes."
+"Returns the n-D distance between the A and B geometries or bounding boxes"
 msgstr ""
 
 #. Tag: para
@@ -18412,38 +18761,6 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid "Availability: 2.2.0 -- KNN only available for PostgreSQL 9.1+"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ", <xref linkend=\"geometry_distance_knn\"/>"
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
-msgid "Returns the n-D distance between A and B bounding boxes."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"The <varname>&lt;&lt;#&gt;&gt;</varname> operator returns distance between "
-"two floating point bounding boxes, possibly reading them from a spatial "
-"index (PostgreSQL 9.1+ required). Useful for doing nearest neighbor "
-"<emphasis role=\"strong\">approximate</emphasis> distance ordering."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Index only kicks in if one of the geometries is a constant e.g. ORDER BY "
-"(ST_GeomFromText('POINT(1 2)') &lt;&lt;#&gt;&gt; geom) instead of g1.geom "
-"&lt;&lt;#&gt;&gt;."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ", <xref linkend=\"geometry_distance_box\"/>"
 msgstr ""
 
 #. Tag: title
@@ -18900,6 +19217,17 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
+"The <varname>id_column</varname> parameter is used to set the \"id\" member "
+"of the returned GeoJSON features. As per GeoJSON RFC, this SHOULD be used "
+"whenever a feature has a commonly used identifier, such as a primary key. "
+"When not specified, the produced features will not get an \"id\" member and "
+"any columns other than the geometry, including any potential keys, will just "
+"end up inside the feature’s \"properties\" member."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
 "The GeoJSON specification states that polygons are oriented using the Right-"
 "Hand Rule, and some clients require this orientation. This can be ensured by "
 "using <xref linkend=\"ST_ForcePolygonCCW\"/>. The specification also "
@@ -18953,19 +19281,17 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
+msgid "Changed: 3.5.0 allow specifying the column containing the feature id"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
 msgid "Generate a FeatureCollection:"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid "Generate a Feature:"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"An alternate way to generate Features with an <varname>id</varname> property "
-"is to use JSONB functions and operators:"
 msgstr ""
 
 #. Tag: para
@@ -18978,6 +19304,11 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid "3D geometries are supported:"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Options argument can be used to add BBOX and CRS in GeoJSON output:"
 msgstr ""
 
 #. Tag: para
@@ -19038,10 +19369,10 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"16: Declare that datas are lat/lon (e.g srid=4326). Default is to assume "
-"that data are planars. This option is useful for GML 3.1.1 output only, "
-"related to axis order. So if you set it, it will swap the coordinates so "
-"order is lat lon instead of database lon lat."
+"16: Declare that data are lat/lon (e.g srid=4326). Default is to assume that "
+"data are planars. This option is useful for GML 3.1.1 output only, related "
+"to axis order. So if you set it, it will swap the coordinates so order is "
+"lat lon instead of database lon lat."
 msgstr ""
 
 #. Tag: para
@@ -19311,23 +19642,23 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"Converting a <varname>POINT</varname> to MARC21/XML formated as hdddmmss "
+"Converting a <varname>POINT</varname> to MARC21/XML formatted as hdddmmss "
 "(default)"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Converting a <varname>POLYGON</varname> to MARC21/XML formated in decimal "
+"Converting a <varname>POLYGON</varname> to MARC21/XML formatted in decimal "
 "degrees"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Converting a <varname>GEOMETRYCOLLECTION</varname> to MARC21/XML formated in "
-"decimal minutes. The geometries order in the MARC21/XML output correspond to "
-"their order in the collection."
+"Converting a <varname>GEOMETRYCOLLECTION</varname> to MARC21/XML formatted "
+"in decimal minutes. The geometries order in the MARC21/XML output correspond "
+"to their order in the collection."
 msgstr ""
 
 #. Tag: refpurpose
@@ -20713,8 +21044,8 @@ msgid ""
 "The optional third parameter controls the buffer accuracy and style. The "
 "accuracy of circular arcs in the buffer is specified as the number of line "
 "segments used to approximate a quarter circle (default is 8). The buffer "
-"style can be specifed by providing a list of blank-separated key=value pairs "
-"as follows:"
+"style can be specified by providing a list of blank-separated key=value "
+"pairs as follows:"
 msgstr ""
 
 #. Tag: para
@@ -21074,7 +21405,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"The result has interpolated values for the Z and M dimenions when present."
+"The result has interpolated values for the Z and M dimensions when present."
 msgstr ""
 
 #. Tag: para
@@ -21641,7 +21972,7 @@ msgid ""
 "input geometry. The circle center is the point in the interior of the "
 "boundary which has the farthest distance from the obstacles. The circle "
 "itself is provided by the center point and a nearest point lying on an "
-"obstacle detemining the circle radius."
+"obstacle determining the circle radius."
 msgstr ""
 
 #. Tag: para
@@ -21716,7 +22047,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"To compute two points lying on the mimimum circle (the \"maximum diameter\") "
+"To compute two points lying on the minimum circle (the \"maximum diameter\") "
 "use <xref linkend=\"ST_LongestLine\"/>."
 msgstr ""
 
@@ -21857,6 +22188,13 @@ msgstr ""
 msgid ""
 "'mitre_limit=#.#' : mitre ratio limit (only affects mitred join style). "
 "'miter_limit' is also accepted as a synonym for 'mitre_limit'."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Behavior changed in GEOS 3.11 so offset curves now have the same direction "
+"as the input line, for both positive and negative offsets."
 msgstr ""
 
 #. Tag: para
@@ -22131,43 +22469,55 @@ msgstr ""
 #. Tag: refpurpose
 #, no-c-format
 msgid ""
-"Returns a simplified version of a geometry, using the Douglas-Peucker "
+"Returns a simplified representation of a geometry, using the Douglas-Peucker "
 "algorithm."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Returns a \"simplified\" version of the given geometry using the Douglas-"
-"Peucker algorithm. Will actually do something only with (multi)lines and "
-"(multi)polygons but you can safely call it with any kind of geometry. Since "
-"simplification occurs on a object-by-object basis you can also feed a "
-"GeometryCollection to this function."
+"Computes a simplified representation of a geometry using the <link xlink:"
+"href=\"https://en.wikipedia.org/wiki/"
+"Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm\">Douglas-Peucker algorithm</"
+"link>. The simplification <varname>tolerance</varname> is a distance value, "
+"in the units of the input SRS. Simplification removes vertices which are "
+"within the tolerance distance of the simplified linework. The result may not "
+"be valid even if the input is."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"The \"preserve collapsed\" flag will retain objects that would otherwise be "
-"too small given the tolerance. For example, a 1m long line simplified with a "
-"10m tolerance. If <varname>preserveCollapsed</varname> argument is specified "
-"as true, the line will not disappear. This flag is useful for rendering "
-"engines, to avoid having large numbers of very small objects disappear from "
-"a map leaving surprising gaps."
+"The function can be called with any kind of geometry (including "
+"GeometryCollections), but only line and polygon elements are simplified. "
+"Endpoints of linear geometry are preserved."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Note that returned geometry might lose its simplicity (see <xref "
-"linkend=\"ST_IsSimple\"/>)"
+"The <varname>preserveCollapsed</varname> flag retains small geometries that "
+"would otherwise be removed at the given tolerance. For example, if a 1m long "
+"line is simplified with a 10m tolerance, when <varname>preserveCollapsed</"
+"varname> is true the line will not disappear. This flag is useful for "
+"rendering purposes, to prevent very small features disappearing from a map."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Note topology may not be preserved and may result in invalid geometries. Use "
-"(see <xref linkend=\"ST_SimplifyPreserveTopology\"/>) to preserve topology."
+"The returned geometry may lose its simplicity (see <xref "
+"linkend=\"ST_IsSimple\"/>), topology may not be preserved, and polygonal "
+"results may be invalid (see <xref linkend=\"ST_IsValid\"/>). Use <xref "
+"linkend=\"ST_SimplifyPreserveTopology\"/> to preserve topology and ensure "
+"validity."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"This function does not preserve boundaries shared between polygons. Use "
+"<xref linkend=\"ST_CoverageSimplify\"/> if this is required."
 msgstr ""
 
 #. Tag: para
@@ -22177,27 +22527,52 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ""
-", <xref linkend=\"ST_SimplifyPreserveTopology\"/>, <xref "
-"linkend=\"ST_SimplifyVW\"/>, Topology <xref linkend=\"TP_ST_Simplify\"/>"
+msgid "Simplifying a set of lines. Lines may intersect after simplification."
 msgstr ""
 
-#. Tag: refpurpose
+#. Tag: para
 #, no-c-format
-msgid ""
-"Returns a simplified and valid version of a geometry, using the Douglas-"
-"Peucker algorithm."
+msgid "Simplifying a MultiPolygon. Polygonal results may be invalid."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Returns a \"simplified\" version of the given geometry using the Douglas-"
-"Peucker algorithm. Will avoid creating derived geometries (polygons in "
-"particular) that are invalid. Will actually do something only with "
-"(multi)lines and (multi)polygons but you can safely call it with any kind of "
-"geometry. Since simplification occurs on a object-by-object basis you can "
-"also feed a GeometryCollection to this function."
+", <xref linkend=\"ST_SimplifyPreserveTopology\"/>, <xref "
+"linkend=\"ST_SimplifyVW\"/>, <xref linkend=\"ST_CoverageSimplify\"/>, "
+"Topology <xref linkend=\"TP_ST_Simplify\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid ""
+"Returns a simplified and valid representation of a geometry, using the "
+"Douglas-Peucker algorithm."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Computes a simplified representation of a geometry using a variant of the "
+"<link xlink:href=\"https://en.wikipedia.org/wiki/"
+"Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm\">Douglas-Peucker algorithm</"
+"link> which limits simplification to ensure the result has the same topology "
+"as the input. The simplification <varname>tolerance</varname> is a distance "
+"value, in the units of the input SRS. Simplification removes vertices which "
+"are within the tolerance distance of the simplified linework, as long as "
+"topology is preserved. The result will be valid and simple if the input is."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"The function can be called with any kind of geometry (including "
+"GeometryCollections), but only line and polygon elements are simplified. For "
+"polygonal inputs, the result will have the same number of rings (shells and "
+"holes), and the rings will not cross. Ring endpoints may be simplified. For "
+"linear inputs, the result will have the same number of lines, and lines will "
+"not intersect if they did not do so in the original geometry. Endpoints of "
+"linear geometry are preserved."
 msgstr ""
 
 #. Tag: para
@@ -22208,14 +22583,32 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"Same example as Simplify, but we see Preserve Topology prevents "
-"oversimplification. The circle can at most become a square."
+"For the same example as <xref linkend=\"ST_Simplify\"/>, "
+"ST_SimplifyPreserveTopology prevents oversimplification. The circle can at "
+"most become a square."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Simplifying a set of lines, preserving topology of non-intersecting lines."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Simplifying a MultiPolygon, preserving topology of shells and holes."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"ST_SimplifyVW\"/>, <xref linkend=\"ST_CoverageSimplify\"/>"
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
 msgid ""
-"Computes a simplifed topology-preserving outer or inner hull of a polygonal "
+"Computes a simplified topology-preserving outer or inner hull of a polygonal "
 "geometry."
 msgstr ""
 
@@ -22235,7 +22628,7 @@ msgid ""
 "The reduction in vertex count is controlled by the <varname>vertex_fraction</"
 "varname> parameter, which is a number in the range 0 to 1. Lower values "
 "produce simpler results, with smaller vertex count and less concaveness. For "
-"both outer and inner hulls a vertex fraction of 1.0 produces the orginal "
+"both outer and inner hulls a vertex fraction of 1.0 produces the original "
 "geometry. For outer hulls a value of 0.0 produces the convex hull (for a "
 "single polygon); for inner hulls it produces a triangle."
 msgstr ""
@@ -22291,18 +22684,31 @@ msgstr ""
 #. Tag: refpurpose
 #, no-c-format
 msgid ""
-"Returns a simplified version of a geometry, using the Visvalingam-Whyatt "
-"algorithm"
+"Returns a simplified representation of a geometry, using the Visvalingam-"
+"Whyatt algorithm"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Returns a \"simplified\" version of the given geometry using the Visvalingam-"
-"Whyatt algorithm. Will actually do something only with (multi)lines and "
-"(multi)polygons but you can safely call it with any kind of geometry. Since "
-"simplification occurs on a object-by-object basis you can also feed a "
-"GeometryCollection to this function."
+"Returns a simplified representation of a geometry using the <link xlink:"
+"href=\"https://en.wikipedia.org/wiki/"
+"Visvalingam%E2%80%93Whyatt_algorithm\">Visvalingam-Whyatt algorithm</link>. "
+"The simplification <varname>tolerance</varname> is an area value, in the "
+"units of the input SRS. Simplification removes vertices which form "
+"\"corners\" with area less than the tolerance. The result may not be valid "
+"even if the input is."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"The returned geometry may lose its simplicity (see <xref "
+"linkend=\"ST_IsSimple\"/>), topology may not be preserved, and polygonal "
+"results may be invalid (see <xref linkend=\"ST_IsValid\"/>). Use <xref "
+"linkend=\"ST_SimplifyPreserveTopology\"/> to preserve topology and ensure "
+"validity. <xref linkend=\"ST_CoverageSimplify\"/> also preserves topology "
+"and validity."
 msgstr ""
 
 #. Tag: para
@@ -22313,15 +22719,26 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "A LineString is simplified with a minimum area threshold of 30."
+msgid "A LineString is simplified with a minimum-area tolerance of 30."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Simplifying a line."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Simplifying a polygon."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
 ", <xref linkend=\"ST_Simplify\"/>, <xref "
-"linkend=\"ST_SimplifyPreserveTopology\"/>, Topology <xref "
-"linkend=\"TP_ST_Simplify\"/>"
+"linkend=\"ST_SimplifyPreserveTopology\"/>, <xref "
+"linkend=\"ST_CoverageSimplify\"/>, Topology <xref linkend=\"TP_ST_Simplify\"/"
+">"
 msgstr ""
 
 #. Tag: refpurpose
@@ -22336,7 +22753,7 @@ msgstr ""
 msgid ""
 "Sets the effective area for each vertex, using the Visvalingam-Whyatt "
 "algorithm. The effective area is stored as the M-value of the vertex. If the "
-"optional \"theshold\" parameter is used, a simplified geometry will be "
+"optional \"threshold\" parameter is used, a simplified geometry will be "
 "returned, containing only vertices with an effective area greater than or "
 "equal to the threshold value."
 msgstr ""
@@ -22357,6 +22774,20 @@ msgid ""
 "you can safely call it with any kind of geometry. Since simplification "
 "occurs on a object-by-object basis you can also feed a GeometryCollection to "
 "this function."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Note that returned geometry might lose its simplicity (see <xref "
+"linkend=\"ST_IsSimple\"/>)"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Note topology may not be preserved and may result in invalid geometries. Use "
+"(see <xref linkend=\"ST_SimplifyPreserveTopology\"/>) to preserve topology."
 msgstr ""
 
 #. Tag: para
@@ -22414,11 +22845,30 @@ msgstr ""
 msgid "Polygon Triangulation"
 msgstr ""
 
+#. Tag: title
+#, no-c-format
+msgid "Same example as ST_Tesselate"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "ST_AsText output"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Original polygon"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Triangulated Polygon"
+msgstr ""
+
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"ST_ConstrainedDelaunayTriangles\"/>, <xref "
-"linkend=\"ST_Tesselate\"/>"
+", <xref linkend=\"ST_DelaunayTriangles\"/>, <xref linkend=\"ST_Tesselate\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -22877,7 +23327,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"<varname>extent</varname> computes extent of whole table and applys "
+"<varname>extent</varname> computes extent of whole table and applies "
 "constraint all rasters must be within that extent"
 msgstr ""
 
@@ -23557,6 +24007,29 @@ msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
+msgid "Aggregate. Renders PostGIS geometries into a new raster."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Returns a single-band raster containing the rendered version of all incoming "
+"geometries, each with its associated value."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Availability: 3.6.0"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"RT_ST_DumpAsPolygons\"/>, <xref linkend=\"RT_ST_Union\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
 msgid ""
 "Returns one or more bands of an existing raster as a new raster. Useful for "
 "building new rasters from existing rasters."
@@ -23578,7 +24051,7 @@ msgstr ""
 msgid ""
 "For the <code>nbands</code> as text variant of function, the default "
 "delimiter is <code>,</code> which means you can ask for <code>'1,2,3'</code> "
-"and if you wanted to use a different delimeter you would do "
+"and if you wanted to use a different delimiter you would do "
 "<code>ST_Band(rast, '1@2@3', '@')</code>. For asking for multiple bands, we "
 "strongly suggest you use the array form of this function e.g. "
 "<code>ST_Band(rast, '{1,2,3}'::int[]);</code> since the <code>text</code> "
@@ -24819,10 +25292,11 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"RT_ST_DumpAsPolygons\"/>, <xref linkend=\"RT_ST_NumBands\"/"
-">, <xref linkend=\"RT_ST_PixelAsPolygon\"/>, <xref linkend=\"RT_ST_ScaleX\"/"
-">, <xref linkend=\"RT_ST_ScaleY\"/>, <xref linkend=\"RT_ST_UpperLeftX\"/>, "
-"<xref linkend=\"RT_ST_UpperLeftY\"/>, <xref linkend=\"RT_ST_SRID\"/>, <xref "
+", <xref linkend=\"RT_ST_SetValue\"/>, <xref linkend=\"RT_ST_DumpAsPolygons\"/"
+">, <xref linkend=\"RT_ST_NumBands\"/>, <xref "
+"linkend=\"RT_ST_PixelAsPolygon\"/>, <xref linkend=\"RT_ST_ScaleX\"/>, <xref "
+"linkend=\"RT_ST_ScaleY\"/>, <xref linkend=\"RT_ST_UpperLeftX\"/>, <xref "
+"linkend=\"RT_ST_UpperLeftY\"/>, <xref linkend=\"RT_ST_SRID\"/>, <xref "
 "linkend=\"ST_AsText\"/>, <xref linkend=\"ST_Point\"/>, <xref "
 "linkend=\"ST_MakeEnvelope\"/>, <xref linkend=\"ST_Intersects\"/>, <xref "
 "linkend=\"ST_Intersection\"/>"
@@ -25795,14 +26269,6 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ""
-"Internally, this method replaces the PostGIS raster's band at index "
-"<varname>band</varname> with a new band instead of updating the existing "
-"path information."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
 msgid ", <xref linkend=\"RT_ST_SetBandIndex\"/>"
 msgstr ""
 
@@ -25825,6 +26291,14 @@ msgid ""
 "compatibility (e.g. alignment, pixel support) between the external raster "
 "file and the PostGIS raster. This mode is intended for where bands are moved "
 "around in the external raster file."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Internally, this method replaces the PostGIS raster's band at index "
+"<varname>band</varname> with a new band instead of updating the existing "
+"path information."
 msgstr ""
 
 #. Tag: para
@@ -26531,9 +27005,11 @@ msgstr ""
 #. Tag: refpurpose
 #, no-c-format
 msgid ""
-"Returns the raster clipped by the input geometry. If band number not is "
+"Returns the raster clipped by the input geometry. If band number is not "
 "specified, all bands are processed. If <varname>crop</varname> is not "
-"specified or TRUE, the output raster is cropped."
+"specified or TRUE, the output raster is cropped. If <varname>touched</"
+"varname> is set to TRUE, then touched pixels are included, otherwise only if "
+"the center of the pixel is in the geometry it is included."
 msgstr ""
 
 #. Tag: para
@@ -26563,7 +27039,21 @@ msgid ""
 "If <varname>crop</varname> is not specified, true is assumed meaning the "
 "output raster is cropped to the intersection of the <varname>geom</"
 "varname>and <varname>rast</varname> extents. If <varname>crop</varname> is "
-"set to false, the new raster gets the same extent as <varname>rast</varname>."
+"set to false, the new raster gets the same extent as <varname>rast</"
+"varname>. If <varname>touched</varname> is set to true, then all pixels in "
+"the <varname>rast</varname> that intersect the geometry are selected."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"The default behavior is touched=false, which will only select pixels where "
+"the center of the pixel is covered by the geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Enhanced: 3.5.0 - touched argument added."
 msgstr ""
 
 #. Tag: para
@@ -26575,13 +27065,18 @@ msgstr ""
 #, no-c-format
 msgid ""
 "Examples here use Massachusetts aerial data available on MassGIS site <link "
-"xlink:href=\"http://www.mass.gov/mgis/colororthos2008.htm\">MassGIS Aerial "
-"Orthos</link>. Coordinates are in Massachusetts State Plane Meters."
+"xlink:href=\"https://www.mass.gov/info-details/massgis-data-20082009-aerial-"
+"imagery\">MassGIS Aerial Orthos</link>."
 msgstr ""
 
 #. Tag: title
 #, no-c-format
-msgid "Examples: 1 band clipping"
+msgid "Examples: Comparing selecting all touched vs. not all touched"
+msgstr ""
+
+#. Tag: title
+#, no-c-format
+msgid "Examples: 1 band clipping (not touched)"
 msgstr ""
 
 #. Tag: para
@@ -26613,8 +27108,8 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"RT_ST_MapAlgebra\"/>, <xref linkend=\"RT_ST_Intersection\"/"
-">"
+", <xref linkend=\"RT_ST_Count\"/>, <xref linkend=\"RT_ST_MapAlgebra\"/>, "
+"<xref linkend=\"RT_ST_Intersection\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -26987,7 +27482,7 @@ msgstr ""
 msgid ""
 "Band numbers of the raster to be evaluated. nband can be an integer or "
 "integer[] denoting the bands. nband1 is band on rast1 and nband2 is band on "
-"rast2 for hte 2 raster/2band case."
+"rast2 for the 2 raster/2band case."
 msgstr ""
 
 #. Tag: para
@@ -27629,7 +28124,7 @@ msgstr ""
 #, no-c-format
 msgid ""
 "1 band version - Creates a new one band raster formed by applying a valid "
-"PostgreSQL function on the input raster band and of pixeltype prodived. Band "
+"PostgreSQL function on the input raster band and of pixeltype provided. Band "
 "1 is assumed if no band is specified."
 msgstr ""
 
@@ -27720,7 +28215,7 @@ msgstr ""
 #, no-c-format
 msgid ""
 "2 band version - Creates a new one band raster formed by applying a valid "
-"PostgreSQL function on the 2 input raster bands and of pixeltype prodived. "
+"PostgreSQL function on the 2 input raster bands and of pixeltype provided. "
 "Band 1 is assumed if no band is specified. Extent type defaults to "
 "INTERSECTION if not specified."
 msgstr ""
@@ -27909,7 +28404,7 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "new raster after averaging pixels withing 4x4 pixels of each other"
+msgid "new raster after averaging pixels within 4x4 pixels of each other"
 msgstr ""
 
 #. Tag: para
@@ -28725,8 +29220,8 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"RT_ST_Value\"/>, <xref linkend=\"RT_ST_Polygon\"/>, <xref "
-"linkend=\"RT_ST_ValueCount\"/>"
+", <xref linkend=\"RT_ST_AsRasterAgg\"/>, <xref linkend=\"RT_ST_Value\"/>, "
+"<xref linkend=\"RT_ST_Polygon\"/>, <xref linkend=\"RT_ST_ValueCount\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -29229,7 +29724,7 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Enhanced: 2.1.0 addition of Aggegrate variant"
+msgid "Enhanced: 2.1.0 addition of Aggregate variant"
 msgstr ""
 
 #. Tag: title
@@ -30084,7 +30579,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"To determine a list of roads that cross a highway, use a query similiar to:"
+"To determine a list of roads that cross a highway, use a query similar to:"
 msgstr ""
 
 #. Tag: para
@@ -30553,7 +31048,8 @@ msgstr ""
 msgid ""
 "It is better to use a named relationship function if available, since they "
 "automatically use a spatial index where one exists. Also, they may implement "
-"performance optimizations which are not available with full relate evalation."
+"performance optimizations which are not available with full relate "
+"evaluation."
 msgstr ""
 
 #. Tag: para
@@ -30720,7 +31216,7 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-"In mathematical terms: <emphasis>ST_Touches(A, B) ⇔ (Int(A) ⋂ Int(B) ≠ ∅) ∧ "
+"In mathematical terms: <emphasis>ST_Touches(A, B) ⇔ (Int(A) ⋂ Int(B) = ∅) ∧ "
 "(A ⋂ B ≠ ∅) </emphasis>"
 msgstr ""
 
@@ -30904,17 +31400,26 @@ msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
-msgid "Tests if two geometries are entirely within a given distance"
+msgid "Tests if a geometry is entirely inside a distance of another"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Returns true if the geometries are entirely within the specified distance of "
-"one another. The distance is specified in units defined by the spatial "
-"reference system of the geometries. For this function to make sense, the "
-"source geometries must both be of the same coordinate projection, having the "
-"same SRID."
+"Returns true if <code>g2</code> is entirely within <code>distance</code> of "
+"<code>g1</code>. Visually, the condition is true if <code>g2</code> is "
+"contained within a <code>distance</code> buffer of <code>g1</code>. The "
+"distance is specified in units defined by the spatial reference system of "
+"the geometries."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Changed: 3.5.0 : the logic behind the function now uses a test of "
+"containment within a buffer, rather than the ST_MaxDistance algorithm. "
+"Results will differ from prior versions, but should be closer to user "
+"expectations."
 msgstr ""
 
 #. Tag: para
@@ -30970,14 +31475,6 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ""
-"Enhanced: 2.1.0 improved speed for geography. See <link xlink:href=\"http://"
-"blog.opengeo.org/2012/07/12/making-geography-faster/\">Making Geography "
-"faster</link> for details."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
 msgid "Enhanced: 2.1.0 support for curved geometries was introduced."
 msgstr ""
 
@@ -31027,7 +31524,7 @@ msgstr ""
 
 #. Tag: title
 #, no-c-format
-msgid "SFCGAL Functions"
+msgid "SFCGAL Functions Reference"
 msgstr ""
 
 #. Tag: para
@@ -31045,6 +31542,18 @@ msgid ""
 "page (<link xlink:href=\"http://www.sfcgal.org\">http://www.sfcgal.org</"
 "link>). To enable the functions use <code>create extension postgis_sfcgal</"
 "code>."
+msgstr ""
+
+#. Tag: title
+#, no-c-format
+msgid "SFCGAL Management Functions"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"This section lists functions for determining version of SFCGAL and library "
+"dependencies you are running."
 msgstr ""
 
 #. Tag: refpurpose
@@ -31086,6 +31595,79 @@ msgid ""
 "versions</para>"
 msgstr ""
 
+#. Tag: title
+#, no-c-format
+msgid "SFCGAL Accessors and Setters"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"These functions access or set properties of geometries. Geometries primarily "
+"supported by these functions are TINS and Polyhedral Surfaces."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Force LHR orientation"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Check if a surface is or not planar"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Test if the geometry is a solid. No validity check is performed."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid ""
+"Cast the geometry into a solid. No check is performed. To obtain a valid "
+"solid, the input geometry must be a closed Polyhedral Surface or a closed "
+"TIN."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Determine surface orientation"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"The function only applies to polygons. It returns -1 if the polygon is "
+"counterclockwise oriented and 1 if the polygon is clockwise oriented."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Calculates the area of a geometry"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Calculates the area of a geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Performed by the SFCGAL module"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"NOTE: this function returns a double precision value representing the area."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_Area\"/>"
+msgstr ""
+
 #. Tag: refpurpose
 #, no-c-format
 msgid "Computes area of 3D surface geometries. Will return 0 for solids."
@@ -31106,13 +31688,262 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
+", <xref linkend=\"CG_MakeSolid\"/>, <xref linkend=\"CG_IsSolid\"/>, <xref "
+"linkend=\"CG_Area\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid ""
+"Computes the volume of a 3D solid. If applied to surface (even closed) "
+"geometries will return 0."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "&sqlmm_compliant; SQL-MM IEC 13249-3: 9.1 (same as CG_3DVolume)"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"When closed surfaces are created with WKT, they are treated as areal rather "
+"than solid. To make them solid, you need to use <xref "
+"linkend=\"CG_MakeSolid\"/>. Areal geometries have no volume. Here is an "
+"example to demonstrate."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"CG_MakeSolid\"/>, <xref linkend=\"CG_IsSolid\"/>"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "is deprecated as of 3.5.0. Use <xref linkend=\"CG_ForceLHR\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "is deprecated as of 3.5.0. Use <xref linkend=\"CG_IsPlanar\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Availability: 2.2.0: This was documented in 2.1.0 but got accidentally left "
+"out in 2.1 release."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "is deprecated as of 3.5.0. Use <xref linkend=\"CG_IsSolid\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_MakeSolid\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_Orientation\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "is deprecated as of 3.5.0. Use <xref linkend=\"CG_3DArea\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
 ", <xref linkend=\"ST_MakeSolid\"/>, <xref linkend=\"ST_IsSolid\"/>, <xref "
 "linkend=\"ST_Area\"/>"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "is deprecated as of 3.5.0. Use <xref linkend=\"CG_Volume\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "&sqlmm_compliant; SQL-MM IEC 13249-3: 9.1 (same as ST_3DVolume)"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"When closed surfaces are created with WKT, they are treated as areal rather "
+"than solid. To make them solid, you need to use <xref "
+"linkend=\"ST_MakeSolid\"/>. Areal geometries have no volume. Here is an "
+"example to demonstrate."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_MakeSolid\"/>, <xref linkend=\"ST_IsSolid\"/>"
+msgstr ""
+
+#. Tag: title
+#, no-c-format
+msgid "SFCGAL Processing and Relationship Functions"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Computes the intersection of two geometries"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Computes the intersection of two geometries."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "NOTE: this function returns a geometry representing the intersection."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"ST_3DIntersects\"/>, <xref linkend=\"ST_Intersects\"/>, "
+"<xref linkend=\"ST_Disjoint\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Tests if two 3D geometries intersect"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Tests if two 3D geometries intersect. 3D geometries intersect if they have "
+"any point in common in the three-dimensional space."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Computes the geometric difference between two geometries"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Computes the geometric difference between two geometries. The resulting "
+"geometry is a set of points that are present in geomA but not in geomB."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "NOTE: this function returns a geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_Difference\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Perform 3D difference"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_3DDifference\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Returns that part of geom1 that is not part of geom2."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"3D images were generated using PostGIS <xref linkend=\"ST_AsX3D\"/> and "
+"rendering in HTML using <link xlink:href=\"http://www.x3dom.org\">X3Dom HTML "
+"Javascript rendering library</link>."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Original 3D geometries overlaid. geom2 is the part that will be removed."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "What's left after removing geom2"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"ST_AsX3D\"/>, <xref linkend=\"CG_3DIntersection\"/> <xref "
+"linkend=\"CG_3DUnion\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Computes the minimum distance between two geometries"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Computes the minimum distance between two geometries."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"NOTE: this function returns a double precision value representing the "
+"distance."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"CG_Distance\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Computes the minimum 3D distance between two geometries"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Computes the minimum 3D distance between two geometries."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"NOTE: this function returns a double precision value representing the 3D "
+"distance."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_3DDistance\"/>"
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
 msgid "Computes the 3D convex hull of a geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_3DConvexHull\"/> instead."
 msgstr ""
 
 #. Tag: para
@@ -31132,15 +31963,13 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Return a geometry that is the shared portion between geom1 and geom2."
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_3DIntersection\"/> instead."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ""
-"3D images were generated using PostGIS <xref linkend=\"ST_AsX3D\"/> and "
-"rendering in HTML using <link xlink:href=\"http://www.x3dom.org\">X3Dom HTML "
-"Javascript rendering library</link>."
+msgid "Return a geometry that is the shared portion between geom1 and geom2."
 msgstr ""
 
 #. Tag: para
@@ -31172,35 +32001,27 @@ msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
-msgid "Perform 3D difference"
+msgid "Computes the union of two geometries"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Returns that part of geom1 that is not part of geom2."
+msgid "Computes the union of two geometries."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ""
-"Original 3D geometries overlaid. geom2 is the part that will be removed."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "What's left after removing geom2"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-", <xref linkend=\"ST_AsX3D\"/>, <xref linkend=\"ST_3DIntersection\"/> <xref "
-"linkend=\"ST_3DUnion\"/>"
+msgid "NOTE: this function returns a geometry representing the union."
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
 msgid "Perform 3D union."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "is deprecated as of 3.5.0. Use <xref linkend=\"CG_3DUnion\"/> instead."
 msgstr ""
 
 #. Tag: para
@@ -31213,6 +32034,21 @@ msgstr ""
 msgid ""
 "<emphasis role=\"bold\">Aggregate variant:</emphasis> returns a geometry "
 "that is the 3D union of a rowset of geometries. The ST_3DUnion() function is "
+"an \"aggregate\" function in the terminology of PostgreSQL. That means that "
+"it operates on rows of data, in the same way the SUM() and AVG() functions "
+"do and like most aggregates, it also ignores NULL geometries."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Perform 3D union using postgis_sfcgal."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"<emphasis role=\"bold\">Aggregate variant:</emphasis> returns a geometry "
+"that is the 3D union of a rowset of geometries. The CG_3DUnion() function is "
 "an \"aggregate\" function in the terminology of PostgreSQL. That means that "
 "it operates on rows of data, in the same way the SUM() and AVG() functions "
 "do and like most aggregates, it also ignores NULL geometries."
@@ -31231,13 +32067,19 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"ST_AsX3D\"/>, <xref linkend=\"ST_3DIntersection\"/> <xref "
-"linkend=\"ST_3DDifference\"/>"
+", <xref linkend=\"ST_AsX3D\"/>, <xref linkend=\"CG_3DIntersection\"/> <xref "
+"linkend=\"CG_3DDifference\"/>"
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
 msgid "Computes an Alpha-shape enclosing a geometry"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_AlphaShape\"/> instead."
 msgstr ""
 
 #. Tag: para
@@ -31289,21 +32131,21 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Availability: 3.3.0 - requires SFCGAL &gt;= 1.4.1."
+msgid "Availability: 3.5.0 - requires SFCGAL &gt;= 1.4.1."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
 "Alpha-shape of a MultiPoint (same example As <xref "
-"linkend=\"ST_OptimalAlphaShape\"/>)"
+"linkend=\"CG_OptimalAlphaShape\"/>)"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
 "Alpha-shape of a MultiPoint, allowing holes (same example as <xref "
-"linkend=\"ST_OptimalAlphaShape\"/>)"
+"linkend=\"CG_OptimalAlphaShape\"/>)"
 msgstr ""
 
 #. Tag: para
@@ -31315,7 +32157,62 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ", <xref linkend=\"ST_OptimalAlphaShape\"/>"
+msgid ", <xref linkend=\"CG_OptimalAlphaShape\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Computes approximal convex partition of the polygon geometry"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Computes approximal convex partition of the polygon geometry (using a "
+"triangulation)."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"A partition of a polygon P is a set of polygons such that the interiors of "
+"the polygons do not intersect and the union of the polygons is equal to the "
+"interior of the original polygon P. CG_ApproxConvexPartition and "
+"CG_GreeneApproxConvexPartition functions produce approximately optimal "
+"convex partitions. Both these functions produce convex decompositions by "
+"first decomposing the polygon into simpler polygons; "
+"CG_ApproxConvexPartition uses a triangulation and "
+"CG_GreeneApproxConvexPartition a monotone partition. These two functions "
+"both guarantee that they will produce no more than four times the optimal "
+"number of convex pieces but they differ in their runtime complexities. "
+"Though the triangulation-based approximation algorithm often results in "
+"fewer convex pieces, this is not always the case."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Availability: 3.5.0 - requires SFCGAL &gt;= 1.5.0."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Requires SFCGAL &gt;= 1.5.0"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Approximal Convex Partition (same example As <xref "
+"linkend=\"CG_YMonotonePartition\"/>, <xref "
+"linkend=\"CG_GreeneApproxConvexPartition\"/> and <xref "
+"linkend=\"CG_OptimalConvexPartition\"/>)"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"CG_GreeneApproxConvexPartition\"/>, <xref "
+"linkend=\"CG_OptimalConvexPartition\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -31326,10 +32223,17 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_ApproximateMedialAxis\"/> "
+"instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
 "Return an approximate medial axis for the areal input based on its straight "
 "skeleton. Uses an SFCGAL specific API when built against a capable version "
 "(1.2.0+). Otherwise the function is just a wrapper around "
-"ST_StraightSkeleton (slower case)."
+"CG_StraightSkeleton (slower case)."
 msgstr ""
 
 #. Tag: para
@@ -31346,6 +32250,13 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
+"is deprecated as of 3.5.0. Use <xref "
+"linkend=\"CG_ConstrainedDelaunayTriangles\"/> instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
 "Return a <link xlink:href=\"https://en.wikipedia.org/wiki/"
 "Constrained_Delaunay_triangulation\">Constrained Delaunay triangulation</"
 "link> around the vertices of the input geometry. Output is a TIN."
@@ -31353,7 +32264,7 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "ST_ConstrainedDelaunayTriangles of 2 polygons"
+msgid "CG_ConstrainedDelaunayTriangles of 2 polygons"
 msgstr ""
 
 #. Tag: para
@@ -31364,13 +32275,18 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"ST_TriangulatePolygon\"/>, <xref linkend=\"ST_Tesselate\"/"
+", <xref linkend=\"ST_TriangulatePolygon\"/>, <xref linkend=\"CG_Tesselate\"/"
 ">, <xref linkend=\"ST_ConcaveHull\"/>, <xref linkend=\"ST_Dump\"/>"
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
 msgid "Extrude a surface to a related volume"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "is deprecated as of 3.5.0. Use <xref linkend=\"CG_Extrude\"/> instead."
 msgstr ""
 
 #. Tag: para
@@ -31393,39 +32309,70 @@ msgstr ""
 msgid "LineString Extruded along Z produces a PolyhedralSurfaceZ"
 msgstr ""
 
-#. Tag: refpurpose
+#. Tag: para
 #, no-c-format
-msgid "Force LHR orientation"
+msgid ", <xref linkend=\"CG_ExtrudeStraightSkeleton\"/>"
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
-msgid "Check if a surface is or not planar"
+msgid "Straight Skeleton Extrusion"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Computes an extrusion with a maximal height of the polygon geometry."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"Availability: 2.2.0: This was documented in 2.1.0 but got accidentally left "
-"out in 2.1 release."
+"Perhaps the first (historically) use-case of straight skeletons: given a "
+"polygonal roof, the straight skeleton directly gives the layout of each "
+"tent. If each skeleton edge is lifted from the plane a height equal to its "
+"offset distance, the resulting roof is \"correct\" in that water will always "
+"fall down to the contour edges (the roof's border), regardless of where it "
+"falls on the roof. The function computes this extrusion aka \"roof\" on a "
+"polygon. If the argument body_height > 0, so the polygon is extruded like "
+"with CG_Extrude(polygon, 0, 0, body_height). The result is an union of these "
+"polyhedralsurfaces."
 msgstr ""
 
-#. Tag: refpurpose
+#. Tag: para
 #, no-c-format
-msgid "Test if the geometry is a solid. No validity check is performed."
+msgid ", <xref linkend=\"CG_StraightSkeleton\"/>"
 msgstr ""
 
-#. Tag: refpurpose
+#. Tag: para
+#, no-c-format
+msgid "Computes approximal monotone convex partition of the polygon geometry."
+msgstr ""
+
+#. Tag: para
 #, no-c-format
 msgid ""
-"Cast the geometry into a solid. No check is performed. To obtain a valid "
-"solid, the input geometry must be a closed Polyhedral Surface or a closed "
-"TIN."
+"Greene Approximal Convex Partition (same example As <xref "
+"linkend=\"CG_YMonotonePartition\"/>, <xref "
+"linkend=\"CG_ApproxConvexPartition\"/> and <xref "
+"linkend=\"CG_OptimalConvexPartition\"/>)"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"CG_ApproxConvexPartition\"/>, <xref "
+"linkend=\"CG_OptimalConvexPartition\"/>"
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
 msgid "Performs Minkowski sum"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_MinkowskiSum\"/> instead."
 msgstr ""
 
 #. Tag: para
@@ -31499,6 +32446,13 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_OptimalAlphaShape\"/> "
+"instead."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
 "Computes the \"optimal\" alpha-shape of the points in a geometry. The alpha-"
 "shape is computed using a value of α chosen so that:"
 msgstr ""
@@ -31524,33 +32478,61 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
+msgid "Availability: 3.3.0 - requires SFCGAL &gt;= 1.4.1."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
 msgid ""
 "Optimal alpha-shape of a MultiPoint (same example as <xref "
-"linkend=\"ST_AlphaShape\"/>)"
+"linkend=\"CG_AlphaShape\"/>)"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
 "Optimal alpha-shape of a MultiPoint, allowing holes (same example as <xref "
-"linkend=\"ST_AlphaShape\"/>)"
+"linkend=\"CG_AlphaShape\"/>)"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ", <xref linkend=\"ST_AlphaShape\"/>"
+msgid ", <xref linkend=\"CG_AlphaShape\"/>"
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
-msgid "Determine surface orientation"
+msgid "Computes an optimal convex partition of the polygon geometry"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Computes an optimal convex partition of the polygon geometry."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"The function only applies to polygons. It returns -1 if the polygon is "
-"counterclockwise oriented and 1 if the polygon is clockwise oriented."
+"A partition of a polygon P is a set of polygons such that the interiors of "
+"the polygons do not intersect and the union of the polygons is equal to the "
+"interior of the original polygon P. CG_OptimalConvexPartition produces a "
+"partition that is optimal in the number of pieces."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Optimal Convex Partition (same example As <xref "
+"linkend=\"CG_YMonotonePartition\"/>, <xref "
+"linkend=\"CG_ApproxConvexPartition\"/> and <xref "
+"linkend=\"CG_GreeneApproxConvexPartition\"/>)"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"CG_ApproxConvexPartition\"/>, <xref "
+"linkend=\"CG_GreeneApproxConvexPartition\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -31560,7 +32542,7 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Original polygon"
+msgid "Requires SFCGAL &gt;= 1.3.8 for option use_distance_as_m"
 msgstr ""
 
 #. Tag: para
@@ -31568,11 +32550,24 @@ msgstr ""
 msgid "Straight Skeleton of polygon"
 msgstr ""
 
+#. Tag: para
+#, no-c-format
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_StraightSkeleton\"/> "
+"instead."
+msgstr ""
+
 #. Tag: refpurpose
 #, no-c-format
 msgid ""
-"Perform surface Tesselation of a polygon or polyhedralsurface and returns as "
-"a TIN or collection of TINS"
+"Perform surface Tessellation of a polygon or polyhedralsurface and returns "
+"as a TIN or collection of TINS"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"is deprecated as of 3.5.0. Use <xref linkend=\"CG_Tesselate\"/> instead."
 msgstr ""
 
 #. Tag: para
@@ -31580,6 +32575,13 @@ msgstr ""
 msgid ""
 "Takes as input a surface such a MULTI(POLYGON) or POLYHEDRALSURFACE and "
 "returns a TIN representation via the process of tessellation using triangles."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"does similar to this function except that it returns a geometry collection "
+"of polygons instead of a TIN and also only works with 2D geometries."
 msgstr ""
 
 #. Tag: para
@@ -31594,48 +32596,350 @@ msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Tesselated Cube with triangles colored"
+msgid "Tessellated Cube with triangles colored"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "ST_AsText output"
+msgid "Tessellated Polygon"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "Tesselated Polygon"
+msgid ""
+", <xref linkend=\"ST_DelaunayTriangles\"/>, <xref "
+"linkend=\"ST_TriangulatePolygon\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Triangulates a polygonal geometry"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ", <xref linkend=\"ST_DelaunayTriangles\"/>"
+msgid "Triangulates a polygonal geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"NOTE: this function returns a geometry representing the triangulated result."
 msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
 msgid ""
-"Computes the volume of a 3D solid. If applied to surface (even closed) "
-"geometries will return 0."
+"Compute a visibility polygon from a point or a segment in a polygon geometry"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "&sqlmm_compliant; SQL-MM IEC 13249-3: 9.1 (same as ST_3DVolume)"
+msgid "Visibility from the point"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Visibility from the segment"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Computes y-monotone partition of the polygon geometry"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Computes y-monotone partition of the polygon geometry."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
-"When closed surfaces are created with WKT, they are treated as areal rather "
-"than solid. To make them solid, you need to use <xref "
-"linkend=\"ST_MakeSolid\"/>. Areal geometries have no volume. Here is an "
-"example to demonstrate."
+"A partition of a polygon P is a set of polygons such that the interiors of "
+"the polygons do not intersect and the union of the polygons is equal to the "
+"interior of the original polygon P. A y-monotone polygon is a polygon whose "
+"vertices v1,…,vn can be divided into two chains v1,…,vk and vk,…,vn,v1, such "
+"that any horizontal line intersects either chain at most once. This "
+"algorithm does not guarantee a bound on the number of polygons produced with "
+"respect to the optimal number."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid ", <xref linkend=\"ST_MakeSolid\"/>, <xref linkend=\"ST_IsSolid\"/>"
+msgid ""
+"Y-Monotone Partition (same example As <xref "
+"linkend=\"CG_ApproxConvexPartition\"/>, <xref "
+"linkend=\"CG_GreeneApproxConvexPartition\"/> and <xref "
+"linkend=\"CG_OptimalConvexPartition\"/>)"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Computes the straight skeleton partition of a polygon."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Computes the straight skeleton partition of the input polygon geometry "
+"<parameter>geom</parameter>. The straight skeleton is a partitioning of the "
+"polygon into faces formed by tracing the collapse of its edges. If "
+"<parameter>auto_orientation</parameter> is set to true, the function will "
+"automatically adjust the orientation of the input polygon to ensure correct "
+"results."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Availability: 3.6.0 - requires SFCGAL &gt;= 2.0.0."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Computes a 3D buffer around a geometry."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Generates a 3D buffer around the input geometry <parameter>geom</parameter> "
+"with a specified <parameter>radius</parameter>. The buffer is constructed in "
+"3D space, creating a volumetric representation of the geometry's "
+"surroundings. The <parameter>segments</parameter> parameter defines the "
+"number of segments used to approximate the curved sections of the buffer. "
+"The <parameter>buffer_type</parameter> specifies the type of buffer to "
+"create: 0: Rounded buffer (default) 1: Flat buffer 2: Square buffer"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Availability: 3.6.0 - requires SFCGAL &gt;= 2.0.0"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"The following images were rendered pasting the output of the ST_AsX3D query "
+"into <link xlink:href=\"https://postgis.net/docs/support/viewers/x3d_viewer."
+"htm\">X3D Viewer</link>."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "segments=32 (rounded buffer)"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "5 segments rounded"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "32 segments, round"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "32 segments, square"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_3DConvexHull\"/>, <xref linkend=\"ST_AsX3D\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Rotates a geometry by a given angle around the origin (0,0)."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Rotates the input geometry <parameter>geom</parameter> by <parameter>angle</"
+"parameter> radians around the origin point (0,0). The rotation is performed "
+"in 2D space; Z coordinates are not modified. Positive angles rotate the "
+"geometry counter-clockwise."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_Rotate\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Rotates a geometry by a given angle around a specified point in 2D."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Rotates the input geometry <parameter>geom</parameter> by <parameter>angle</"
+"parameter> radians around the point (<parameter>cx</parameter>, "
+"<parameter>cy</parameter>). The rotation is performed in 2D space; Z "
+"coordinates are dropped. Positive angles rotate the geometry counter-"
+"clockwise."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"CG_3DRotate\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Rotates a geometry in 3D space around an axis vector."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Rotates the input geometry <parameter>geom</parameter> by <parameter>angle</"
+"parameter> radians around an axis defined by the vector (<parameter>ax</"
+"parameter>, <parameter>ay</parameter>, <parameter>az</parameter>) passing "
+"through the origin (0,0,0)."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"CG_RotateY\"/>, <xref linkend=\"CG_RotateZ\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Rotates a geometry around the X-axis by a given angle."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Rotates the input geometry <parameter>geom</parameter> by <parameter>angle</"
+"parameter> radians around the X-axis."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"CG_RotateZ\"/>, <xref linkend=\"CG_3DRotate\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Rotates a geometry around the Y-axis by a given angle."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Rotates the input geometry <parameter>geom</parameter> by <parameter>angle</"
+"parameter> radians around the Y-axis passing."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Rotates a geometry around the Z-axis by a given angle."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Rotates the input geometry <parameter>geom</parameter> by <parameter>angle</"
+"parameter> radians around the Z-axis."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"CG_RotateY\"/>, <xref linkend=\"CG_3DRotate\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Scales a geometry uniformly in all dimensions by a given factor."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Scales the input geometry <parameter>geom</parameter> by a uniform scale "
+"<parameter>factor</parameter> in all dimensions (X, Y, and Z). The scaling "
+"is performed relative to the origin point (0,0,0)."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"CG_3DScaleAroundCenter\"/>, <xref linkend=\"ST_Scale\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Scales a geometry by separate factors along X, Y, and Z axes."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Scales the input geometry <parameter>geom</parameter> by different factors "
+"along the X, Y, and Z axes. The scaling is performed relative to the origin "
+"point (0,0,0)."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"CG_3DScaleAroundCenter\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Scales a geometry in 3D space around a specified center point."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Scales the input geometry <parameter>geom</parameter> by different factors "
+"along the X, Y, and Z axes, relative to a specified center point "
+"(<parameter>centerX</parameter>, <parameter>centerY</parameter>, "
+"<parameter>centerZ</parameter>)."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"CG_3DScale\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Translates (moves) a geometry by given offsets in 2D space."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Translates the input geometry <parameter>geom</parameter> by adding "
+"<parameter>deltaX</parameter> to the X coordinates and <parameter>deltaY</"
+"parameter> to the Y coordinates. Z coordinates are dropped."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ", <xref linkend=\"ST_Translate\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid "Translates (moves) a geometry by given offsets in 3D space."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Translates the input geometry <parameter>geom</parameter> by adding "
+"<parameter>deltaX</parameter> to the X coordinates, <parameter>deltaY</"
+"parameter> to the Y coordinates, and <parameter>deltaZ</parameter> to the Z "
+"coordinates."
 msgstr ""
 
 #. Tag: title
@@ -32057,14 +33361,14 @@ msgstr ""
 #, no-c-format
 msgid ""
 "Return metadata records for projected coordinate systems that have areas of "
-"useage that fully contain the bounds parameter."
+"usage that fully contain the bounds parameter."
 msgstr ""
 
 #. Tag: para
 #, no-c-format
 msgid ""
 "Return a set of metadata records for projected coordinate systems that have "
-"areas of useage that fully contain the bounds parameter. Each record will "
+"areas of usage that fully contain the bounds parameter. Each record will "
 "have the <varname>auth_name</varname>, <varname>auth_srid</varname>, "
 "<varname>srname</varname>, <varname>srtext</varname>, <varname>proj4text</"
 "varname>, and the corners of the area of usage, <varname>point_sw</varname> "
@@ -32211,155 +33515,6 @@ msgstr ""
 msgid ""
 ", <xref linkend=\"ST_ClosestPointOfApproach\"/>, <xref "
 "linkend=\"ST_DistanceCPA\"/>, <xref linkend=\"geometry_distance_cpa\"/>"
-msgstr ""
-
-#. Tag: title
-#, no-c-format
-msgid "Long Transaction Support"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"These functions implement a row locking mechanism to support long "
-"transactions. They are provided primarily for implementors of the <link "
-"xlink:href=\"http://www.opengeospatial.org/standards/wfs\">Web Feature "
-"Service</link> specification."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"For the locking mechanism to operate correctly the <emphasis "
-"role=\"bold\">serializable</emphasis> <link xlink:href=\"http://www."
-"postgresql.org/docs/current/static/transaction-iso.html\"> transaction "
-"isolation level</link> must be used."
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
-msgid ""
-"<refpurpose>Adds an authorization token to be used in the current "
-"transaction.</refpurpose>"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<para>Adds an authorization token to be used in the current transaction.</"
-"para>"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Adds the current transaction identifier and authorization token to a "
-"temporary table called <varname>temp_lock_have_table</varname>."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "Availability: 1.1.3"
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
-msgid ""
-"Creates a trigger on a table to prevent/allow updates and deletes of rows "
-"based on authorization token."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Creates trigger on a table to prevent/allow updates and deletes of rows "
-"based on an authorization token. Identify rows using &lt;rowid_col&gt; "
-"column."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"If a_schema_name is not passed in, then searches for table in current schema."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"If an authorization trigger already exists on this table function errors."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "If Transaction support is not enabled, function throws an exception."
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
-msgid "Disables long transaction support."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Disables long transaction support. This function removes the long "
-"transaction support metadata tables, and drops all triggers attached to lock-"
-"checked tables."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Drops meta table called <varname>authorization_table</varname> and a view "
-"called <varname>authorized_tables</varname> and all triggers called "
-"<varname>checkauthtrigger</varname>"
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
-msgid "Enables long transaction support."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Enables long transaction support. This function creates the required "
-"metadata tables. It must be called once before using the other functions in "
-"this section. Calling it twice is harmless."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Creates a meta table called <varname>authorization_table</varname> and a "
-"view called <varname>authorized_tables</varname>"
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
-msgid "Sets lock/authorization for a row in a table."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Sets lock/authorization for a specific row in a table. "
-"<varname>an_auth_token</varname> is a text value. <varname>expire_dt</"
-"varname> is a timestamp which defaults to <emphasis>now() + 1 hour</"
-"emphasis>. Returns 1 if lock has been assigned, 0 otherwise (i.e. row is "
-"already locked by another auth.)"
-msgstr ""
-
-#. Tag: refpurpose
-#, no-c-format
-msgid "Removes all locks held by an authorization token."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Removes all locks held by specified authorization token. Returns the number "
-"of locks released."
 msgstr ""
 
 #. Tag: title
@@ -32578,7 +33733,7 @@ msgid ""
 "The three-geometry variant allows a \"false origin\" for the scaling to be "
 "passed in. This allows \"scaling in place\", for example using the centroid "
 "of the geometry as the false origin. Without a false origin, scaling takes "
-"place relative to the actual origin, so all coordinates are just multipled "
+"place relative to the actual origin, so all coordinates are just multiplied "
 "by the scale factor."
 msgstr ""
 
@@ -32662,11 +33817,6 @@ msgid ""
 "<code>ST_TransScale(geomA, deltaX, deltaY, XFactor, YFactor)</code> is short-"
 "hand for <code>ST_Affine(geomA, XFactor, 0, 0, 0, YFactor, 0, 0, 0, 1, "
 "deltaX*XFactor, deltaY*YFactor, 0)</code>."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ", <xref linkend=\"ST_Translate\"/>"
 msgstr ""
 
 #. Tag: title
@@ -32790,7 +33940,7 @@ msgstr ""
 #, no-c-format
 msgid ""
 "The representation contains the values <varname>xmin, ymin, zmin, xmax, "
-"ymax, zmax</varname>. These are the minimum and maxium values of the X, Y "
+"ymax, zmax</varname>. These are the minimum and maximum values of the X, Y "
 "and Z extents."
 msgstr ""
 
@@ -33365,6 +34515,16 @@ msgstr ""
 
 #. Tag: refpurpose
 #, no-c-format
+msgid "Returns the version number of the libjson-c library."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Returns the version number of the LibJSON-C library."
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
 msgid "<refpurpose>Returns build date of the PostGIS library.</refpurpose>"
 msgstr ""
 
@@ -33414,9 +34574,24 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid ""
-", <xref linkend=\"PostGIS_GEOS_Version\"/>, <xref "
-"linkend=\"PostGIS_Lib_Version\"/>, <xref linkend=\"PostGIS_LibXML_Version\"/"
-">, <xref linkend=\"PostGIS_Version\"/>"
+", <xref linkend=\"PostGIS_Full_Version\"/>, <xref "
+"linkend=\"PostGIS_GEOS_Version\"/>, <xref linkend=\"PostGIS_Lib_Version\"/>, "
+"<xref linkend=\"PostGIS_LibXML_Version\"/>, <xref "
+"linkend=\"PostGIS_Version\"/>"
+msgstr ""
+
+#. Tag: refpurpose
+#, no-c-format
+msgid ""
+"Returns the version number of the PROJ library against which PostGIS was "
+"built."
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+"Returns the version number of the PROJ library, or against which PostGIS was "
+"built."
 msgstr ""
 
 #. Tag: refpurpose
@@ -33448,6 +34623,14 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid "<para>Returns build date of the PostGIS scripts.</para>"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid ""
+", <xref linkend=\"PostGIS_GEOS_Version\"/>, <xref "
+"linkend=\"PostGIS_Lib_Version\"/>, <xref linkend=\"PostGIS_LibXML_Version\"/"
+">, <xref linkend=\"PostGIS_Version\"/>"
 msgstr ""
 
 #. Tag: refpurpose
@@ -33545,345 +34728,12 @@ msgstr ""
 
 #. Tag: title
 #, no-c-format
-msgid "PostGIS 3.4.0"
+msgid "PostGIS 3.6.0"
 msgstr ""
 
 #. Tag: para
 #, no-c-format
-msgid "2023/08/15"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"This version requires PostgreSQL 12-16, GEOS 3.6 or higher, and Proj 6.1+. "
-"To take advantage of all features, GEOS 3.12+ is needed. To take advantage "
-"of all SFCGAL featurs, SFCGAL 1.4.1+ is needed."
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"NOTE: GEOS 3.12.0 details at <link xlink:href=\"https://libgeos.org/"
-"posts/2023-06-27-geos-3-12-released/\">GEOS 3.12.0 release notes</link>"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "Many thanks to our translation teams, in particular:"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "Teramoto Ikuhiro (Japanese Team)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "Vincent Bre (French Team)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid "There are 2 new ./configure switches:"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"--disable-extension-upgrades-install, will skip installing all the extension "
-"upgrade scripts except for the ANY--currentversion. If you use this, you can "
-"install select upgrades using the postgis commandline tool"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"--without-pgconfig, will build just the commandline tools raster2pgsql and "
-"shp2pgsql even if PostgreSQL is not installed"
-msgstr ""
-
-#. Tag: title
-#, no-c-format
-msgid "New features"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5055\">5055</link>, "
-"complete manual internationalization (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5052\">5052</link>, "
-"target version support in postgis_extensions_upgrade (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5306\">5306</link>, "
-"expose version of GEOS at compile time (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"New install-extension-upgrades command in postgis script (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5257\">5257</link>, "
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5261\">5261</link>, "
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5277\">5277</link>, "
-"Support changes for PostgreSQL 16 (Regina Obe)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5006\">5006</link>, "
-"<link xlink:href=\"https://github.com/postgis/postgis/pull/705\">705</link>, "
-"ST_Transform: Support PROJ pipelines (Robert Coup, Koordinates)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5283\">5283</link>, "
-"[postgis_topology] RenameTopology (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5286\">5286</link>, "
-"[postgis_topology] RenameTopoGeometryColumn (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://github.com/postgis/postgis/pull/703\">703</link>, "
-"[postgis_raster] Add min/max resampling as options (Christian Schroeder)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5336\">5336</link>, "
-"[postgis_topology] topogeometry cast to topoelement support (Regina Obe)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Allow singleton geometry to be inserted into Geometry(Multi*) columns (Paul "
-"Ramsey)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://github.com/postgis/postgis/pull/721\">721</link>, "
-"New window-based ST_ClusterWithinWin and ST_ClusterIntersectingWin (Paul "
-"Ramsey)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5397\">5397</link>, "
-"[address_standardizer] debug_standardize_address function (Regina Obe)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5373\">5373</"
-"link>ST_LargestEmptyCircle, exposes extra semantics on circle finding. Geos "
-"3.9+ required(Martin Davis)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5267\">5267</link>, "
-"ST_Project signature for geometry, and two-point signature (Paul Ramsey)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5267\">5267</link>, "
-"ST_LineExtend for extending linestrings (Paul Ramsey)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"New coverage functions ST_CoverageInvalidEdges, ST_CoverageSimplify, "
-"ST_CoverageUnion (Paul Ramsey)"
-msgstr ""
-
-#. Tag: title
-#, no-c-format
-msgid "Enhancements"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5194\">5194</link>, "
-"do not update system catalogs from postgis_extensions_upgrade (Sandro "
-"Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5092\">5092</link>, "
-"reduce number of upgrade paths installed on system (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/635\">635</link>, "
-"honour --bindir (and --prefix) configure switch for executables (Sandro "
-"Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Honour --mandir (and --prefix) configure switch for man pages install path "
-"(Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Honour --htmldir (and --docdir and --prefix) configure switch for html pages "
-"install path (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5447\">5447</link> "
-"Manual pages added for postgis and postgis_restore utilities (Sandro "
-"Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"[postgis_topology] Speed up check of topology faces without edges (Sandro "
-"Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"[postgis_topology] Speed up coincident nodes check in topology validation "
-"(Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://github.com/postgis/postgis/pull/718\">718</link>, "
-"ST_QuantizeCoordinates(): speed-up implementation (Even Rouault)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Repair spatial planner stats to use computed selectivity for contains/within "
-"queries (Paul Ramsey)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://github.com/postgis/postgis/pull/734\">734</link>, "
-"Additional metadata on Proj installation in postgis_proj_version (Paul "
-"Ramsey)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5177\">5177</link>, "
-"Allow building tools without PostgreSQL server headers. Respect prefix/bin "
-"for tools install (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"ST_Project signature for geometry, and two-point signature (Paul Ramsey)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/4913\">4913</link>, "
-"ST_AsSVG support for curve types CircularString, CompoundCurve, MultiCurve, "
-"and MultiSurface (Regina Obe)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5266\">5266</link>, "
-"ST_ClosestPoint, ST_ShortestLine, ST_LineSubString support for geography "
-"type (MobilityDB Esteban Zimanyi, Maxime Schoemans, Paul Ramsey)"
-msgstr ""
-
-#. Tag: title
-#, no-c-format
-msgid "Breaking Changes"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5229\">5229</link>, "
-"Drop support for Proj &lt; 6.1 and PG 11 (Regina Obe)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://trac.osgeo.org/postgis/ticket/5306\">5306</link>, "
-"<link xlink:href=\"https://github.com/postgis/postgis/pull/734\">734</link>, "
-"postgis_full_version() and postgis_proj_version() now output more "
-"information about proj network configuration and data paths. GEOS compile-"
-"time version also shown if different from run-time (Paul Ramsey, Sandro "
-"Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"<link xlink:href=\"https://github.com/postgis/postgis/pull/5447\">5447</"
-"link>, postgis_restore.pl renamed to postgis_restore (Sandro Santilli)"
-msgstr ""
-
-#. Tag: para
-#, no-c-format
-msgid ""
-"Utilities now installed in OS bin or user specified --bindir and --prefix "
-"instead of postgresql bin and extension stripped except on windows (postgis, "
-"postgis_restore, shp2pgsql, raster2pgsql, pgsql2shp, pgtopo_import, "
-"pgtopo_export)"
+msgid "2025/xx/xx"
 msgstr ""
 
 #. Tag: title
@@ -35325,7 +36175,7 @@ msgstr ""
 msgid ""
 "the polygon boundary rings (the exterior shell ring and interior hole rings) "
 "are <emphasis>simple</emphasis> (do not cross or self-touch). Because of "
-"this a polygon cannnot have cut lines, spikes or loops. This implies that "
+"this a polygon cannot have cut lines, spikes or loops. This implies that "
 "polygon holes must be represented as interior rings, rather than by the "
 "exterior ring self-touching (a so-called \"inverted hole\")."
 msgstr ""
@@ -37543,7 +38393,7 @@ msgstr ""
 msgid ""
 "This query takes a while, because every road in the table is summarized into "
 "the final result (about 250K roads for the example table). For smaller "
-"datsets (several thousand records on several hundred) the response can be "
+"datasets (several thousand records on several hundred) the response can be "
 "very fast."
 msgstr ""
 
@@ -38636,6 +39486,11 @@ msgstr ""
 #. Tag: para
 #, no-c-format
 msgid "Requires GEOS (3.9,3.10,3.11,3.12) or higher"
+msgstr ""
+
+#. Tag: para
+#, no-c-format
+msgid "Requires SFCGAL 1.5 or higher"
 msgstr ""
 
 #. Tag: para

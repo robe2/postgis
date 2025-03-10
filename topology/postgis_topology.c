@@ -3,7 +3,7 @@
  * PostGIS - Spatial Types for PostgreSQL
  * http://postgis.net
  *
- * Copyright (C) 2015-2021 Sandro Santilli <strk@kbt.io>
+ * Copyright (C) 2015-2024 Sandro Santilli <strk@kbt.io>
  *
  * This is free software; you can redistribute and/or modify it under
  * the terms of the GNU General Public Licence. See the COPYING file.
@@ -15,7 +15,7 @@
 #include "c.h" /* for UINT64_FORMAT and uint64 */
 #include "utils/builtins.h" /* for cstring_to_text */
 #include "utils/elog.h"
-#include "utils/memutils.h" /* for TopMemoryContext */
+#include "utils/memutils.h" /* for transaction contexts */
 #include "utils/array.h" /* for ArrayType */
 #include "catalog/pg_type.h" /* for INT4OID, TEXTOID */
 #include "lib/stringinfo.h"
@@ -27,12 +27,11 @@
 #include "../postgis_config.h"
 
 #include "liblwgeom_internal.h" /* for gbox_clone */
-#include "liblwgeom_topo.h"
+#include "topo/liblwgeom_topo.h"
 
 /*#define POSTGIS_DEBUG_LEVEL 1*/
 #include "lwgeom_log.h"
 #include "lwgeom_pg.h"
-#include "pgsql_compat.h"
 
 #include <stdarg.h>
 
@@ -69,7 +68,7 @@ struct LWT_BE_DATA_T
    * in the database.
    * It will be used by SPI_execute calls to
    * make sure to see any data change occurring
-   * doring operations.
+   * during operations.
    */
   bool data_changed;
 
@@ -793,12 +792,9 @@ fillEdgeFields(LWT_ISO_EDGE* edge, HeapTuple row, TupleDesc rowdesc, int fields)
     if ( ! isnull )
     {
       {
-        MemoryContext oldcontext = CurrentMemoryContext;
         geom = (GSERIALIZED *)PG_DETOAST_DATUM(dat);
         lwg = lwgeom_from_gserialized(geom);
-        MemoryContextSwitchTo( TopMemoryContext );
         edge->geom = lwgeom_as_lwline(lwgeom_clone_deep(lwg));
-        MemoryContextSwitchTo( oldcontext ); /* switch back */
         lwgeom_free(lwg);
         if ( DatumGetPointer(dat) != (Pointer)geom ) pfree(geom); /* IF_COPY */
       }
@@ -1525,7 +1521,7 @@ cb_getNodeWithinDistance2D(const LWT_BE_TOPOLOGY *topo,
     else
     {
       lwpgwarning("liblwgeom-topo invoked 'getNodeWithinDistance2D' "
-                  "backend callback with limit=%d and no fields",
+                  "backend callback with limit=%ld and no fields",
                   elems_requested);
       appendStringInfo(sql, "*");
     }
@@ -2137,8 +2133,14 @@ cb_getNextEdgeId( const LWT_BE_TOPOLOGY* topo )
   LWT_ELEMID edge_id;
 
   initStringInfo(sql);
-  appendStringInfo(sql, "SELECT nextval('\"%s\".edge_data_edge_id_seq')",
-                   topo->name);
+  appendStringInfo(sql, "SELECT nextval("
+       "SUBSTRING(column_default, "
+       "POSITION('(' IN column_default)+2, "
+       "(POSITION(':' IN column_default)-POSITION('(' IN column_default)-3))"
+       ") "
+       "FROM information_schema.columns "
+       "WHERE table_schema = '%s' AND table_name='edge_data' AND column_name = 'edge_id' \n",
+      topo->name);
   spi_result = SPI_execute(sql->data, false, 0);
   MemoryContextSwitchTo( oldcontext ); /* switch back */
   if ( spi_result != SPI_OK_SELECT )
@@ -3087,7 +3089,7 @@ cb_computeFaceMBR(const LWT_BE_TOPOLOGY *topo, LWT_ELEMID face)
     sql,
     "SELECT ST_BoundingDiagonal(ST_Collect("
     "ST_BoundingDiagonal(geom, true)"
-    "), true) FROM \"%s\".edge "
+    "), true) FROM \"%s\".edge_data "
     "WHERE left_face != right_face AND "
     "( left_face = %" LWTFMT_ELEMID
     " OR right_face = %" LWTFMT_ELEMID
@@ -3342,7 +3344,7 @@ cb_getEdgeWithinBox2D(const LWT_BE_TOPOLOGY *topo, const GBOX *box, uint64_t *nu
     appendStringInfoString(sql, "SELECT ");
     addEdgeFields(sql, fields, 0);
   }
-  appendStringInfo(sql, " FROM \"%s\".edge", topo->name);
+  appendStringInfo(sql, " FROM \"%s\".edge_data", topo->name);
 
   if ( box )
   {
@@ -4100,8 +4102,8 @@ Datum ST_GetFaceGeometry(PG_FUNCTION_ARGS)
   }
 
   /* Serialize in upper memory context (outside of SPI) */
-  /* TODO: use a narrower context to switch to */
-  old_context = MemoryContextSwitchTo( TopMemoryContext );
+  /* TODO: use a narrower context to switch to ? */
+  old_context = MemoryContextSwitchTo( TopTransactionContext );
   geom = geometry_serialize(lwgeom);
   MemoryContextSwitchTo(old_context);
 
@@ -4223,6 +4225,8 @@ Datum ST_GetFaceEdges(PG_FUNCTION_ARGS)
 
   if ( state->curr == state->nelems )
   {
+    if ( state->nelems ) lwfree(state->elems);
+    lwfree( state );
     SRF_RETURN_DONE(funcctx);
   }
 
@@ -5105,6 +5109,7 @@ Datum TopoGeo_AddLinestring(PG_FUNCTION_ARGS)
     tol = PG_GETARG_FLOAT8(2);
     if ( tol < 0 )
     {
+      lwgeom_free(lwgeom);
       PG_FREE_IF_COPY(geom, 1);
       lwpgerror("Tolerance must be >=0");
       PG_RETURN_NULL();
@@ -5112,6 +5117,8 @@ Datum TopoGeo_AddLinestring(PG_FUNCTION_ARGS)
 
     if ( SPI_OK_CONNECT != SPI_connect() )
     {
+      lwgeom_free(lwgeom);
+      PG_FREE_IF_COPY(geom, 1);
       lwpgerror("Could not connect to SPI");
       PG_RETURN_NULL();
     }
@@ -5169,6 +5176,9 @@ Datum TopoGeo_AddLinestring(PG_FUNCTION_ARGS)
   if ( state->curr == state->nelems )
   {
     POSTGIS_DEBUG(1, "We're done, cleaning up all");
+
+    if ( state->nelems ) lwfree(state->elems);
+    lwfree( state );
     SRF_RETURN_DONE(funcctx);
   }
 
@@ -5179,6 +5189,80 @@ Datum TopoGeo_AddLinestring(PG_FUNCTION_ARGS)
   result = Int32GetDatum((int32)id);
 
   SRF_RETURN_NEXT(funcctx, result);
+}
+
+/*  _TopoGeo_AddLinestringNoFace(atopology, point, tolerance) */
+Datum TopoGeo_AddLinestringNoFace(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(TopoGeo_AddLinestringNoFace);
+Datum TopoGeo_AddLinestringNoFace(PG_FUNCTION_ARGS)
+{
+  text* toponame_text;
+  char* toponame;
+  double tol;
+  int nelems;
+  GSERIALIZED *geom;
+  LWGEOM *lwgeom;
+  LWLINE *ln;
+  LWT_TOPOLOGY *topo;
+
+  toponame_text = PG_GETARG_TEXT_P(0);
+  toponame = text_to_cstring(toponame_text);
+  PG_FREE_IF_COPY(toponame_text, 0);
+
+  geom = PG_GETARG_GSERIALIZED_P(1);
+  lwgeom = lwgeom_from_gserialized(geom);
+  /* TODO: allow multilines too */
+  ln = lwgeom_as_lwline(lwgeom);
+  if ( ! ln )
+  {
+    {
+      char buf[32];
+      _lwtype_upper_name(lwgeom_get_type(lwgeom), buf, 32);
+      lwgeom_free(lwgeom);
+      PG_FREE_IF_COPY(geom, 1);
+      lwpgerror("Invalid geometry type (%s) passed to "
+                "TopoGeo_AddLinestringNoFace, expected LINESTRING", buf);
+      PG_RETURN_NULL();
+    }
+  }
+
+  tol = PG_GETARG_FLOAT8(2);
+  if ( tol < 0 )
+  {
+    PG_FREE_IF_COPY(geom, 1);
+    lwpgerror("Tolerance must be >=0");
+    PG_RETURN_NULL();
+  }
+
+  if ( SPI_OK_CONNECT != SPI_connect() )
+  {
+    lwpgerror("Could not connect to SPI");
+    PG_RETURN_NULL();
+  }
+
+  topo = lwt_LoadTopology(be_iface, toponame);
+  pfree(toponame);
+  if ( ! topo )
+  {
+    /* should never reach this point, as lwerror would raise an exception */
+    SPI_finish();
+    PG_RETURN_NULL();
+  }
+
+  POSTGIS_DEBUG(1, "Calling lwt_AddLineNoFace");
+  /* return discarded as we assume lwerror would raise an exception earlier
+   * in case of error
+   */
+  lwt_AddLineNoFace(topo, ln, tol, &nelems);
+  POSTGIS_DEBUG(1, "lwt_AddLineNoFace returned");
+  lwgeom_free(lwgeom);
+  PG_FREE_IF_COPY(geom, 1);
+  lwt_FreeTopology(topo);
+  POSTGIS_DEBUG(1, "TopoGeo_AddLinestringNoFace calling SPI_finish");
+
+  SPI_finish();
+
+  PG_RETURN_VOID();
 }
 
 /*  TopoGeo_AddPolygon(atopology, poly, tolerance) */
@@ -5300,6 +5384,8 @@ Datum TopoGeo_AddPolygon(PG_FUNCTION_ARGS)
   if ( state->curr == state->nelems )
   {
     POSTGIS_DEBUG(1, "We're done, cleaning up all");
+    if ( state->nelems ) lwfree(state->elems);
+    lwfree( state );
     SRF_RETURN_DONE(funcctx);
   }
 
@@ -5423,6 +5509,8 @@ Datum GetRingEdges(PG_FUNCTION_ARGS)
   if ( state->curr == state->nelems )
   {
     POSTGIS_DEBUG(1, "We're done, cleaning up all");
+    if ( state->nelems ) lwfree(state->elems);
+    lwfree( state );
     SRF_RETURN_DONE(funcctx);
   }
 
@@ -5498,4 +5586,112 @@ Datum GetFaceContainingPoint(PG_FUNCTION_ARGS)
 
   SPI_finish();
   PG_RETURN_INT32(face_id);
+}
+
+/*  RegisterMissingFaces(atopology) */
+Datum RegisterMissingFaces(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(RegisterMissingFaces);
+Datum RegisterMissingFaces(PG_FUNCTION_ARGS)
+{
+  text* toponame_text;
+  char* toponame;
+  LWT_TOPOLOGY *topo;
+
+  toponame_text = PG_GETARG_TEXT_P(0);
+  toponame = text_to_cstring(toponame_text);
+  PG_FREE_IF_COPY(toponame_text, 0);
+
+  if ( SPI_OK_CONNECT != SPI_connect() ) {
+    lwpgerror("Could not connect to SPI");
+    PG_RETURN_NULL();
+  }
+
+  {
+    int pre = be_data.topoLoadFailMessageFlavor;
+    be_data.topoLoadFailMessageFlavor = 1;
+    topo = lwt_LoadTopology(be_iface, toponame);
+    be_data.topoLoadFailMessageFlavor = pre;
+  }
+  pfree(toponame);
+  if ( ! topo ) {
+    /* should never reach this point, as lwerror would raise an exception */
+    SPI_finish();
+    PG_RETURN_NULL();
+  }
+
+  POSTGIS_DEBUG(1, "Calling lwt_Polygonize");
+  lwt_Polygonize(topo);
+  POSTGIS_DEBUG(1, "lwt_Polygonize returned");
+  lwt_FreeTopology(topo);
+
+  SPI_finish();
+
+  PG_RETURN_NULL();
+}
+
+/*  TopoGeo_LoadGeometry(atopology, geom, tolerance) */
+Datum TopoGeo_LoadGeometry(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(TopoGeo_LoadGeometry);
+Datum TopoGeo_LoadGeometry(PG_FUNCTION_ARGS)
+{
+  text* toponame_text;
+  char* toponame;
+  double tol;
+  GSERIALIZED *geom;
+  LWGEOM *lwgeom;
+  LWT_TOPOLOGY *topo;
+
+  if ( PG_ARGISNULL(0) || PG_ARGISNULL(1) )
+  {
+    lwpgerror("SQL/MM Spatial exception - null argument");
+    PG_RETURN_NULL();
+  }
+
+  toponame_text = PG_GETARG_TEXT_P(0);
+  toponame = text_to_cstring(toponame_text);
+  PG_FREE_IF_COPY(toponame_text, 0);
+
+  geom = PG_GETARG_GSERIALIZED_P(1);
+
+  tol = PG_GETARG_FLOAT8(2);
+  if ( tol < 0 )
+  {
+    PG_FREE_IF_COPY(geom, 1);
+    lwpgerror("Tolerance must be >=0");
+    PG_RETURN_NULL();
+  }
+
+  if ( SPI_OK_CONNECT != SPI_connect() )
+  {
+    lwpgerror("Could not connect to SPI");
+    PG_RETURN_NULL();
+  }
+
+  topo = lwt_LoadTopology(be_iface, toponame);
+  pfree(toponame);
+  if ( ! topo )
+  {
+    /* should never reach this point, as lwerror would raise an exception */
+    SPI_finish();
+    PG_RETURN_NULL();
+  }
+
+  /* Nothing to do if the input is empty */
+  if (gserialized_is_empty(geom) != LW_TRUE)
+  {
+    lwgeom = lwgeom_from_gserialized(geom);
+    POSTGIS_DEBUG(1, "Calling lwt_LoadGeometry");
+    lwt_LoadGeometry(topo, lwgeom, tol);
+    POSTGIS_DEBUG(1, "lwt_LoadGeometry returned");
+    lwgeom_free(lwgeom);
+  }
+
+  PG_FREE_IF_COPY(geom, 1);
+  lwt_FreeTopology(topo);
+
+  POSTGIS_DEBUG(1, "TopoGeo_LoadGeometry calling SPI_finish");
+
+  SPI_finish();
+
+  PG_RETURN_VOID();
 }

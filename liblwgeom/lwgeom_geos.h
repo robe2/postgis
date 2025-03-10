@@ -23,6 +23,11 @@
  *
  **********************************************************************/
 
+#if POSTGIS_GEOS_VERSION < 31300
+/* See https://github.com/libgeos/geos/pull/1097 */
+typedef void (*GEOSMessageHandler)(const char *fmt, ...) __attribute__ (( format(printf, 1, 2) ));
+#endif
+
 #include "geos_c.h"
 
 #include "liblwgeom.h"
@@ -45,4 +50,31 @@ int union_dbscan(LWGEOM **geoms, uint32_t num_geoms, UNIONFIND *uf, double eps, 
 POINTARRAY* ptarray_from_GEOSCoordSeq(const GEOSCoordSequence* cs, uint8_t want3d);
 
 extern char lwgeom_geos_errmsg[];
-extern void lwgeom_geos_error(const char* fmt, ...);
+extern void lwgeom_geos_error(const char* fmt, ...) __attribute__ ((format (printf, 1, 2)));
+
+
+/*
+ * Debug macros
+ */
+#if POSTGIS_DEBUG_LEVEL > 0
+
+/* Display a notice and a WKT representation of a geometry
+ * at the given debug level */
+#define LWDEBUGGEOS(level, geom, msg) \
+  if (POSTGIS_DEBUG_LEVEL >= level) \
+  do { \
+		GEOSWKTWriter *wktwriter = GEOSWKTWriter_create(); \
+		char *wkt = GEOSWKTWriter_write(wktwriter, (geom)); \
+		LWDEBUGF(1, msg " (GEOS): %s", wkt); \
+		GEOSFree(wkt); \
+		GEOSWKTWriter_destroy(wktwriter); \
+  } while (0);
+
+#else /* POSTGIS_DEBUG_LEVEL <= 0 */
+
+/* Empty prototype that can be optimised away by the compiler
+ * for non-debug builds */
+#define LWDEBUGGEOS(level, geom, msg) \
+        ((void) 0)
+
+#endif /*POSTGIS_DEBUG_LEVEL <= 0 */

@@ -55,6 +55,7 @@ doc/postgis-out.xml.in
 doc/raster_comments.sql
 doc/postgis_gardentest_*.sql
 doc/raster_gardentest_*.sql
+doc/sfcgal_gardentest_*.sql
 doc/tiger_geocoder_comments.sql
 doc/topology_comments.sql
 extensions/Makefile
@@ -190,7 +191,6 @@ topology/test/Makefile
 topology/test/load_topology-4326.sql
 topology/test/load_topology.sql
 topology/test/topo_predicates.sql
-topology/test/regress/topogeo_addlinestring_expected
 topology/topology_after_upgrade.sql
 topology/topology_before_upgrade.sql
 topology/topology.sql

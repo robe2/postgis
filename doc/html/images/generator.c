@@ -34,7 +34,7 @@
  *  generator [-v] [-s <width>x<height>] <source_wktfile> [<output_pngfile>]
  *
  * -v - show generated Imagemagick commands
- * -s - output dimention, if omitted defaults to 200x200
+ * -s - output dimension, if omitted defaults to 200x200
  *
  * If <output_pngfile> is omitted the output image PNG file has the
  * same name as the source file
@@ -373,7 +373,7 @@ drawPolygon(char *output, LWPOLY *lwp, GEOMETRY_DRAW_CONTEXT *ctx)
  * @return the numbers of character written to *output
  */
 static size_t
-drawGeometry(char *output, LWGEOM *lwgeom, GEOMETRY_DRAW_CONTEXT *ctx)
+drawGeometry(char *output, const LWGEOM *lwgeom, GEOMETRY_DRAW_CONTEXT *ctx)
 {
 	char *ptr = output;
 	unsigned int i;

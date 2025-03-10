@@ -13,8 +13,8 @@ BEGIN
 							oid::regprocedure::text,
 							'double precision', 'float8'
 						),
-						'\(([^)])',
-						'(NULL::\1'
+						E'\\(([^)])',
+						E'(NULL::\\1'
 					),
 					',',
 					',NULL::',
@@ -52,3 +52,6 @@ BEGIN
 
 END;
 $BODY$ LANGUAGE 'plpgsql';
+
+
+SELECT 'INFO: Most PostGIS functions locked into view usage';

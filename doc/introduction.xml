@@ -38,7 +38,7 @@
 		<varlistentry>
 		<term>Regina Obe</term>
 		<listitem>
-			<para>Buildbot Maintenance, Windows production and experimental builds, documentation, alignment of
+			<para>CI and website maintenance, Windows production and experimental builds, documentation, alignment of
 			PostGIS with PostgreSQL releases, X3D support, TIGER geocoder support, management functions.</para>
 		</listitem>
 		</varlistentry>
@@ -46,7 +46,7 @@
 		<varlistentry>
 			<term>Darafei Praliaskouski</term>
 			<listitem>
-				<para>Index improvements, bug fixing and geometry/geography function improvements, SFCGAL, raster, GitHub curation, and bot maintenance.</para>
+				<para>Index improvements, bug fixing and geometry/geography function improvements, SFCGAL, raster, GitHub curation, and ci maintenance.</para>
 			</listitem>
 		</varlistentry>
 
@@ -62,7 +62,7 @@
 		<varlistentry>
 		<term>Sandro Santilli</term>
 		<listitem>
-			<para>Bug fixes and maintenance, buildbot maintenance, git mirror management, management functions, integration of new GEOS functionality and alignment with GEOS releases, topology support, and raster framework and low level API functions.</para>
+			<para>Bug fixes and maintenance, ci maintenance, git mirror management, management functions, integration of new GEOS functionality and alignment with GEOS releases, topology support, and raster framework and low level API functions.</para>
 		</listitem>
 		</varlistentry>
 
@@ -75,6 +75,13 @@
 			<term>Nicklas Avén</term>
 			<listitem>
 			  <para>Distance function enhancements (including 3D distance and relationship functions) and additions, Tiny WKB (TWKB) output format and general user support</para>
+			</listitem>
+		</varlistentry>
+
+		<varlistentry>
+			<term>Loïc Bartoletti</term>
+			<listitem>
+			  <para>SFCGAL enhancements and maintenance and ci support</para>
 			</listitem>
 		</varlistentry>
 
@@ -97,7 +104,7 @@
 			<term>Björn Harrtell</term>
 
 			<listitem>
-			  <para>MapBox Vector Tile and GeoBuf functions. Gogs testing and GitLab experimentation.</para>
+			  <para>MapBox Vector Tile, GeoBuf, and Flatgeobuf functions. Gitea testing and GitLab experimentation.</para>
 			</listitem>
 		</varlistentry>
 
@@ -234,15 +241,18 @@
 					<member>Bryce L. Nordgren</member>
 					<member>Carl Anderson</member>
 					<member>Charlie Savage</member>
+					<member>Chris Mayo</member>
 					<member>Christian Schroeder</member>
 					<member>Christoph Berg</member>
 					<member>Christoph Moench-Tegeder</member>
 					<member>Dane Springmeyer</member>
+					<member>Dapeng Wang</member>
 					<member>Daryl Herzmann</member>
 					<member>Dave Fuhry</member>
 					<member>David Garnier</member>
 					<member>David Skea</member>
 					<member>David Techer</member>
+					<member>Dian M Fay</member>
 					<member>Dmitry Vasilyev</member>
 					<member>Eduin Carrillo</member>
 					<member>Esteban Zimanyi</member>
@@ -263,8 +273,10 @@
 					<member>IIDA Tetsushi</member>
 					<member>Ingvild Nystuen</member>
 					<member>Jackie Leng</member>
+					<member>James Addison</member>
 					<member>James Marca</member>
 					<member>Jan Katins</member>
+					<member>Jan Tojnar</member>
 					<member>Jason Smith</member>
 					<member>Jeff Adams</member>
 					<member>Jelte Fennema</member>
@@ -280,7 +292,6 @@
 					<member>Laurenz Albe</member>
 					<member>Lars Roessiger</member>
 					<member>Leo Hsu</member>
-					<member>Loïc Bartoletti</member>
 					<member>Loic Dachary</member>
 					<member>Luca S. Percich</member>
 					<member>Lucas C. Villa Real</member>
@@ -309,6 +320,7 @@
 					<member>Robert Coup</member>
 					<member>Roger Crew</member>
 					<member>Ron Mayer</member>
+					<member>Sam Peters</member>
 					<member>Sebastiaan Couwenberg</member>
 					<member>Sergei Shoulbakov</member>
 					<member>Sergey Fedoseev</member>
@@ -329,6 +341,7 @@
 					<member>Vincent Mora</member>
 					<member>Vincent Picavet</member>
 					<member>Volf Tomáš</member>
+					<member>Zuo Chenwei</member>
 				</simplelist>
 			</para>
 		</listitem>
@@ -359,7 +372,9 @@
 				<listitem><simpara><link xlink:href="http://www.elecnor-deimos.com">Deimos Space</link></simpara></listitem>
 				<listitem><simpara><link xlink:href="https://www.faunalia.eu">Faunalia</link></simpara></listitem>
 				<listitem><simpara><link xlink:href="https://gov.bc.ca">Geographic Data BC</link></simpara></listitem>
+				<listitem><simpara><link xlink:href="https://www.highgo.ca">HighGo</link></simpara></listitem>
 				<listitem><simpara>Hunter Systems Group</simpara></listitem>
+				<listitem><simpara><link xlink:href="https://pti-agriambio.csic.es">INIA-CSIC</link></simpara></listitem>
 				<listitem><simpara><link xlink:href="https://www.isciences.com">ISciences, LLC</link></simpara></listitem>
                 <listitem><simpara><link xlink:href="https://www.kontur.io">Kontur</link></simpara></listitem>
 				<listitem><simpara><link xlink:href="https://www.lidwala.com">Lidwala Consulting Engineers</link></simpara></listitem>
@@ -368,7 +383,7 @@
 				<listitem><simpara>Maponics</simpara></listitem>
 				<listitem><simpara><link xlink:href="http://www.mtri.org">Michigan Tech Research Institute</link></simpara></listitem>
 				<listitem><simpara><link xlink:href="https://www.nrcan.gc.ca">Natural Resources Canada</link></simpara></listitem>
-				<listitem><simpara>Norwegian Forest and Landscape Institue</simpara></listitem>
+				<listitem><simpara>Norwegian Forest and Landscape Institute</simpara></listitem>
 				<listitem><simpara><link xlink:href="https://www.nibio.no/">Norwegian Institute of Bioeconomy Research (NIBIO)</link></simpara></listitem>
 				<listitem><simpara><link xlink:href="https://www.osgeo.org">OSGeo</link></simpara></listitem>
 				<listitem><simpara><link xlink:href="https://oslandia.com">Oslandia</link></simpara></listitem>

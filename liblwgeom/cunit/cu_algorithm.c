@@ -33,7 +33,7 @@ LWGEOM_PARSER_RESULT parse_result;
 
 /*
 ** The suite initialization function.
-** Create any re-used objects.
+** Create any reused objects.
 */
 static int init_cg_suite(void)
 {
@@ -784,7 +784,7 @@ test_lwtriangle_clip(void)
 	    LW_PARSER_CHECK_NONE);
 	c = lwgeom_clip_to_ordinate_range(g, 'Z', 0.0, DBL_MAX, 0);
 
-	/* Adjust for Rasberry Pi 64-bit (Debian Buster) */
+	/* Adjust for Raspberry Pi 64-bit (Debian Buster) */
 	gridspec grid = {0};
 	grid.xsize = grid.ysize = grid.zsize = grid.msize = 1;
 	lwgeom_grid_in_place((LWGEOM *)c, &grid);
@@ -1048,7 +1048,6 @@ static void test_isclosed(void)
 	geom = lwgeom_from_wkt("LINESTRING(1 2 3 4,5 6 7 8,1 2 3 0)", LW_PARSER_CHECK_NONE);
 	CU_ASSERT(lwline_is_closed((LWLINE *) geom));
 	lwgeom_free(geom);
-
 
 	/* CIRCULARSTRING */
 
@@ -1658,11 +1657,11 @@ static void test_point_density(void)
 	/* Check if the 1000th point is the expected value.
 	 * Note that if the RNG is not portable, this test may fail. */
 	pt = (LWPOINT*)mpt->geoms[999];
-	// ewkt = lwgeom_to_ewkt((LWGEOM*)pt);
+	// char* ewkt = lwgeom_to_ewkt((LWGEOM*)pt);
 	// printf("%s\n", ewkt);
 	// lwfree(ewkt);
-	CU_ASSERT_DOUBLE_EQUAL(lwpoint_get_x(pt), 0.801167838758, 1e-11);
-	CU_ASSERT_DOUBLE_EQUAL(lwpoint_get_y(pt), 0.345281131175, 1e-11);
+	CU_ASSERT_DOUBLE_EQUAL(lwpoint_get_x(pt), 0.363667838758, 1e-11);
+	CU_ASSERT_DOUBLE_EQUAL(lwpoint_get_y(pt), 0.782781131175, 1e-11);
 	lwmpoint_free(mpt);
 	pt = NULL;
 
@@ -1813,6 +1812,20 @@ static void test_trim_bits(void)
 	lwline_free(line);
 }
 
+static void test_ptarray_simplify(void)
+{
+	LWGEOM *geom1 = lwgeom_from_wkt("LINESTRING (2 2,3 2,4 1,3 2, 4 4)", LW_PARSER_CHECK_NONE);
+	LWGEOM *geom2 = lwgeom_from_wkt("LINESTRING (2 2,3 2,4 1,3 2, 4 4)", LW_PARSER_CHECK_NONE);
+	LWLINE *line1 = (LWLINE*)geom1;
+	double tolerance = 0.0;
+	int minpts = 2;
+	ptarray_simplify_in_place(line1->points, tolerance, minpts);
+	ASSERT_LWGEOM_EQUAL(geom1, geom2);
+	lwgeom_free(geom1);
+	lwgeom_free(geom2);
+}
+
+
 /*
 ** Used by test harness to register the tests in this file.
 */
@@ -1820,6 +1833,7 @@ void algorithms_suite_setup(void);
 void algorithms_suite_setup(void)
 {
 	CU_pSuite suite = CU_add_suite("algorithm", init_cg_suite, clean_cg_suite);
+	PG_ADD_TEST(suite,test_ptarray_simplify);
 	PG_ADD_TEST(suite,test_lw_segment_side);
 	PG_ADD_TEST(suite,test_lw_segment_intersects);
 	PG_ADD_TEST(suite,test_lwline_crossing_short_lines);

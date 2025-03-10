@@ -592,7 +592,7 @@ proj_version integer;
 err_str text;
 begin
 
-    select ((regexp_matches(postgis_proj_version(), '(\d+)\.\d+'))[1])::integer into proj_version;
+    select ((regexp_matches(postgis_proj_version(), E'(\\d+)\\.\\d+'))[1])::integer into proj_version;
     select ST_Transform('SRID=4326;POINT(180 95)'::geometry, 3395); -- fails
 
 exception
@@ -908,7 +908,7 @@ SELECT '#3355',  ST_Intersects(
          'LINESTRING(124.983539 1.419224,91.181596 29.647798)'::geography
        , ST_Segmentize('LINESTRING(124.983539 1.419224,91.181596 29.647798)'::geography, 47487290)::geography);
 /** NOTE: change seems crazy but PG16s ordering of parenthesis is different from prior versions
-so to accomodate had to add and remove superfluous spaces **/
+so to accommodate had to add and remove superfluous spaces **/
 SELECT '#3356', ST_Summary(wkt::geometry) As wkt_geom,
    ST_Summary(wkt::geography) As wkt_geog,
    ST_Summary(wkt::geometry::geography) As geom_geog
@@ -1252,10 +1252,10 @@ SELECT '#4299', ST_Disjoint(ST_GeneratePoints(g, 1000), ST_GeneratePoints(g, 100
 FROM (SELECT 'POLYGON((0 0,1 0,1 1,0 1,0 0))'::geometry AS g) AS f;
 
 -- #4304
-SELECT '#4304', ST_Equals(ST_GeneratePoints(g, 1000, 12345), ST_GeneratePoints(g, 1000, 12345)),
-ST_Disjoint(ST_GeneratePoints(g, 1000, 12345), ST_GeneratePoints(g, 1000, 54321)),
-ST_Disjoint(ST_GeneratePoints(g, 1000, 12345), ST_GeneratePoints(g, 1000)),
-ST_Distance(ST_GeometryN(ST_GeneratePoints(g, 1000, 12345), 1000), 'POINT(0.801167838758 0.345281131175)'::geometry) < 1e-11
+SELECT '#4304',
+  ST_Equals(ST_GeneratePoints(g, 1000, 12345), ST_GeneratePoints(g, 1000, 12345)),
+  ST_Disjoint(ST_GeneratePoints(g, 1000, 12345), ST_GeneratePoints(g, 1000, 54321)),
+  ST_Disjoint(ST_GeneratePoints(g, 1000, 12345), ST_GeneratePoints(g, 1000))
 FROM (SELECT 'POLYGON((0 0,1 0,1 1,0 1,0 0))'::geometry AS g) AS f;
 
 -- #4331
@@ -1509,3 +1509,69 @@ SELECT '#5320', ST_SimplifyPreserveTopology('0106000020E864000001000000010300000
 
 DROP PROCEDURE IF EXISTS p_force_parellel_mode(text);
 SELECT '#5378', ST_SRID( ST_Buffer(ST_GeomFromText('POINT(-94 29.53)', 4269)::geography, 12)::geometry );
+
+SELECT '#5425', ST_AsText(ST_SnapToGrid(
+  ST_SnapToGrid('POINT(1.23456789 9.87654321)'::geometry, 0.001),
+  0.000001) );
+
+SELECT '#5627' AS ticket, bool_and(ST_Intersects(
+    'MULTIPOINT(EMPTY,(-378 574))'::geometry,
+    geom))
+FROM (VALUES
+    ('MULTIPOLYGON(((-357 477,-392 574,-378 574,-357 477)))'::geometry),
+    ('MULTIPOLYGON(((-357 477,-392 574,-378 574,-357 477)))'::geometry))
+    AS geoms(geom);
+
+SELECT '#5604',
+ ST_Distance(a2, a1),
+ ST_AsText(ST_ClosestPoint(a2, a1)),
+ ST_Distance(a1, a2),
+ ST_AsText(ST_ClosestPoint(a1, a2))
+FROM
+ST_GeomFromText('MULTIPOINT((-2 0), EMPTY)') AS a1,
+ST_GeomFromText('MULTIPOINT((1 0),(0 0))') AS a2;
+
+SELECT '#5639','fullywithin' || id, ST_DFullyWithin(a, b, r)
+FROM (VALUES
+ (1, 'POLYGON((0 0, 1 0, 1 1, 1 0, 0 0))', 'POINT(1 2)', 2)
+,(2, 'POLYGON((0 0, 1 0, 1 1, 1 0, 0 0))', 'POINT(1 2)', 0.5)
+,(3, 'POLYGON((0 0, 1 0, 1 1, 1 0, 0 0))', 'LINESTRING(1.5 0.5, 2.5 0.5)', 1)
+,(4, 'POLYGON((0 0, 1 0, 1 1, 1 0, 0 0))', 'LINESTRING(1.5 0.5, 2.5 0.5)', 2)
+,(5, 'LINESTRING(0 0, 10 0)', 'LINESTRING(0 2, 10 4)', 1)
+,(6, 'LINESTRING(0 0, 10 0)', 'LINESTRING(0 2, 10 4)', 3)
+,(7, 'LINESTRING(0 0, 10 0)', 'LINESTRING(0 2, 10 4)', 4)
+) AS t(id, a, b, r);
+
+SELECT '#5597', ST_AsGeoJSON(r.*) from (values (null::geometry)) as r(geom);
+
+SELECT '#5677',
+ st_asewkt(st_normalize(
+   st_union(
+     array[
+       st_geomfromtext(
+         'GEOMETRYCOLLECTION(
+           POLYGON((0 0,10 0,25 25,0 10,0 0)),
+           POLYGON((20 20,30 20,30 30,20 30,20 20))
+         )'
+       )
+     ]
+   ))
+ );
+
+SELECT '#5686', ST_NumInteriorRings('TRIANGLE (( -71.0821 42.3036, -71.0821 42.3936, -71.0901 42.3036, -71.0821 42.3036))'::geometry);
+
+SELECT '#5747', ST_Length('MULTISURFACE (((0 0, 1 0, 1 1, 0 1, 0 0)), CURVEPOLYGON (CIRCULARSTRING (10 10, 11 11, 12 10, 11 9, 10 10)))'::geometry);
+
+-- #5855
+CREATE TEMP TABLE TEST (street text, extent geometry(Polygon,32633));
+INSERT INTO test VALUES ('Knosesmauet','0103000020797F0000010000000500000010B2468761BDDFC06390523AA1B0594110B2468761BDDFC030554D9BC3B0594107992AF50799DFC030554D9BC3B0594107992AF50799DFC06390523AA1B0594110B2468761BDDFC06390523AA1B05941');
+SET enable_seqscan=false;
+CREATE INDEX test_idx ON test USING GIST ( extent );
+
+SELECT '#5855', street
+FROM test
+WHERE ST_DFullyWithin(
+    ST_SetSRID(ST_GeomFromText('POINT(-32356 6734606)'), 32633),
+    extent,
+    1700
+);

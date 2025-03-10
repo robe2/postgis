@@ -37,11 +37,10 @@
 #include "access/htup_details.h"
 
 /* PostGIS */
-#include "lwgeom_functions_analytic.h" /* for point_in_polygon */
 #include "lwgeom_geos.h"
 #include "liblwgeom.h"
 #include "liblwgeom_internal.h"
-#include "lwgeom_rtree.h"
+#include "lwgeom_itree.h"
 #include "lwgeom_geos_prepared.h"
 #include "lwgeom_accum.h"
 
@@ -51,17 +50,6 @@
 /*
 ** Prototypes for SQL-bound functions
 */
-Datum relate_full(PG_FUNCTION_ARGS);
-Datum relate_pattern(PG_FUNCTION_ARGS);
-Datum disjoint(PG_FUNCTION_ARGS);
-Datum touches(PG_FUNCTION_ARGS);
-Datum ST_Intersects(PG_FUNCTION_ARGS);
-Datum crosses(PG_FUNCTION_ARGS);
-Datum contains(PG_FUNCTION_ARGS);
-Datum within(PG_FUNCTION_ARGS);
-Datum containsproperly(PG_FUNCTION_ARGS);
-Datum covers(PG_FUNCTION_ARGS);
-Datum overlaps(PG_FUNCTION_ARGS);
 Datum isvalid(PG_FUNCTION_ARGS);
 Datum isvalidreason(PG_FUNCTION_ARGS);
 Datum isvaliddetail(PG_FUNCTION_ARGS);
@@ -84,7 +72,6 @@ Datum polygonize_garray(PG_FUNCTION_ARGS);
 Datum clusterintersecting_garray(PG_FUNCTION_ARGS);
 Datum cluster_within_distance_garray(PG_FUNCTION_ARGS);
 Datum linemerge(PG_FUNCTION_ARGS);
-Datum coveredby(PG_FUNCTION_ARGS);
 Datum hausdorffdistance(PG_FUNCTION_ARGS);
 Datum hausdorffdistancedensify(PG_FUNCTION_ARGS);
 Datum ST_FrechetDistance(PG_FUNCTION_ARGS);
@@ -101,65 +88,20 @@ Datum pgis_union_geometry_array(PG_FUNCTION_ARGS);
 ** Prototypes end
 */
 
-
 PG_FUNCTION_INFO_V1(postgis_geos_version);
 Datum postgis_geos_version(PG_FUNCTION_ARGS)
 {
-	const char *ver = lwgeom_geos_version();
-	text *result = cstring_to_text(ver);
-	PG_RETURN_POINTER(result);
+    const char *ver = lwgeom_geos_version();
+    text *result = cstring_to_text(ver);
+    PG_RETURN_POINTER(result);
 }
 
 PG_FUNCTION_INFO_V1(postgis_geos_compiled_version);
 Datum postgis_geos_compiled_version(PG_FUNCTION_ARGS)
 {
-	const char *ver = lwgeom_geos_compiled_version();
-	text *result = cstring_to_text(ver);
-	PG_RETURN_POINTER(result);
-}
-
-
-static char
-is_poly(const GSERIALIZED* g)
-{
-    int type = gserialized_get_type(g);
-    return type == POLYGONTYPE || type == MULTIPOLYGONTYPE;
-}
-
-static char
-is_point(const GSERIALIZED* g)
-{
-	int type = gserialized_get_type(g);
-	return type == POINTTYPE || type == MULTIPOINTTYPE;
-}
-
-/* Utility function that checks a LWPOINT and a GSERIALIZED poly against a cache.
- * Serialized poly may be a multipart.
- */
-static int
-pip_short_circuit(RTREE_POLY_CACHE *poly_cache, LWPOINT *point, const GSERIALIZED *gpoly)
-{
-	int result;
-
-	if ( poly_cache && poly_cache->ringIndices )
-	{
-        result = point_in_multipolygon_rtree(poly_cache->ringIndices, poly_cache->polyCount, poly_cache->ringCounts, point);
-	}
-	else
-	{
-		LWGEOM* poly = lwgeom_from_gserialized(gpoly);
-		if ( lwgeom_get_type(poly) == POLYGONTYPE )
-		{
-			result = point_in_polygon(lwgeom_as_lwpoly(poly), point);
-		}
-		else
-		{
-			result = point_in_multipolygon(lwgeom_as_lwmpoly(poly), point);
-		}
-		lwgeom_free(poly);
-	}
-
-	return result;
+    const char *ver = lwgeom_geos_compiled_version();
+    text *result = cstring_to_text(ver);
+    PG_RETURN_POINTER(result);
 }
 
 /**
@@ -168,7 +110,6 @@ pip_short_circuit(RTREE_POLY_CACHE *poly_cache, LWPOINT *point, const GSERIALIZE
  *      'POLYGON((0 0, 0 2, 1 2, 2 2, 2 0, 0 0))'::geometry,
  *      'POLYGON((0.5 0.5, 0.5 2.5, 1.5 2.5, 2.5 2.5, 2.5 0.5, 0.5 0.5))'::geometry);
  */
-
 PG_FUNCTION_INFO_V1(hausdorffdistance);
 Datum hausdorffdistance(PG_FUNCTION_ARGS)
 {
@@ -629,6 +570,9 @@ Datum pgis_union_geometry_array(PG_FUNCTION_ARGS)
 	if ( count == 0 )
 		PG_RETURN_NULL();
 
+	/* Ok, we really need GEOS now ;) */
+	initGEOS(lwpgnotice, lwgeom_geos_error);
+
 	/* One geom, good geom? Return it */
 	if ( count == 1 && nelems == 1 )
 	{
@@ -636,14 +580,19 @@ Datum pgis_union_geometry_array(PG_FUNCTION_ARGS)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
-		PG_RETURN_POINTER((GSERIALIZED *)(ARR_DATA_PTR(array)));
+		g = POSTGIS2GEOS((GSERIALIZED *)(ARR_DATA_PTR(array)));
 #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
 #pragma GCC diagnostic pop
 #endif
+		srid = GEOSGetSRID(g);
+		g_union = GEOSUnaryUnion(g);
+		GEOSGeom_destroy(g);
+		if (!g_union) HANDLE_GEOS_ERROR("GEOSUnaryUnion");
+		GEOSSetSRID(g_union, srid);
+		gser_out = GEOS2POSTGIS(g_union, is3d);
+		GEOSGeom_destroy(g_union);
+		PG_RETURN_POINTER(gser_out);
 	}
-
-	/* Ok, we really need GEOS now ;) */
-	initGEOS(lwpgnotice, lwgeom_geos_error);
 
 	/*
 	** Collect the non-empty inputs and stuff them into a GEOS collection
@@ -1783,979 +1732,6 @@ Datum isvaliddetail(PG_FUNCTION_ARGS)
 	PG_RETURN_HEAPTUPLEHEADER(result);
 }
 
-/**
- * overlaps(GSERIALIZED g1,GSERIALIZED g2)
- * @param g1
- * @param g2
- * @return  if GEOS::g1->overlaps(g2) returns true
- * @throw an error (elog(ERROR,...)) if GEOS throws an error
- */
-PG_FUNCTION_INFO_V1(overlaps);
-Datum overlaps(PG_FUNCTION_ARGS)
-{
-	GSERIALIZED *geom1;
-	GSERIALIZED *geom2;
-	GEOSGeometry *g1, *g2;
-	char result;
-	GBOX box1, box2;
-
-	geom1 = PG_GETARG_GSERIALIZED_P(0);
-	geom2 = PG_GETARG_GSERIALIZED_P(1);
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* A.Overlaps(Empty) == FALSE */
-	if ( gserialized_is_empty(geom1) || gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(false);
-
-	/*
-	 * short-circuit 1: if geom2 bounding box does not overlap
-	 * geom1 bounding box we can return FALSE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-	        gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( ! gbox_overlaps_2d(&box1, &box2) )
-		{
-			PG_RETURN_BOOL(false);
-		}
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	g1 = POSTGIS2GEOS(geom1);
-	if (!g1)
-		HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-
-	g2 = POSTGIS2GEOS(geom2);
-
-	if (!g2)
-	{
-		GEOSGeom_destroy(g1);
-		HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-	}
-
-	result = GEOSOverlaps(g1,g2);
-
-	GEOSGeom_destroy(g1);
-	GEOSGeom_destroy(g2);
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSOverlaps");
-
-	PG_FREE_IF_COPY(geom1, 0);
-	PG_FREE_IF_COPY(geom2, 1);
-
-	PG_RETURN_BOOL(result);
-}
-
-
-PG_FUNCTION_INFO_V1(contains);
-Datum contains(PG_FUNCTION_ARGS)
-{
-	SHARED_GSERIALIZED *shared_geom1 = ToastCacheGetGeometry(fcinfo, 0);
-	SHARED_GSERIALIZED *shared_geom2 = ToastCacheGetGeometry(fcinfo, 1);
-	const GSERIALIZED *geom1 = shared_gserialized_get(shared_geom1);
-	const GSERIALIZED *geom2 = shared_gserialized_get(shared_geom2);
-	int result;
-	GEOSGeometry *g1, *g2;
-	GBOX box1, box2;
-	PrepGeomCache *prep_cache;
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* A.Contains(Empty) == FALSE */
-	if (gserialized_is_empty(geom1) || gserialized_is_empty(geom2))
-		PG_RETURN_BOOL(false);
-
-	POSTGIS_DEBUG(3, "contains called.");
-
-	/*
-	** short-circuit 1: if geom2 bounding box is not completely inside
-	** geom1 bounding box we can return FALSE.
-	*/
-	if (gserialized_get_gbox_p(geom1, &box1) &&
-	    gserialized_get_gbox_p(geom2, &box2))
-	{
-		if (!gbox_contains_2d(&box1, &box2))
-			PG_RETURN_BOOL(false);
-	}
-
-	/*
-	** short-circuit 2: if geom2 is a point and geom1 is a polygon
-	** call the point-in-polygon function.
-	*/
-	if (is_poly(geom1) && is_point(geom2))
-	{
-		SHARED_GSERIALIZED *shared_gpoly = is_poly(geom1) ? shared_geom1 : shared_geom2;
-		SHARED_GSERIALIZED *shared_gpoint = is_point(geom1) ? shared_geom1 : shared_geom2;
-		const GSERIALIZED *gpoly = shared_gserialized_get(shared_gpoly);
-		const GSERIALIZED *gpoint = shared_gserialized_get(shared_gpoint);
-		RTREE_POLY_CACHE *cache = GetRtreeCache(fcinfo, shared_gpoly);
-		int retval;
-
-		POSTGIS_DEBUG(3, "Point in Polygon test requested...short-circuiting.");
-		if (gserialized_get_type(gpoint) == POINTTYPE)
-		{
-			LWGEOM* point = lwgeom_from_gserialized(gpoint);
-			int pip_result = pip_short_circuit(cache, lwgeom_as_lwpoint(point), gpoly);
-			lwgeom_free(point);
-
-			retval = (pip_result == 1); /* completely inside */
-		}
-		else if (gserialized_get_type(gpoint) == MULTIPOINTTYPE)
-		{
-			LWMPOINT* mpoint = lwgeom_as_lwmpoint(lwgeom_from_gserialized(gpoint));
-			uint32_t i;
-			int found_completely_inside = LW_FALSE;
-
-			retval = LW_TRUE;
-			for (i = 0; i < mpoint->ngeoms; i++)
-			{
-				/* We need to find at least one point that's completely inside the
-				 * polygons (pip_result == 1).  As long as we have one point that's
-				 * completely inside, we can have as many as we want on the boundary
-				 * itself. (pip_result == 0)
-				 */
-				int pip_result = pip_short_circuit(cache, mpoint->geoms[i], gpoly);
-				if (pip_result == 1)
-					found_completely_inside = LW_TRUE;
-
-				if (pip_result == -1) /* completely outside */
-				{
-					retval = LW_FALSE;
-					break;
-				}
-			}
-
-			retval = retval && found_completely_inside;
-			lwmpoint_free(mpoint);
-		}
-		else
-		{
-			/* Never get here */
-			elog(ERROR,"Type isn't point or multipoint!");
-			PG_RETURN_BOOL(false);
-		}
-
-		return retval > 0;
-	}
-	else
-	{
-		POSTGIS_DEBUGF(3, "Contains: type1: %d, type2: %d", gserialized_get_type(geom1), gserialized_get_type(geom2));
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	prep_cache = GetPrepGeomCache(fcinfo, shared_geom1, NULL);
-
-	if ( prep_cache && prep_cache->prepared_geom && prep_cache->gcache.argnum == 1 )
-	{
-		g1 = POSTGIS2GEOS(geom2);
-		if (!g1)
-			HANDLE_GEOS_ERROR("Geometry could not be converted to GEOS");
-
-		POSTGIS_DEBUG(4, "containsPrepared: cache is live, running preparedcontains");
-		result = GEOSPreparedContains( prep_cache->prepared_geom, g1);
-		GEOSGeom_destroy(g1);
-	}
-	else
-	{
-		g1 = POSTGIS2GEOS(geom1);
-		if (!g1) HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-		g2 = POSTGIS2GEOS(geom2);
-		if (!g2)
-		{
-			HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-			GEOSGeom_destroy(g1);
-		}
-		POSTGIS_DEBUG(4, "containsPrepared: cache is not ready, running standard contains");
-		result = GEOSContains( g1, g2);
-		GEOSGeom_destroy(g1);
-		GEOSGeom_destroy(g2);
-	}
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSContains");
-
-	PG_RETURN_BOOL(result > 0);
-}
-
-
-PG_FUNCTION_INFO_V1(within);
-Datum within(PG_FUNCTION_ARGS)
-{
-	PG_RETURN_DATUM(CallerFInfoFunctionCall2(contains, fcinfo->flinfo, InvalidOid,
-		PG_GETARG_DATUM(1), PG_GETARG_DATUM(0)));
-}
-
-
-
-PG_FUNCTION_INFO_V1(containsproperly);
-Datum containsproperly(PG_FUNCTION_ARGS)
-{
-	SHARED_GSERIALIZED *shared_geom1 = ToastCacheGetGeometry(fcinfo, 0);
-	SHARED_GSERIALIZED *shared_geom2 = ToastCacheGetGeometry(fcinfo, 1);
-	const GSERIALIZED *geom1 = shared_gserialized_get(shared_geom1);
-	const GSERIALIZED *geom2 = shared_gserialized_get(shared_geom2);
-	char 					result;
-	GBOX 			box1, box2;
-	PrepGeomCache *	prep_cache;
-
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* A.ContainsProperly(Empty) == FALSE */
-	if ( gserialized_is_empty(geom1) || gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(false);
-
-	/*
-	 * short-circuit: if geom2 bounding box is not completely inside
-	 * geom1 bounding box we can return FALSE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-	        gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( ! gbox_contains_2d(&box1, &box2) )
-			PG_RETURN_BOOL(false);
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	prep_cache = GetPrepGeomCache(fcinfo, shared_geom1, 0);
-
-	if ( prep_cache && prep_cache->prepared_geom && prep_cache->gcache.argnum == 1 )
-	{
-		GEOSGeometry *g = POSTGIS2GEOS(geom2);
-		if (!g) HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-		result = GEOSPreparedContainsProperly( prep_cache->prepared_geom, g);
-		GEOSGeom_destroy(g);
-	}
-	else
-	{
-		GEOSGeometry *g2;
-		GEOSGeometry *g1;
-
-		g1 = POSTGIS2GEOS(geom1);
-		if (!g1) HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-		g2 = POSTGIS2GEOS(geom2);
-		if (!g2)
-		{
-			GEOSGeom_destroy(g1);
-			HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-		}
-		result = GEOSRelatePattern( g1, g2, "T**FF*FF*" );
-		GEOSGeom_destroy(g1);
-		GEOSGeom_destroy(g2);
-	}
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSContains");
-
-	PG_RETURN_BOOL(result);
-}
-
-/*
- * Described at
- * http://lin-ear-th-inking.blogspot.com/2007/06/subtleties-of-ogc-covers-spatial.html
- */
-PG_FUNCTION_INFO_V1(covers);
-Datum covers(PG_FUNCTION_ARGS)
-{
-	SHARED_GSERIALIZED *shared_geom1 = ToastCacheGetGeometry(fcinfo, 0);
-	SHARED_GSERIALIZED *shared_geom2 = ToastCacheGetGeometry(fcinfo, 1);
-	const GSERIALIZED *geom1 = shared_gserialized_get(shared_geom1);
-	const GSERIALIZED *geom2 = shared_gserialized_get(shared_geom2);
-	int result;
-	GBOX box1, box2;
-	PrepGeomCache *prep_cache;
-
-
-	/* A.Covers(Empty) == FALSE */
-	if ( gserialized_is_empty(geom1) || gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(false);
-
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/*
-	 * short-circuit 1: if geom2 bounding box is not completely inside
-	 * geom1 bounding box we can return FALSE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-	        gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( ! gbox_contains_2d(&box1, &box2) )
-		{
-			PG_RETURN_BOOL(false);
-		}
-	}
-	/*
-	 * short-circuit 2: if geom2 is a point and geom1 is a polygon
-	 * call the point-in-polygon function.
-	 */
-	if (is_poly(geom1) && is_point(geom2))
-	{
-		SHARED_GSERIALIZED *shared_gpoly = is_poly(geom1) ? shared_geom1 : shared_geom2;
-		SHARED_GSERIALIZED *shared_gpoint = is_point(geom1) ? shared_geom1 : shared_geom2;
-		const GSERIALIZED *gpoly = shared_gserialized_get(shared_gpoly);
-		const GSERIALIZED *gpoint = shared_gserialized_get(shared_gpoint);
-		RTREE_POLY_CACHE *cache = GetRtreeCache(fcinfo, shared_gpoly);
-		int retval;
-
-		POSTGIS_DEBUG(3, "Point in Polygon test requested...short-circuiting.");
-		if (gserialized_get_type(gpoint) == POINTTYPE)
-		{
-			LWGEOM* point = lwgeom_from_gserialized(gpoint);
-			int pip_result = pip_short_circuit(cache, lwgeom_as_lwpoint(point), gpoly);
-			lwgeom_free(point);
-
-			retval = (pip_result != -1); /* not outside */
-		}
-		else if (gserialized_get_type(gpoint) == MULTIPOINTTYPE)
-		{
-			LWMPOINT* mpoint = lwgeom_as_lwmpoint(lwgeom_from_gserialized(gpoint));
-			uint32_t i;
-
-			retval = LW_TRUE;
-			for (i = 0; i < mpoint->ngeoms; i++)
-			{
-				int pip_result = pip_short_circuit(cache, mpoint->geoms[i], gpoly);
-				if (pip_result == -1)
-				{
-					retval = LW_FALSE;
-					break;
-				}
-			}
-
-			lwmpoint_free(mpoint);
-		}
-		else
-		{
-			/* Never get here */
-			elog(ERROR,"Type isn't point or multipoint!");
-			PG_RETURN_NULL();
-		}
-
-		PG_RETURN_BOOL(retval);
-	}
-	else
-	{
-		POSTGIS_DEBUGF(3, "Covers: type1: %d, type2: %d", gserialized_get_type(geom1), gserialized_get_type(geom2));
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	prep_cache = GetPrepGeomCache(fcinfo, shared_geom1, 0);
-
-	if ( prep_cache && prep_cache->prepared_geom && prep_cache->gcache.argnum == 1 )
-	{
-		GEOSGeometry *g1 = POSTGIS2GEOS(geom2);
-		if (!g1) HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-		result = GEOSPreparedCovers( prep_cache->prepared_geom, g1);
-		GEOSGeom_destroy(g1);
-	}
-	else
-	{
-		GEOSGeometry *g1;
-		GEOSGeometry *g2;
-
-		g1 = POSTGIS2GEOS(geom1);
-		if (!g1) HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-		g2 = POSTGIS2GEOS(geom2);
-		if (!g2)
-		{
-			GEOSGeom_destroy(g1);
-			HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-		}
-		result = GEOSRelatePattern( g1, g2, "******FF*" );
-		GEOSGeom_destroy(g1);
-		GEOSGeom_destroy(g2);
-	}
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSCovers");
-
-	PG_RETURN_BOOL(result);
-}
-
-
-/**
-* ST_Within(A, B) => ST_Contains(B, A) so we just delegate this calculation to the
-* Contains implementation.
-PG_FUNCTION_INFO_V1(within);
-Datum within(PG_FUNCTION_ARGS)
-*/
-
-/*
- * Described at:
- * http://lin-ear-th-inking.blogspot.com/2007/06/subtleties-of-ogc-covers-spatial.html
- */
-PG_FUNCTION_INFO_V1(coveredby);
-Datum coveredby(PG_FUNCTION_ARGS)
-{
-	SHARED_GSERIALIZED *shared_geom1 = ToastCacheGetGeometry(fcinfo, 0);
-	SHARED_GSERIALIZED *shared_geom2 = ToastCacheGetGeometry(fcinfo, 1);
-	const GSERIALIZED *geom1 = shared_gserialized_get(shared_geom1);
-	const GSERIALIZED *geom2 = shared_gserialized_get(shared_geom2);
-	GEOSGeometry *g1, *g2;
-	int result;
-	GBOX box1, box2;
-	char *patt = "**F**F***";
-
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* A.CoveredBy(Empty) == FALSE */
-	if ( gserialized_is_empty(geom1) || gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(false);
-
-	/*
-	 * short-circuit 1: if geom1 bounding box is not completely inside
-	 * geom2 bounding box we can return FALSE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-	        gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( ! gbox_contains_2d(&box2, &box1) )
-		{
-			PG_RETURN_BOOL(false);
-		}
-
-		POSTGIS_DEBUG(3, "bounding box short-circuit missed.");
-	}
-	/*
-	 * short-circuit 2: if geom1 is a point and geom2 is a polygon
-	 * call the point-in-polygon function.
-	 */
-	if (is_point(geom1) && is_poly(geom2))
-	{
-		SHARED_GSERIALIZED *shared_gpoly = is_poly(geom1) ? shared_geom1 : shared_geom2;
-		SHARED_GSERIALIZED *shared_gpoint = is_point(geom1) ? shared_geom1 : shared_geom2;
-		const GSERIALIZED *gpoly = shared_gserialized_get(shared_gpoly);
-		const GSERIALIZED *gpoint = shared_gserialized_get(shared_gpoint);
-		RTREE_POLY_CACHE *cache = GetRtreeCache(fcinfo, shared_gpoly);
-		int retval;
-
-		POSTGIS_DEBUG(3, "Point in Polygon test requested...short-circuiting.");
-		if (gserialized_get_type(gpoint) == POINTTYPE)
-		{
-			LWGEOM* point = lwgeom_from_gserialized(gpoint);
-			int pip_result = pip_short_circuit(cache, lwgeom_as_lwpoint(point), gpoly);
-			lwgeom_free(point);
-
-			retval = (pip_result != -1); /* not outside */
-		}
-		else if (gserialized_get_type(gpoint) == MULTIPOINTTYPE)
-		{
-			LWMPOINT* mpoint = lwgeom_as_lwmpoint(lwgeom_from_gserialized(gpoint));
-			uint32_t i;
-
-			retval = LW_TRUE;
-			for (i = 0; i < mpoint->ngeoms; i++)
-			{
-				int pip_result = pip_short_circuit(cache, mpoint->geoms[i], gpoly);
-				if (pip_result == -1)
-				{
-					retval = LW_FALSE;
-					break;
-				}
-			}
-
-			lwmpoint_free(mpoint);
-		}
-		else
-		{
-			/* Never get here */
-			elog(ERROR,"Type isn't point or multipoint!");
-			PG_RETURN_NULL();
-		}
-
-		PG_RETURN_BOOL(retval);
-	}
-	else
-	{
-		POSTGIS_DEBUGF(3, "CoveredBy: type1: %d, type2: %d", gserialized_get_type(geom1), gserialized_get_type(geom2));
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	g1 = POSTGIS2GEOS(geom1);
-
-	if (!g1)
-		HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-
-	g2 = POSTGIS2GEOS(geom2);
-
-	if (!g2)
-	{
-		GEOSGeom_destroy(g1);
-		HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-	}
-
-	result = GEOSRelatePattern(g1,g2,patt);
-
-	GEOSGeom_destroy(g1);
-	GEOSGeom_destroy(g2);
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSCoveredBy");
-
-	PG_RETURN_BOOL(result);
-}
-
-PG_FUNCTION_INFO_V1(crosses);
-Datum crosses(PG_FUNCTION_ARGS)
-{
-	GSERIALIZED *geom1;
-	GSERIALIZED *geom2;
-	GEOSGeometry *g1, *g2;
-	int result;
-	GBOX box1, box2;
-
-	geom1 = PG_GETARG_GSERIALIZED_P(0);
-	geom2 = PG_GETARG_GSERIALIZED_P(1);
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* A.Crosses(Empty) == FALSE */
-	if ( gserialized_is_empty(geom1) || gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(false);
-
-	/*
-	 * short-circuit 1: if geom2 bounding box does not overlap
-	 * geom1 bounding box we can return FALSE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-	        gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( gbox_overlaps_2d(&box1, &box2) == LW_FALSE )
-		{
-			PG_RETURN_BOOL(false);
-		}
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	g1 = POSTGIS2GEOS(geom1);
-	if (!g1)
-		HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-
-	g2 = POSTGIS2GEOS(geom2);
-	if (!g2)
-	{
-		GEOSGeom_destroy(g1);
-		HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-	}
-
-	result = GEOSCrosses(g1,g2);
-
-	GEOSGeom_destroy(g1);
-	GEOSGeom_destroy(g2);
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSCrosses");
-
-	PG_FREE_IF_COPY(geom1, 0);
-	PG_FREE_IF_COPY(geom2, 1);
-
-	PG_RETURN_BOOL(result);
-}
-
-PG_FUNCTION_INFO_V1(ST_Intersects);
-Datum ST_Intersects(PG_FUNCTION_ARGS)
-{
-	SHARED_GSERIALIZED *shared_geom1 = ToastCacheGetGeometry(fcinfo, 0);
-	SHARED_GSERIALIZED *shared_geom2 = ToastCacheGetGeometry(fcinfo, 1);
-	const GSERIALIZED *geom1 = shared_gserialized_get(shared_geom1);
-	const GSERIALIZED *geom2 = shared_gserialized_get(shared_geom2);
-	int result;
-	GBOX box1, box2;
-	PrepGeomCache *prep_cache;
-
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* A.Intersects(Empty) == FALSE */
-	if ( gserialized_is_empty(geom1) || gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(false);
-
-	/*
-	 * short-circuit 1: if geom2 bounding box does not overlap
-	 * geom1 bounding box we can return FALSE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-	        gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( gbox_overlaps_2d(&box1, &box2) == LW_FALSE )
-			PG_RETURN_BOOL(false);
-	}
-
-	/*
-	 * short-circuit 2: if the geoms are a point and a polygon,
-	 * call the point_outside_polygon function.
-	 */
-	if ((is_point(geom1) && is_poly(geom2)) || (is_poly(geom1) && is_point(geom2)))
-	{
-		SHARED_GSERIALIZED *shared_gpoly = is_poly(geom1) ? shared_geom1 : shared_geom2;
-		SHARED_GSERIALIZED *shared_gpoint = is_point(geom1) ? shared_geom1 : shared_geom2;
-		const GSERIALIZED *gpoly = shared_gserialized_get(shared_gpoly);
-		const GSERIALIZED *gpoint = shared_gserialized_get(shared_gpoint);
-		RTREE_POLY_CACHE *cache = GetRtreeCache(fcinfo, shared_gpoly);
-		int retval;
-
-		POSTGIS_DEBUG(3, "Point in Polygon test requested...short-circuiting.");
-		if (gserialized_get_type(gpoint) == POINTTYPE)
-		{
-			LWGEOM* point = lwgeom_from_gserialized(gpoint);
-			int pip_result = pip_short_circuit(cache, lwgeom_as_lwpoint(point), gpoly);
-			lwgeom_free(point);
-
-			retval = (pip_result != -1); /* not outside */
-		}
-		else if (gserialized_get_type(gpoint) == MULTIPOINTTYPE)
-		{
-			LWMPOINT* mpoint = lwgeom_as_lwmpoint(lwgeom_from_gserialized(gpoint));
-			uint32_t i;
-
-			retval = LW_FALSE;
-			for (i = 0; i < mpoint->ngeoms; i++)
-			{
-				int pip_result = pip_short_circuit(cache, mpoint->geoms[i], gpoly);
-				if (pip_result != -1) /* not outside */
-				{
-					retval = LW_TRUE;
-					break;
-				}
-			}
-
-			lwmpoint_free(mpoint);
-		}
-		else
-		{
-			/* Never get here */
-			elog(ERROR,"Type isn't point or multipoint!");
-			PG_RETURN_NULL();
-		}
-
-		PG_RETURN_BOOL(retval);
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-	prep_cache = GetPrepGeomCache(fcinfo, shared_geom1, shared_geom2);
-
-	if ( prep_cache && prep_cache->prepared_geom )
-	{
-		if ( prep_cache->gcache.argnum == 1 )
-		{
-			GEOSGeometry *g = POSTGIS2GEOS(geom2);
-			if (!g) HANDLE_GEOS_ERROR("Geometry could not be converted to GEOS");
-			result = GEOSPreparedIntersects( prep_cache->prepared_geom, g);
-			GEOSGeom_destroy(g);
-		}
-		else
-		{
-			GEOSGeometry *g = POSTGIS2GEOS(geom1);
-			if (!g)
-				HANDLE_GEOS_ERROR("Geometry could not be converted to GEOS");
-			result = GEOSPreparedIntersects( prep_cache->prepared_geom, g);
-			GEOSGeom_destroy(g);
-		}
-	}
-	else
-	{
-		GEOSGeometry *g1;
-		GEOSGeometry *g2;
-		g1 = POSTGIS2GEOS(geom1);
-		if (!g1) HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-		g2 = POSTGIS2GEOS(geom2);
-		if (!g2)
-		{
-			GEOSGeom_destroy(g1);
-			HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-		}
-		result = GEOSIntersects( g1, g2);
-		GEOSGeom_destroy(g1);
-		GEOSGeom_destroy(g2);
-	}
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSIntersects");
-
-	PG_RETURN_BOOL(result);
-}
-
-
-PG_FUNCTION_INFO_V1(touches);
-Datum touches(PG_FUNCTION_ARGS)
-{
-	GSERIALIZED *geom1;
-	GSERIALIZED *geom2;
-	GEOSGeometry *g1, *g2;
-	char result;
-	GBOX box1, box2;
-
-	geom1 = PG_GETARG_GSERIALIZED_P(0);
-	geom2 = PG_GETARG_GSERIALIZED_P(1);
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* A.Touches(Empty) == FALSE */
-	if ( gserialized_is_empty(geom1) || gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(false);
-
-	/*
-	 * short-circuit 1: if geom2 bounding box does not overlap
-	 * geom1 bounding box we can return FALSE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-			gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( gbox_overlaps_2d(&box1, &box2) == LW_FALSE )
-		{
-			PG_RETURN_BOOL(false);
-		}
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	g1 = POSTGIS2GEOS(geom1 );
-	if (!g1)
-		HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-
-	g2 = POSTGIS2GEOS(geom2 );
-	if (!g2)
-	{
-		GEOSGeom_destroy(g1);
-		HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-	}
-
-	result = GEOSTouches(g1,g2);
-
-	GEOSGeom_destroy(g1);
-	GEOSGeom_destroy(g2);
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSTouches");
-
-	PG_FREE_IF_COPY(geom1, 0);
-	PG_FREE_IF_COPY(geom2, 1);
-
-	PG_RETURN_BOOL(result);
-}
-
-
-PG_FUNCTION_INFO_V1(disjoint);
-Datum disjoint(PG_FUNCTION_ARGS)
-{
-	GSERIALIZED *geom1;
-	GSERIALIZED *geom2;
-	GEOSGeometry *g1, *g2;
-	char result;
-	GBOX box1, box2;
-
-	geom1 = PG_GETARG_GSERIALIZED_P(0);
-	geom2 = PG_GETARG_GSERIALIZED_P(1);
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* A.Disjoint(Empty) == TRUE */
-	if ( gserialized_is_empty(geom1) || gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(true);
-
-	/*
-	 * short-circuit 1: if geom2 bounding box does not overlap
-	 * geom1 bounding box we can return TRUE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-	        gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( gbox_overlaps_2d(&box1, &box2) == LW_FALSE )
-		{
-			PG_RETURN_BOOL(true);
-		}
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	g1 = POSTGIS2GEOS(geom1);
-	if (!g1)
-		HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-
-	g2 = POSTGIS2GEOS(geom2);
-	if (!g2)
-	{
-		GEOSGeom_destroy(g1);
-		HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-	}
-
-	result = GEOSDisjoint(g1,g2);
-
-	GEOSGeom_destroy(g1);
-	GEOSGeom_destroy(g2);
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSDisjoint");
-
-	PG_FREE_IF_COPY(geom1, 0);
-	PG_FREE_IF_COPY(geom2, 1);
-
-	PG_RETURN_BOOL(result);
-}
-
-
-PG_FUNCTION_INFO_V1(relate_pattern);
-Datum relate_pattern(PG_FUNCTION_ARGS)
-{
-	GSERIALIZED *geom1;
-	GSERIALIZED *geom2;
-	char *patt;
-	char result;
-	GEOSGeometry *g1, *g2;
-	size_t i;
-
-	geom1 = PG_GETARG_GSERIALIZED_P(0);
-	geom2 = PG_GETARG_GSERIALIZED_P(1);
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* TODO handle empty */
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	g1 = POSTGIS2GEOS(geom1);
-	if (!g1)
-		HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-	g2 = POSTGIS2GEOS(geom2);
-	if (!g2)
-	{
-		GEOSGeom_destroy(g1);
-		HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-	}
-
-	patt =  DatumGetCString(DirectFunctionCall1(textout, PG_GETARG_DATUM(2)));
-
-	/*
-	** Need to make sure 't' and 'f' are upper-case before handing to GEOS
-	*/
-	for ( i = 0; i < strlen(patt); i++ )
-	{
-		if ( patt[i] == 't' ) patt[i] = 'T';
-		if ( patt[i] == 'f' ) patt[i] = 'F';
-	}
-
-	result = GEOSRelatePattern(g1,g2,patt);
-	GEOSGeom_destroy(g1);
-	GEOSGeom_destroy(g2);
-	pfree(patt);
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSRelatePattern");
-
-	PG_FREE_IF_COPY(geom1, 0);
-	PG_FREE_IF_COPY(geom2, 1);
-
-	PG_RETURN_BOOL(result);
-}
-
-
-
-PG_FUNCTION_INFO_V1(relate_full);
-Datum relate_full(PG_FUNCTION_ARGS)
-{
-	GSERIALIZED *geom1;
-	GSERIALIZED *geom2;
-	GEOSGeometry *g1, *g2;
-	char *relate_str;
-	text *result;
-	int bnr = GEOSRELATE_BNR_OGC;
-
-	/* TODO handle empty */
-	geom1 = PG_GETARG_GSERIALIZED_P(0);
-	geom2 = PG_GETARG_GSERIALIZED_P(1);
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	if ( PG_NARGS() > 2 )
-		bnr = PG_GETARG_INT32(2);
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	g1 = POSTGIS2GEOS(geom1 );
-	if (!g1)
-		HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-	g2 = POSTGIS2GEOS(geom2 );
-	if (!g2)
-	{
-		GEOSGeom_destroy(g1);
-		HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-	}
-
-	POSTGIS_DEBUG(3, "constructed geometries ");
-
-	POSTGIS_DEBUGF(3, "%s", GEOSGeomToWKT(g1));
-	POSTGIS_DEBUGF(3, "%s", GEOSGeomToWKT(g2));
-
-	relate_str = GEOSRelateBoundaryNodeRule(g1, g2, bnr);
-
-	GEOSGeom_destroy(g1);
-	GEOSGeom_destroy(g2);
-
-	if (!relate_str) HANDLE_GEOS_ERROR("GEOSRelate");
-
-	result = cstring_to_text(relate_str);
-	GEOSFree(relate_str);
-
-	PG_FREE_IF_COPY(geom1, 0);
-	PG_FREE_IF_COPY(geom2, 1);
-
-	PG_RETURN_TEXT_P(result);
-}
-
-
-PG_FUNCTION_INFO_V1(ST_Equals);
-Datum ST_Equals(PG_FUNCTION_ARGS)
-{
-	GSERIALIZED *geom1;
-	GSERIALIZED *geom2;
-	GEOSGeometry *g1, *g2;
-	char result;
-	GBOX box1, box2;
-
-	geom1 = PG_GETARG_GSERIALIZED_P(0);
-	geom2 = PG_GETARG_GSERIALIZED_P(1);
-	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
-
-	/* Empty == Empty */
-	if ( gserialized_is_empty(geom1) && gserialized_is_empty(geom2) )
-		PG_RETURN_BOOL(true);
-
-	/*
-	 * short-circuit: If geom1 and geom2 do not have the same bounding box
-	 * we can return FALSE.
-	 */
-	if ( gserialized_get_gbox_p(geom1, &box1) &&
-	     gserialized_get_gbox_p(geom2, &box2) )
-	{
-		if ( gbox_same_2d_float(&box1, &box2) == LW_FALSE )
-		{
-			PG_RETURN_BOOL(false);
-		}
-	}
-
-	/*
-	 * short-circuit: if geom1 and geom2 are binary-equivalent, we can return
-	 * TRUE.  This is much faster than doing the comparison using GEOS.
-	 */
-	if (VARSIZE(geom1) == VARSIZE(geom2) && !memcmp(geom1, geom2, VARSIZE(geom1))) {
-	    PG_RETURN_BOOL(true);
-	}
-
-	initGEOS(lwpgnotice, lwgeom_geos_error);
-
-	g1 = POSTGIS2GEOS(geom1);
-
-	if (!g1)
-		HANDLE_GEOS_ERROR("First argument geometry could not be converted to GEOS");
-
-	g2 = POSTGIS2GEOS(geom2);
-
-	if (!g2)
-	{
-		GEOSGeom_destroy(g1);
-		HANDLE_GEOS_ERROR("Second argument geometry could not be converted to GEOS");
-	}
-
-	result = GEOSEquals(g1,g2);
-
-	GEOSGeom_destroy(g1);
-	GEOSGeom_destroy(g2);
-
-	if (result == 2) HANDLE_GEOS_ERROR("GEOSEquals");
-
-	PG_FREE_IF_COPY(geom1, 0);
-	PG_FREE_IF_COPY(geom2, 1);
-
-	PG_RETURN_BOOL(result);
-}
 
 PG_FUNCTION_INFO_V1(issimple);
 Datum issimple(PG_FUNCTION_ARGS)
@@ -2858,19 +1834,23 @@ POSTGIS2GEOS(const GSERIALIZED *pglwgeom)
 	return ret;
 }
 
-uint32_t array_nelems_not_null(ArrayType* array) {
-    ArrayIterator iterator;
-    Datum value;
-    bool isnull;
-    uint32_t nelems_not_null = 0;
+static uint32_t
+array_nelems_not_null(ArrayType* array)
+{
+	ArrayIterator iterator;
+	Datum value;
+	bool isnull;
+	uint32_t nelems_not_null = 0;
 	iterator = array_create_iterator(array, 0, NULL);
-	while(array_iterate(iterator, &value, &isnull) )
-        if (!isnull)
-            nelems_not_null++;
+	while(array_iterate(iterator, &value, &isnull))
+	{
+		if (!isnull)
+			nelems_not_null++;
+	}
 
-    array_free_iterator(iterator);
+	array_free_iterator(iterator);
 
-    return nelems_not_null;
+	return nelems_not_null;
 }
 
 /* ARRAY2LWGEOM: Converts the non-null elements of a Postgres array into a LWGEOM* array */
@@ -3392,6 +2372,19 @@ Datum ST_Split(PG_FUNCTION_ARGS)
 	lwgeom_in = lwgeom_from_gserialized(in);
 	lwblade_in = lwgeom_from_gserialized(blade_in);
 
+	if (!lwgeom_isfinite(lwgeom_in))
+	{
+		lwpgerror("Input Geometry contains invalid coordinates");
+		PG_RETURN_NULL();
+	}
+
+	if (!lwgeom_isfinite(lwblade_in))
+	{
+		lwpgerror("Blade Geometry contains invalid coordinates");
+		PG_RETURN_NULL();
+	}
+
+
 	lwgeom_out = lwgeom_split(lwgeom_in, lwblade_in);
 	lwgeom_free(lwgeom_in);
 	lwgeom_free(lwblade_in);
@@ -3691,4 +2684,60 @@ Datum ST_OrientedEnvelope(PG_FUNCTION_ARGS)
 }
 
 
+/**
+* Returns boolean true if the second argument
+* is fully contained in a buffer of the first
+* argument.
+*/
+Datum LWGEOM_dfullywithin(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(LWGEOM_dfullywithin);
+Datum LWGEOM_dfullywithin(PG_FUNCTION_ARGS)
+{
+	GSERIALIZED *geom1 = PG_GETARG_GSERIALIZED_P(0);
+	GSERIALIZED *geom2 = PG_GETARG_GSERIALIZED_P(1);
+	LWGEOM *lwg1 = lwgeom_from_gserialized(geom1);
+	LWGEOM *lwg2 = lwgeom_from_gserialized(geom2);
+	double radius = PG_GETARG_FLOAT8(2);
+	GEOSGeometry *buffer1 = NULL;
+	GEOSGeometry *geos1 = NULL, *geos2 = NULL;
+	char contained;
 
+	if (radius < 0.0)
+	{
+		elog(ERROR, "Tolerance cannot be less than zero\n");
+		PG_RETURN_NULL();
+	}
+
+	gserialized_error_if_srid_mismatch(geom1, geom2, __func__);
+
+	if (lwgeom_is_empty(lwg1) || lwgeom_is_empty(lwg2))
+		PG_RETURN_BOOL(false);
+
+	if (!(lwgeom_isfinite(lwg1) && lwgeom_isfinite(lwg2)))
+		PG_RETURN_BOOL(false);
+
+	initGEOS(lwpgnotice, lwgeom_geos_error);
+
+	geos1 = LWGEOM2GEOS(lwg1, true);
+	geos2 = LWGEOM2GEOS(lwg2, true);
+	lwgeom_free(lwg1);
+	lwgeom_free(lwg2);
+	if (!(geos1 && geos2))
+		HANDLE_GEOS_ERROR("Geometry could not be converted to GEOS");
+
+	buffer1 = GEOSBuffer(geos1, radius, 16);
+	GEOSGeom_destroy(geos1);
+	if (!(buffer1))
+		HANDLE_GEOS_ERROR("Buffer operation failed");
+
+	contained = GEOSCovers(buffer1, geos2);
+	GEOSGeom_destroy(buffer1);
+	GEOSGeom_destroy(geos2);
+
+	if (contained == 2) HANDLE_GEOS_ERROR("GEOSContains");
+
+	PG_FREE_IF_COPY(geom1, 0);
+	PG_FREE_IF_COPY(geom2, 1);
+
+	PG_RETURN_BOOL(contained == 1);
+}

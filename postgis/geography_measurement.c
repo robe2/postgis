@@ -539,10 +539,7 @@ Datum geography_area(PG_FUNCTION_ARGS)
 		s.a = s.b = s.radius;
 
 	/* Calculate the area */
-	if ( use_spheroid )
-		area = lwgeom_area_spheroid(lwgeom, &s);
-	else
-		area = lwgeom_area_sphere(lwgeom, &s);
+	area = lwgeom_area_spheroid(lwgeom, &s);
 
 	/* Clean up */
 	lwgeom_free(lwgeom);
@@ -1376,7 +1373,7 @@ Datum geography_line_locate_point(PG_FUNCTION_ARGS)
 	}
 	if ( gserialized_get_type(gs2) != POINTTYPE )
 	{
-		elog(ERROR,"%s: 2st arg is not a point", __func__);
+		elog(ERROR,"%s: 2nd arg is not a point", __func__);
 		PG_RETURN_NULL();
 	}
 

@@ -753,7 +753,7 @@ SELECT ST_Covers(geog_poly, geog_pt) As poly_covers_pt,
     </informaltable>
 
     <para>To determine a list of roads that cross a highway, use a query
-    similiar to:</para>
+    similar to:</para>
 
     <para><informalexample>
       <programlisting>SELECT roads.id
@@ -1483,7 +1483,7 @@ FROM (SELECT ST_GeomFromText('POLYGON ((40 170, 90 30, 180 100, 40 170))') AS a,
       <note><para>It is better to use a named relationship function if available,
             since they automatically use a spatial index where one exists.
             Also, they may implement performance optimizations which are not available
-            with full relate evalation.
+            with full relate evaluation.
                 </para></note>
 
       <para><emphasis role="bold">Variant 2:</emphasis> Returns the DE-9IM matrix string for the
@@ -1724,7 +1724,7 @@ SELECT pat.name AS relationship, pat.val AS pattern,
     since points do not have a boundary.</para>
 
     <para>In mathematical terms:
-    <emphasis>ST_Touches(A, B) ⇔ (Int(A) ⋂ Int(B) ≠ ∅) ∧ (A ⋂ B ≠ ∅) </emphasis></para>
+    <emphasis>ST_Touches(A, B) ⇔ (Int(A) ⋂ Int(B) = ∅) ∧ (A ⋂ B ≠ ∅) </emphasis></para>
 
     <para>This relationship holds if the DE-9IM Intersection Matrix for the two geometries matches one of:</para>
 
@@ -2102,7 +2102,7 @@ ST_DWithin(
     <refnamediv>
     <refname>ST_DFullyWithin</refname>
 
-    <refpurpose>Tests if two geometries are entirely within a given distance</refpurpose>
+    <refpurpose>Tests if a geometry is entirely inside a distance of another</refpurpose>
     </refnamediv>
 
     <refsynopsisdiv>
@@ -2125,26 +2125,33 @@ ST_DWithin(
     <refsection>
     <title>Description</title>
 
-    <para>Returns true if the geometries are entirely within the specified distance
-    of one another. The distance is specified in units defined by the
-    spatial reference system of the geometries.  For this function to make
-    sense, the source geometries must both be of the same coordinate projection,
-    having the same SRID.</para>
+    <para>Returns true if <code>g2</code> is entirely within
+    <code>distance</code> of <code>g1</code>. Visually, the
+    condition is true if <code>g2</code> is contained within
+    a <code>distance</code> buffer of <code>g1</code>.
+    The distance is specified in units defined by the
+    spatial reference system of the geometries.</para>
 
     <note><para>&index_aware;</para></note>
 
     <para role="availability" conformance="1.5.0">Availability: 1.5.0</para>
+    <para role="changed" conformance="3.5.0">Changed: 3.5.0 : the logic behind the function now uses a test of containment within a buffer, rather than the ST_MaxDistance algorithm. Results will differ from prior versions, but should be closer to user expectations.</para>
     </refsection>
 
     <refsection>
     <title>Examples</title>
-    <programlisting>postgis=# SELECT ST_DFullyWithin(geom_a, geom_b, 10) as DFullyWithin10, ST_DWithin(geom_a, geom_b, 10) as DWithin10, ST_DFullyWithin(geom_a, geom_b, 20) as DFullyWithin20 from
-    (select ST_GeomFromText('POINT(1 1)') as geom_a,ST_GeomFromText('LINESTRING(1 5, 2 7, 1 9, 14 12)') as geom_b) t1;
+    <programlisting>SELECT
+    ST_DFullyWithin(geom_a, geom_b, 10) AS DFullyWithin10,
+    ST_DWithin(geom_a, geom_b, 10) AS DWithin10,
+    ST_DFullyWithin(geom_a, geom_b, 20) AS DFullyWithin20
+FROM (VALUES
+    ('POINT(1 1)', 'LINESTRING(1 5, 2 7, 1 9, 14 12)')
+    ) AS v(geom_a, geom_b)
 
------------------
- DFullyWithin10 | DWithin10 | DFullyWithin20 |
----------------+----------+---------------+
- f             | t        | t             |  </programlisting>
+ dfullywithin10 | dwithin10 | dfullywithin20
+----------------+-----------+----------------
+ f              | t         | t
+</programlisting>
     </refsection>
 
     <refsection>
@@ -2218,7 +2225,7 @@ ST_DWithin(
 
     <para>&sfs_compliant;</para>
     <para role="availability" conformance="1.5.0">Availability: 1.5.0 support for geography was introduced</para>
-    <para role="enhanced" conformance="2.1.0">Enhanced: 2.1.0 improved speed for geography. See <link xlink:href="http://blog.opengeo.org/2012/07/12/making-geography-faster/">Making Geography faster</link> for details.</para>
+    <para role="enhanced" conformance="2.1.0">Enhanced: 2.1.0 improved speed for geography. See <link xlink:href="https://web.archive.org/web/20160827203903/http://boundlessgeo.com/2012/07/making-geography-faster/">Making Geography faster</link> for details.</para>
     <para role="enhanced" conformance="2.1.0">Enhanced: 2.1.0 support for curved geometries was introduced.</para>
 
         <para>Prior to 1.3, <xref linkend="ST_Expand"/> was commonly used in conjunction with &amp;&amp; and ST_Distance to

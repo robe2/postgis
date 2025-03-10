@@ -13,12 +13,12 @@
 	 ******************************************************************** -->
 	<xsl:output method="xml" indent="yes" encoding="utf-8" />
 
-	<!-- We deal only with the reference chapter -->
+	<!-- We deal only with the reference chapters -->
 	<xsl:template match="/">
-		<xsl:apply-templates select="/db:book/db:chapter[@xml:id='reference']" />
+		<xsl:apply-templates select="/db:book/db:chapter[contains(@xml:id, 'reference')]" />
 	</xsl:template>
 
-	<xsl:template match="//db:chapter">
+	<xsl:template match="/">
 
 		<xsl:variable name="chap" select="." />
 
@@ -35,9 +35,6 @@
 			</xsl:variable>
 
 			<section>
-			<xsl:attribute name="xml:id">
-				<xsl:value-of select="concat('NewFunctions_', $ver_id)" />
-			</xsl:attribute>
 
 				<xsl:variable name="header" select="document('xsl-config.xml')//list_new_functions/per_version_header" />
 
@@ -59,7 +56,7 @@
 				<xsl:variable name='tag_role' select="$tag_node/@role" />
 
 				<!-- { -->
-				<xsl:if test="$chap//para[@role=$tag_role and starts-with(./@conformance, $ver)]">
+				<xsl:if test="$chap//db:para[@role=$tag_role and starts-with(./@conformance, $ver)]">
 
 				<para>
 				<xsl:value-of select="substring-before($tag_para, '%')" />
@@ -71,12 +68,15 @@
 				<!-- Pull out the purpose section for each ref entry and strip whitespace and put in
 						 a variable to be tagged unto each function comment	-->
 					<xsl:for-each select="$chap//db:refentry">
+
 						<xsl:sort select="db:refnamediv/db:refname"/>
+
 						<xsl:variable name='comment'>
 							<xsl:value-of select="normalize-space(translate(translate(db:refnamediv/db:refpurpose,'&#x0d;&#x0a;', ' '), '&#09;', ' '))"/>
 						</xsl:variable>
+
 						<xsl:variable name="refid">
-							<xsl:value-of select="@id" />
+							<xsl:value-of select="@xml:id" />
 						</xsl:variable>
 
 						<xsl:variable name="refname">
@@ -84,8 +84,8 @@
 						</xsl:variable>
 
 						<!-- For each section if there is note about availability in this version -->
-						<xsl:for-each select="refsection">
-							<xsl:for-each select=".//para[@role=$tag_role and starts-with(./@conformance, $ver)]">
+						<xsl:for-each select="db:refsection">
+							<xsl:for-each select=".//db:para[@role=$tag_role and starts-with(./@conformance, $ver)]">
 								<listitem>
 									<simpara>
 										<link linkend="{$refid}"><xsl:value-of select="$refname" /></link> - <xsl:value-of select="." /><xsl:text> </xsl:text> <xsl:value-of select="$comment" />
