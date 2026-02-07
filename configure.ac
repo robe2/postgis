@@ -15,10 +15,20 @@ AC_CONFIG_MACRO_DIR([macros])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_PROG_INSTALL
 
+dnl Overwrite _LT_PROG_AR
+m4_pushdef([_LT_PROG_AR],
+  [: ${AR_FLAGS=rs}
+  PG_PROG_AR
+  PG_PROG_RANLIB
+  dnl Call original _LT_PROG_AR
+  m4_popdef([_LT_PROG_AR])
+  _LT_PROG_AR
+]) # _LT_PROG_AR
+
 
 dnl Invoke libtool: we do this as it is the easiest way to find the PIC
 dnl flags required to build liblwgeom
-AC_PROG_LIBTOOL
+LT_INIT
 
 dnl
 dnl Compilers
@@ -144,8 +154,8 @@ dnl
 dnl Search for flex/bison to build the parser
 dnl
 
-AC_PROG_LEX
-AC_PROG_YACC
+AC_PROG_LEX(noyywrap)
+AC_PATH_PROG(YACC, bison)
 AC_SUBST([LEX])
 AC_SUBST([YACC])
 
@@ -202,8 +212,8 @@ fi
 
 CAN_BUILD_PDF=${CAN_BUILD_COMMENTS}
 
-AC_PATH_PROG([IMAGEMAGICK], [convert], [])
-if test "x$IMAGEMAGICK" = "x"; then
+AC_PATH_PROG([CONVERT], [convert], [])
+if test "x$CONVERT" = "x"; then
 	AC_MSG_WARN([ImageMagick does not seem to be installed. Documentation cannot be built])
   CAN_BUILD_PDF=no
 fi
@@ -750,6 +760,22 @@ CPPFLAGS="$GEOS_CPPFLAGS"
 AC_CHECK_HEADER([geos_c.h], [], [AC_MSG_ERROR([could not find geos_c.h - you may need to specify the directory of a geos-config file using --with-geosconfig])])
 CPPFLAGS="$CPPFLAGS_SAVE"
 
+#
+# MacOS with XCode > 15 now requires rpath entries for
+# libraries like GEOS/Proj that might be flexibly installed
+# with movability expected
+#
+case $host_os in
+    darwin*)
+                GEOS_RPATH=`echo $GEOS_LDFLAGS | $PERL -nle 'print "$1" if /\-L ?(\S+) /'`
+                AC_MSG_RESULT([checking for GEOS_RPATH under MacOS... $GEOS_RPATH])
+                if test "x$GEOS_RPATH" != "x"; then
+                  # Add the rpath setting to the LDFLAGS
+                    GEOS_LDFLAGS="$GEOS_LDFLAGS -Wl,-rpath,$GEOS_RPATH"
+                fi
+                ;;
+esac
+
 dnl Ensure we can link against libgeos_c
 LIBS_SAVE="$LIBS"
 LIBS="$GEOS_LDFLAGS"
@@ -885,6 +911,7 @@ elif test ! -z "$PKG_CONFIG"; then
 		[
 			PROJ_CPPFLAGS="$PROJ_CFLAGS"
 			PROJ_LDFLAGS="$PROJ_LIBS"
+			POSTGIS_PROJ_VERSION=`$PKG_CONFIG proj --modversion | sed 's/\([[0-9]]\).*\([[0-9]]\).*\([[0-9]]\)/\1\2/'`
 		],
 		[
 			PROJ_LDFLAGS="-lproj"
@@ -894,6 +921,21 @@ else
 	PROJ_LDFLAGS="-lproj"
 fi
 
+#
+# MacOS with XCode > 15 now requires rpath entries for
+# libraries like GEOS/Proj that might be flexibly installed
+# with movability expected
+#
+case $host_os in
+    darwin*)
+                PROJ_RPATH=`echo $PROJ_LDFLAGS | $PERL -nle 'print "$1" if /\-L ?(\S+) /'`
+                AC_MSG_RESULT([checking for PROJ_RPATH under MacOS... $PROJ_RPATH])
+                    if test "x$PROJ_RPATH" != "x"; then
+                  # Add the rpath setting to the LDFLAGS
+                    PROJ_LDFLAGS="$PROJ_LDFLAGS -Wl,-rpath,$PROJ_RPATH"
+                fi
+                ;;
+esac
 
 dnl Check that we can find the proj_api.h header file
 CPPFLAGS_SAVE="$CPPFLAGS"
@@ -906,8 +948,10 @@ AC_CHECK_HEADER([proj_api.h],
 		)]
 	)
 
-dnl Return the PROJ.4 version number
-AC_PROJ_VERSION([POSTGIS_PROJ_VERSION])
+dnl Return the PROJ.4 version number if not detected by pkg-config
+if test "x$POSTGIS_PROJ_VERSION" = "x"; then
+	AC_PROJ_VERSION([POSTGIS_PROJ_VERSION])
+fi
 AC_DEFINE_UNQUOTED([POSTGIS_PROJ_VERSION], [$POSTGIS_PROJ_VERSION], [PROJ library version])
 AC_SUBST([POSTGIS_PROJ_VERSION])
 CPPFLAGS="$CPPFLAGS_SAVE"
@@ -1022,6 +1066,7 @@ if test "$CHECK_PROTOBUF" != "no"; then
 		PKG_CHECK_MODULES([PROTOBUFC], [libprotobuf-c >= 1.0.0], [
 				PROTOBUF_CPPFLAGS="$PROTOBUFC_CFLAGS";
 				PROTOBUF_LDFLAGS="$PROTOBUFC_LIBS";
+								PROTOC_VERSION=`$PKG_CONFIG libprotobuf-c --modversion | sed 's/\([[0-9]]\).*\([[0-9]]\).*\([[0-9]]\)/\100\200\3/'`
 			], [
 				AC_MSG_RESULT([libprotobuf-c not found in pkg-config])
 			])
@@ -1048,11 +1093,11 @@ if test "$CHECK_PROTOBUF" != "no"; then
 		],[])
 
 	if test -n "$PROTOBUF_CPPFLAGS"; then
-		CPPFLAGS="$PROTOBUF_CPPFLAGS"
+		CPPFLAGS="$CPPFLAGS $PROTOBUF_CPPFLAGS"
 	fi
 
 	if test -n "$PROTOBUF_LDFLAGS"; then
-		LDFLAGS="$PROTOBUF_LDFLAGS"
+		LDFLAGS="$LDFLAGS $PROTOBUF_LDFLAGS"
 	fi
 
 	dnl confirm that discovered/configured include path works
@@ -1114,7 +1159,7 @@ AC_ARG_WITH([gui],
 	[GUI="yes"], [GUI="no"])
 
 if test "x$GUI" = "xyes"; then
-	AC_MSG_RESULT([GUI: Build requested, checking for dependencies (GKT+2.0)])
+	AC_MSG_RESULT([GUI: Build requested, checking for dependencies (GTK+2.0)])
 	dnl Try to find the GTK libs with pkgconfig
 	AM_PATH_GTK_2_0([2.8.0], [GTK_BUILD="gui"], [GTK_BUILD=""])
 
