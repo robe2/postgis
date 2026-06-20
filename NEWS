@@ -21,11 +21,12 @@ To take advantage of all postgis_sfcgal extension features SFCGAL 2.3+ is needed
 
 * New Features *
 
- - #1124, shp2pgsql can create UNLOGGED tables for transient staging loads
-          (Darafei Praliaskouski)
- - #2935, shp2pgsql --drop-table can emit DROP TABLE before prepare output
-          (Darafei Praliaskouski)
- - raster2pgsql and shp2pgsql expose loader actions as long options
+ - #1124, #2935, #3033, #4658, #4659, [loader] Rework loader arguments:
+          shp2pgsql can create UNLOGGED tables and choose the feature id column
+          name, shp2pgsql --drop-table can emit DROP TABLE before prepare
+          output, raster2pgsql/shp2pgsql expose loader actions as long options,
+          both loaders accept long aliases for existing options, and
+          --if-not-exists makes creation actions idempotent
           (Darafei Praliaskouski)
  - #4208, Add single-geometry variants of ST_MaxDistance and ST_LongestLine
           (Darafei Praliaskouski)
@@ -58,6 +59,14 @@ To take advantage of all postgis_sfcgal extension features SFCGAL 2.3+ is needed
 
 * Enhancements *
 
+ - #2045, pgsql2shp query dumps no longer require temporary table
+          privileges (Darafei Praliaskouski)
+ - #1577, [loader] Report unsupported .zip archive input before trying
+          to open shapefile sidecar files (Darafei Praliaskouski)
+ - #3158, Move geometry and geography typmod bit helpers out of the
+          public liblwgeom header (Darafei Praliaskouski)
+ - #4678, [raster] Move st_sum4ma neighborhood callback to C
+          (Darafei Praliaskouski)
  - #2116, [raster] Add ST_Value nearest-neighbor boundary options
           (Darafei Praliaskouski)
  - #2804, #4315, [raster] Support two-argument ST_MapAlgebra callbacks
@@ -67,9 +76,10 @@ To take advantage of all postgis_sfcgal extension features SFCGAL 2.3+ is needed
  - #6062, [topology] Stop using recursive snapping, for improved robustness (Sandro Santilli)
  - #6065, Improved winding order computation robustness for rings having collapsed elements
           (Sandro Santilli)
- - #3743, [raster] Document and test raster2pgsql -s FROM_SRID:SRID
-          reprojection support (Darafei Praliaskouski)
- - #4659, [raster] Add raster2pgsql and shp2pgsql long loader action options
+ - #3743, #4385, [raster loader] Document raster2pgsql -s FROM_SRID:SRID
+          reprojection support and clarify index creation timing for append loads
+          (Darafei Praliaskouski)
+ - #2137, [raster] Reuse matching source raster overviews in raster2pgsql -l
           (Darafei Praliaskouski)
  - #4749, Use point-in-polygon predicate fast paths for point-only
           GeometryCollections (Darafei Praliaskouski)
@@ -82,12 +92,20 @@ To take advantage of all postgis_sfcgal extension features SFCGAL 2.3+ is needed
           (Darafei Praliaskouski)
  - #2832, [raster] Avoid padding single-tile raster2pgsql overviews
           when padding is not requested (Darafei Praliaskouski)
+ - #2623, Generate a pgsql2shp GID field when exporting geometry-only
+          shapefiles (Darafei Praliaskouski)
+ - #2838, Emit valid X3D Coordinate nodes for 2D polygon output
+          (Darafei Praliaskouski)
  - Fix WKB and TWKB parser resource exhaustion on malformed input
+          (Darafei Praliaskouski)
+ - #2850, Preserve pgsql2shp numeric precision and scale in DBF metadata
           (Darafei Praliaskouski)
  - #6083, Pass configured dependency include paths to fuzzer smoke builds
           (Darafei Praliaskouski)
  - #3103, Add regression coverage for exact-schema find_srid and
           geometry_columns lookups (Darafei Praliaskouski)
+ - #1705, Infer constraint metadata for direct view and materialized view
+          geometry columns (Darafei Praliaskouski)
  - #6038, Avoid stale relation lookups in geometry_columns after topology
           objects are dropped (Darafei Praliaskouski)
  - #5655, [doc] Skip XML validation during `make check` when xsltproc is
