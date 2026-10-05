@@ -784,6 +784,9 @@ _PG_init(void) {
 		);
 	}
 
+	/* rt_band.c defaults this to true for non-backend users; GUC init asserts the C var matches bootValue */
+	enable_outdb_rasters = boot_postgis_enable_outdb_rasters;
+
 	if ( postgis_guc_find_option("postgis.enable_outdb_rasters") )
 	{
 		/* In this narrow case the previously installed GUC is tied to the callback in */
