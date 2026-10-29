@@ -238,7 +238,7 @@ strtolower(char * str) {
 	int j;
 
 	for (j = strlen(str) - 1; j >= 0; j--)
-		str[j] = tolower(str[j]);
+		str[j] = tolower((unsigned char)str[j]);
 
 	return str;
 }
@@ -322,12 +322,12 @@ trim(const char *input) {
 		return (char *) input;
 
 	/* trim left */
-	while (isspace(*input))
+	while (isspace((unsigned char)*input))
 		input++;
 
 	/* trim right */
 	ptr = ((char *) input) + strlen(input);
-	while (isspace(*--ptr))
+	while (isspace((unsigned char)*--ptr))
 		offset++;
 
 	len = strlen(input) - offset + 1;

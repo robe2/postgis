@@ -150,7 +150,7 @@ static int is_literal_valid(const char *literal) {
 
 	for (int j = coord_start; j < literal_length; j++) {
 
-		if (!isdigit(literal[j])) {
+		if (!isdigit((unsigned char)literal[j])) {
 
 
 			if (j < 3) {
@@ -221,7 +221,7 @@ static double parse_geo_literal(char *literal) {
 
 	literal_length = strlen(literal);
 
-	if (!isdigit(start_character)) start_literal = 1;
+	if (!isdigit((unsigned char)start_character)) start_literal = 1;
 
 	POSTGIS_DEBUGF(2, "    start_literal=%d", start_literal);
 

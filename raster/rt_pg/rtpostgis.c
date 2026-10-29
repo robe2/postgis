@@ -397,7 +397,7 @@ rt_pg_vsi_load_options(const char* vsiname, stringlist_t *s)
 			   lowercases keys, so we'll lower case our list
 			   of options before storing them in the stringlist. */
 			while (*ptr) {
-				*ptr = tolower(*ptr);
+				*ptr = tolower((unsigned char)*ptr);
 				ptr++;
 			}
 			elog(DEBUG4, "GDAL %s option: %s", vsiname, optionstr);

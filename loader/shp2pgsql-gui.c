@@ -960,8 +960,8 @@ create_new_file_config(const char *filename)
 	/* Force the table name to lower case */
 	for (i = 0; i < table_end - table_start; i++)
 	{
-		if (isupper(loader_file_config->table[i]) != 0)
-			loader_file_config->table[i] = tolower(loader_file_config->table[i]);
+		if (isupper((unsigned char)loader_file_config->table[i]) != 0)
+			loader_file_config->table[i] = tolower((unsigned char)loader_file_config->table[i]);
 	}
 
 	/* Set the default schema to public */
@@ -2567,7 +2567,7 @@ pgui_validate_connection()
 	{
 		for (i = 0; i < strlen(conn->port); i++)
 		{
-			if (!isdigit(conn->port[i]))
+			if (!isdigit((unsigned char)conn->port[i]))
 			{
 				pgui_seterr(_("The connection port must be numeric!"));
 				return 0;

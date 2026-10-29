@@ -241,13 +241,13 @@ static double parse_kml_double(char *d, bool space_before, bool space_after)
 	 * this pattern upon parameters
 	 */
 
-	if (space_before) while (isspace(*d)) d++;
+	if (space_before) while (isspace((unsigned char)*d)) d++;
 	for (st = INIT, p = d ; *p ; p++)
 	{
 
 lwpgnotice("State: %d, *p=%c", st, *p);
 
-		if (isdigit(*p))
+		if (isdigit((unsigned char)*p))
 		{
 			if (st == INIT || st == NEED_DIG) 	st = DIG;
 			else if (st == NEED_DIG_DEC) 			st = DIG_DEC;
@@ -271,7 +271,7 @@ lwpgnotice("State: %d, *p=%c", st, *p);
 			if      (st == DIG || st == DIG_DEC) 		st = EXP;
 			else    lwpgerror("invalid KML representation");
 		}
-		else if (isspace(*p))
+		else if (isspace((unsigned char)*p))
 		{
 			if (!space_after) lwpgerror("invalid KML representation");
 			if (st == DIG || st == DIG_DEC || st == DIG_EXP)st = END;
@@ -329,11 +329,11 @@ static POINTARRAY* parse_kml_coordinates(xmlNodePtr xnode, bool *hasz)
 	/* HasZ, !HasM, 1pt */
 	dpa = ptarray_construct_empty(1, 0, 1);
 
-  while (*p && isspace(*p)) ++p;
+  while (*p && isspace((unsigned char)*p)) ++p;
 	for (kml_dims=0; *p ; p++)
 	{
 //lwpgnotice("*p:%c, kml_dims:%d", *p, kml_dims);
-    if ( isdigit(*p) || *p == '+' || *p == '-' || *p == '.' ) {
+    if ( isdigit((unsigned char)*p) || *p == '+' || *p == '-' || *p == '.' ) {
 			  kml_dims++;
         errno = 0; d = strtod(p, &q);
         if ( errno != 0 ) {
@@ -350,13 +350,13 @@ static POINTARRAY* parse_kml_coordinates(xmlNodePtr xnode, bool *hasz)
 
 //lwpgnotice("after strtod d:%f, *q:%c, kml_dims:%d", d, *q, kml_dims);
 
-        if ( *q && ! isspace(*q) && *q != ',' ) {
+        if ( *q && ! isspace((unsigned char)*q) && *q != ',' ) {
           lwpgerror("invalid KML representation"); /* (invalid character %c follows ordinate value)", *q); */
         }
 
         /* Look-ahead to see if we're done reading */
-        while (*q && isspace(*q)) ++q;
-        if ( isdigit(*q) || *q == '+' || *q == '-' || *q == '.' || ! *q ) {
+        while (*q && isspace((unsigned char)*q)) ++q;
+        if ( isdigit((unsigned char)*q) || *q == '+' || *q == '-' || *q == '.' || ! *q ) {
           if ( kml_dims < 2 ) lwpgerror("invalid KML representation"); /* (not enough ordinates)"); */
           else if ( kml_dims < 3 ) *hasz = false;
           if ( ! seen_kml_dims ) seen_kml_dims = kml_dims;
@@ -368,7 +368,7 @@ static POINTARRAY* parse_kml_coordinates(xmlNodePtr xnode, bool *hasz)
         }
         p = q-1; /* will be incremented on next iteration */
 //lwpgnotice("after look-ahead *p:%c, kml_dims:%d", *p, kml_dims);
-    } else if ( *p != ',' && ! isspace(*p) ) {
+    } else if ( *p != ',' && ! isspace((unsigned char)*p) ) {
           lwpgerror("invalid KML representation"); /* (unexpected character %c)", *p); */
     }
 	}

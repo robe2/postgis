@@ -88,7 +88,7 @@ static lwflags_t wkt_dimensionality(char *dimensionality)
 		else if( (dimensionality[i] == 'M') || (dimensionality[i] == 'm') )
 			FLAGS_SET_M(flags,1);
 		/* only a space is accepted in between */
-		else if( ! isspace(dimensionality[i]) ) break;
+		else if( ! isspace((unsigned char)dimensionality[i]) ) break;
 	}
 	return flags;
 }

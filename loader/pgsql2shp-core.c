@@ -750,7 +750,7 @@ goodDBFValue(char *in, char fieldType)
 	switch (fieldType)
 	{
 	case FTLogical:
-		buf[0] = toupper(in[0]);
+		buf[0] = toupper((unsigned char)in[0]);
 		buf[1]='\0';
 		return buf;
 	case FTDate:
@@ -1714,7 +1714,7 @@ ShpDumperOpenTable(SHPDUMPERSTATE *state)
 		{
 			size_t nameit;
 			for (nameit = 0; nameit < strlen(dbffieldname); nameit++)
-				dbffieldname[nameit] = toupper(dbffieldname[nameit]);
+				dbffieldname[nameit] = toupper((unsigned char)dbffieldname[nameit]);
 		}
 
 		/* Issue warning if column has been renamed */

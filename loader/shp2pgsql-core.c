@@ -888,7 +888,7 @@ strtolower(char *s)
 	size_t j;
 
 	for (j = 0; j < strlen(s); j++)
-		s[j] = tolower(s[j]);
+		s[j] = tolower((unsigned char)s[j]);
 }
 
 static const char *

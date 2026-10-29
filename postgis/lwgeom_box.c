@@ -65,7 +65,7 @@ Datum BOX2D_in(PG_FUNCTION_ARGS)
 	gbox_init(&box);
 
 	for(i = 0; str[i]; i++) {
-	  str[i] = tolower(str[i]);
+	  str[i] = tolower((unsigned char)str[i]);
 	}
 
 	nitems = sscanf(str,"box(%lf %lf,%lf %lf)", &box.xmin, &box.ymin, &box.xmax, &box.ymax);

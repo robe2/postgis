@@ -696,7 +696,7 @@ void decode_geohash_bbox(char *geohash, double *lat, double *lon, int precision)
 
 	for (int i = 0; i < precision; i++)
 	{
-		char c = tolower(geohash[i]);
+		char c = tolower((unsigned char)geohash[i]);
 
 		/* Valid characters are all digits in base32 */
 		char *base32_pos = strchr(base32, c);

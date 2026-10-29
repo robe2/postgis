@@ -71,7 +71,7 @@ static void cu_strtolower(char* str)
 {
 	size_t i;
 	for (i = 0; i < strlen(str); ++i) {
-		str[i] = tolower(str[i]);
+		str[i] = tolower((unsigned char)str[i]);
 	}
 }
 

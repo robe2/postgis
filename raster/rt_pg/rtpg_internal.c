@@ -100,7 +100,7 @@ rtpg_strtoupper(char * str) {
 	int j;
 
 	for (j = strlen(str) - 1; j >= 0; j--)
-		str[j] = toupper(str[j]);
+		str[j] = toupper((unsigned char)str[j]);
 
 	return str;
 }
@@ -234,14 +234,14 @@ rtpg_trim(const char *input) {
 		return (char *) input;
 
 	/* trim left */
-	while (isspace(*input) && *input != '\0')
+	while (isspace((unsigned char)*input) && *input != '\0')
 		input++;
 
 	/* trim right */
 	inputlen = strlen(input);
 	if (inputlen) {
 		ptr = ((char *) input) + inputlen;
-		while (isspace(*--ptr))
+		while (isspace((unsigned char)*--ptr))
 			offset++;
 	}
 

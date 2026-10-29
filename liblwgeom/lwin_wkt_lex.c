@@ -1384,9 +1384,9 @@ YY_RULE_SETUP
 #line 106 "lwin_wkt_lex.l"
 {
 	LWDEBUG(5,"DIMENSIONALITY");
-	if (toupper(wkt_yytext[0]) == 'Z' && toupper(wkt_yytext[1]) == 'M')
+	if (toupper((unsigned char)wkt_yytext[0]) == 'Z' && toupper((unsigned char)wkt_yytext[1]) == 'M')
 		wkt_yylval.stringvalue = "ZM";
-	else if (toupper(wkt_yytext[0]) == 'Z')
+	else if (toupper((unsigned char)wkt_yytext[0]) == 'Z')
 		wkt_yylval.stringvalue = "Z";
 	else
 		wkt_yylval.stringvalue = "M";

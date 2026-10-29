@@ -105,9 +105,9 @@ EMPTY { return EMPTY_TOK; }
 
 [zZ]|[mM]|[zZ][mM] {
 	LWDEBUG(5,"DIMENSIONALITY");
-	if (toupper(wkt_yytext[0]) == 'Z' && toupper(wkt_yytext[1]) == 'M')
+	if (toupper((unsigned char)wkt_yytext[0]) == 'Z' && toupper((unsigned char)wkt_yytext[1]) == 'M')
 		wkt_yylval.stringvalue = "ZM";
-	else if (toupper(wkt_yytext[0]) == 'Z')
+	else if (toupper((unsigned char)wkt_yytext[0]) == 'Z')
 		wkt_yylval.stringvalue = "Z";
 	else
 		wkt_yylval.stringvalue = "M";

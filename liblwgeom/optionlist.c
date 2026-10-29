@@ -33,7 +33,7 @@ option_list_string_to_lower(char* key)
 {
 	if (!key) return;
 	while (*key) {
-		*key = tolower(*key);
+		*key = tolower((unsigned char)*key);
 		key++;
 	}
 	return;

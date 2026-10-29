@@ -142,7 +142,7 @@ _lwtype_upper_name(int type, char *buf, size_t buflen)
   ptr = buf;
   while (*ptr)
   {
-    *ptr = toupper(*ptr);
+    *ptr = toupper((unsigned char)*ptr);
     ++ptr;
   }
 }
